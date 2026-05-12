@@ -5,7 +5,7 @@ import 'package:path/path.dart';
 class DatabaseHelper {
   static const _dbName = 'habit_track.db';
   static const _dbVersion = 1;
-  static const tableHabits = 'habis';
+  static const tableHabits = 'habits';
 
   DatabaseHelper._internal();
   static final DatabaseHelper instance = DatabaseHelper._internal();
