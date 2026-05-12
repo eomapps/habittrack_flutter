@@ -11,5 +11,5 @@ class AppStrings {
   static const String today = 'Today';
   static const String noHabitsYet = 'No habits yet';
   static const String addPrompt =
-      'Tap the + button to add your first habit and start building your streak.';
+      'Tap the + button to add your first habit\nand start your streak.';
 }
