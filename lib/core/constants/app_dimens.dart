@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 class AppDimens {
   AppDimens._();
 
-  // border radius
   static const double radiusCard = 12;
   static const double radiusButton = 12;
   static const double checkSize = 24;
