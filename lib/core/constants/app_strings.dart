@@ -1,4 +1,6 @@
 class AppStrings {
+  AppStrings._();
+
   static const String appTitle = 'HabitTrack';
   static const String appTagLine = 'build better habits';
   static const String todaysHabits = 'Today\'s Habits';
