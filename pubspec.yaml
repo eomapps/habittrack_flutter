@@ -71,6 +71,7 @@ flutter:
     -  assets/images/habittrack_tagline.png
     -  assets/images/habittrack_tagline_800.png
     -  assets/images/home_icon.svg
+    -  assets/images/habittrack_light_circle_600.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -136,7 +137,7 @@ flutter_native_splash:
   # remain optional. NOTE that if you specify the [required] color, then you cant 
   # use the [required] background_image in the next section. the reverse is true.
   # select one, they cant work together.
-  color: "#534AB7"  ##====================================[REQUIRED]==========
+  color: "#2D2860" #"#534AB7"  ##====================================[REQUIRED]==========
   #color_dark: "#042a49"
   # platform-specific color. will override general color if active:
   #color_android: "#42a5f5"
@@ -232,7 +233,7 @@ flutter_native_splash:
   #! ANDROID 12+ configuration:
   android_12:
     # background color
-    color: "#534AB7"
+    color: "#2D2860" #"#534AB7"
     # color_dark: "#042a49"
 
     # center-logo
@@ -241,11 +242,11 @@ flutter_native_splash:
     # with background: 960×960 px (fit within circle 640px in diameter)    
     # without background: 1152×1152 px (fit within circle 768px in diameter)
     # ensure that the most important design elements of your image are placed within a circular area 
-    image: assets/images/habittrack_light_960.png    
+    image: assets/images/habittrack_light_circle_600.png  
     # image_dark: assets/images/logo/logo-splash2.png  
 
     # center-logo background color
-    icon_background_color: "#534AB7"
+    icon_background_color: "#2D2860" #"#534AB7"
     # icon_background_color_dark: "#eeeeee"
 
     # branding:
