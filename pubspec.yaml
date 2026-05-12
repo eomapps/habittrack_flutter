@@ -70,6 +70,7 @@ flutter:
     -  assets/images/habittrack_light_960.png
     -  assets/images/habittrack_tagline.png
     -  assets/images/habittrack_tagline_800.png
+    -  assets/images/home_icon.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
