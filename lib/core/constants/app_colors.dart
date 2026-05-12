@@ -9,4 +9,5 @@ class AppColors {
   static const colorChoice3 = Color(0xFF1D9E75);
   static const colorChoice4 = Color(0xFF7F77DD);
   static const colorChoice5 = Color(0xFFD4537E);
+  static const mutedText = Color(0xFF7A789A);
 }
