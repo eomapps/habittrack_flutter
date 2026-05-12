@@ -10,8 +10,8 @@ class AppTheme {
     ),
     textTheme: TextTheme(
       headlineLarge: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
-      bodyLarge: TextStyle(fontSize: 14),
-      bodyMedium: TextStyle(fontSize: 11),
+      bodyLarge: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+      bodyMedium: TextStyle(fontSize: 14, color: AppColors.mutedText),
       bodySmall: TextStyle(fontSize: 10),
     ),
     buttonTheme: ButtonThemeData(buttonColor: AppColors.brand),
