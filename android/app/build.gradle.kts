@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "HabitTrack"
+    namespace = "com.eomapps.habit_track"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
