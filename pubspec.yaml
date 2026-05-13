@@ -42,7 +42,7 @@ dependencies:
   intl: ^0.20.2
   flutter_svg: ^2.2.4
   google_fonts: ^8.1.0
-
+  flutter_launcher_icons: ^0.14.4
 
 dev_dependencies:
   flutter_test:
@@ -167,3 +167,9 @@ flutter_native_splash:
     # The branding image dimensions must be 800x320 px.
     branding:      assets/images/habittrack_tagline_800.png
     #branding_dark: assets/dart_dark.png
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/habittrack_icon_1024.png"   
+  remove_alpha_ios: true 
