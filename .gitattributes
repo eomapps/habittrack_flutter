@@ -1,0 +1,7 @@
+# Ignore Flutter platform scaffolding for language stats
+windows/** linguist-vendored
+linux/** linguist-vendored
+macos/** linguist-vendored
+ios/** linguist-vendored
+android/** linguist-vendored
+web/** linguist-vendored
