@@ -1,5 +1,5 @@
-import 'package:eomappshabit_track/data/database/database_helper.dart';
-import 'package:eomappshabit_track/data/models/habit.dart';
+import 'package:habittrack/data/database/database_helper.dart';
+import 'package:habittrack/data/models/habit.dart';
 
 class HabitRepository {
   final DatabaseHelper _databaseHelper;

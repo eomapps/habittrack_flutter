@@ -1,8 +1,8 @@
-import 'package:eomappshabit_track/core/constants/app_theme.dart';
-import 'package:eomappshabit_track/data/database/database_helper.dart';
-import 'package:eomappshabit_track/data/repositories/habit_repository.dart';
-import 'package:eomappshabit_track/viewmodels/habit_viewmodel.dart';
-import 'package:eomappshabit_track/views/home/home_screen.dart';
+import 'package:habittrack/core/constants/app_theme.dart';
+import 'package:habittrack/data/database/database_helper.dart';
+import 'package:habittrack/data/repositories/habit_repository.dart';
+import 'package:habittrack/viewmodels/habit_viewmodel.dart';
+import 'package:habittrack/views/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';

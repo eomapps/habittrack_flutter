@@ -1,8 +1,8 @@
-import 'package:eomappshabit_track/core/constants/app_colors.dart';
-import 'package:eomappshabit_track/core/constants/app_dimens.dart';
-import 'package:eomappshabit_track/core/constants/app_strings.dart';
-import 'package:eomappshabit_track/core/constants/app_text_styles.dart';
-import 'package:eomappshabit_track/views/home/widgets/empty_placeholder.dart';
+import 'package:habittrack/core/constants/app_colors.dart';
+import 'package:habittrack/core/constants/app_dimens.dart';
+import 'package:habittrack/core/constants/app_strings.dart';
+import 'package:habittrack/core/constants/app_text_styles.dart';
+import 'package:habittrack/views/home/widgets/empty_placeholder.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {

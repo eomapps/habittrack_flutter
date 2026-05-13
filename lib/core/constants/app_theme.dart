@@ -1,4 +1,4 @@
-import 'package:eomappshabit_track/core/constants/app_colors.dart';
+import 'package:habittrack/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AppTheme {

@@ -1,6 +1,6 @@
 # HabitTrack
 
-A lightweight habit tracking app built in Flutter.
+A lightweight habit tracking app built with Flutter.
 
 ## Architecture
 MVVM using Provider. `HabitViewModel` extends `ChangeNotifier` and is the 

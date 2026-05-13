@@ -1,5 +1,5 @@
-import 'package:eomappshabit_track/data/models/habit.dart';
-import 'package:eomappshabit_track/data/repositories/habit_repository.dart';
+import 'package:habittrack/data/models/habit.dart';
+import 'package:habittrack/data/repositories/habit_repository.dart';
 import 'package:flutter/material.dart';
 
 class HabitViewModel extends ChangeNotifier {

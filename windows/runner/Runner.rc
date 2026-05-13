@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "eomappshabit_track" "\0"
+            VALUE "FileDescription", "habittrack" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "eomappshabit_track" "\0"
+            VALUE "InternalName", "habittrack" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2026 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "eomappshabit_track.exe" "\0"
-            VALUE "ProductName", "eomappshabit_track" "\0"
+            VALUE "OriginalFilename", "habittrack.exe" "\0"
+            VALUE "ProductName", "habittrack" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
