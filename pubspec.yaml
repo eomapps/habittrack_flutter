@@ -1,16 +1,38 @@
 name: eomappshabit_track
-description: "A lightweight habit tracking app."
-publish_to: 'none' 
+description: "A new Flutter project."
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
 version: 1.0.0+1
 
 environment:
   sdk: ^3.11.5
 
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
 dependencies:
   flutter:
     sdk: flutter
 
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
 
   flutter_native_splash: ^2.4.7
@@ -19,6 +41,7 @@ dependencies:
   path: ^1.9.0
   intl: ^0.20.2
   flutter_svg: ^2.2.4
+  google_fonts: ^8.1.0
 
 
 dev_dependencies:
@@ -28,7 +51,9 @@ dev_dependencies:
   flutter_lints: ^6.0.0
 
 flutter:
+
   uses-material-design: true
+
   assets:
     -  assets/images/habittrack_light_960.png
     -  assets/images/habittrack_tagline.png
@@ -37,26 +62,108 @@ flutter:
     -  assets/images/habittrack_light_circle_600.png
 
   fonts:
-    - family: Nunito
-      fonts:
-        - asset: assets/fonts/Nunito-Regular.ttf
-          weight: 400
-        - asset: assets/fonts/Nunito-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/Nunito-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/Nunito-Bold.ttf
-          weight: 700
-
+     - family: Nunito
+       fonts:
+          - asset: assets/fonts/Nunito-Regular.ttf
+            weight: 400
+          - asset: assets/fonts/Nunito-Medium.ttf
+            weight: 500
+          - asset: assets/fonts/Nunito-SemiBold.ttf
+            weight: 600
+          - asset: assets/fonts/Nunito-Bold.ttf
+            weight: 700
+ 
 flutter_native_splash:
-  color: "#2D2860"
-  image:         assets/images/habittrack_light_960.png
+
+  #! FOR ALL PLATFORM, except Android 12+:
+  color: "#2D2860" #"#534AB7"  ##====================================[REQUIRED]==========
+  #color_dark: "#042a49"
+  # platform-specific color. will override general color if active:
+  #color_android: "#42a5f5"
+  #color_dark_android: "#042a49"
+  #color_ios: "#42a5f5"
+  #color_dark_ios: "#042a49"
+  #color_web: "#42a5f5"
+  #color_dark_web: "#042a49"
+
+  # general background_image for all platform (except android 12+)
+  # if you specify this [required] background_image, then you should comment the 
+  # [required] color in previous section. select one, they cant work together.
+  #background_image:      "assets/background.png" #========[REQUIRED]============
+  #background_image_dark: "assets/dark-background.png"
+  # platform-specific background_image. will override general background_image if active:
+  #background_image_android:      "assets/background-android.png"
+  #background_image_dark_android: "assets/dark-background-android.png"
+  #background_image_ios:          "assets/background-ios.png"
+  #background_image_dark_ios:     "assets/dark-background-ios.png"
+  #background_image_web:          "assets/background-web.png"
+  #background_image_dark_web:     "assets/dark-background-web.png"
+
+  # general image for all platform (except android 12+):
+  # allows you to specify an image used in the splash screen. It must be a
+  # png file and should be sized for 4x pixel density.
+  image:                assets/images/habittrack_light_960.png
+  #image_dark:          assets/splash-invert.png
+  # platform-specific image. will override general image if active:
+  #image_android:       assets/splash-android.png
+  #image_dark_android:  assets/splash-invert-android.png
+  #image_ios:           assets/splash-ios.png
+  #image_dark_ios:      assets/splash-invert-ios.png
+  #image_web:           assets/splash-web.gif
+  #image_dark_web:      assets/splash-invert-web.gif  
+
+  # image alignment (default center if not specified, or speccified something else):
+  #android_gravity: center       # bottom, center, center_horizontal, center_vertical, 
+  # clip_horizontal, clip_vertical, end, fill, fill_horizontal, fill_vertical, left, right, start, top. could also be a combination like `android_gravity: fill|clip_vertical`
+  # This will fill the width while maintaining the image's vertical aspect ratio.
+  # visit https://developer.android.com/reference/android/view/Gravity
+  #ios_content_mode: center      # scaleToFill, scaleAspectFit, scaleAspectFill, 
+  # center, top, bottom, left, right, topLeft, topRight, bottomLeft, or bottomRight.
+  # visit https://developer.apple.com/documentation/uikit/uiview/contentmode
+  #web_image_mode: center        # center, contain, stretch, cover
+
+  # general branding for all platform (except android 12+):
+  # allows you to specify an image used as branding in the splash screen. should be png.
   branding:      assets/images/habittrack_tagline_800.png
-  branding_mode: bottom               
-  fullscreen:    true                
+  #branding_dark: assets/dart_dark.png
+  # platform-specific branding. will override general branding if active:
+  #branding_android:      assets/brand-android.png
+  #branding_dark_android: assets/dart_dark-android.png
+  #branding_ios:          assets/brand-ios.png
+  #branding_dark_ios:     assets/dart_dark-ios.png
+  #branding_web:          assets/brand-web.gif
+  #branding_dark_web:     assets/dart_dark-web.gif
+
+  # branding position:
+  # you can use bottom, bottomRight, and bottomLeft. The default values is 
+  # bottom if not specified or specified something else.
+  branding_mode: bottom                # default bottom
+  #branding_bottom_padding: 24          # default 0
+  #branding_bottom_padding_android: 24  # default 0
+  #branding_bottom_padding_ios: 24      # default 0
+  #branding bottom padding web is not available yet.
+
+  # The screen orientation can be set in Android with the android_screen_orientation parameter.
+  # Valid parameters can be found here:
+  # https://developer.android.com/guide/topics/manifest/activity-element#screen
+  #android_screen_orientation: sensorLandscape
+
+  fullscreen: true                
   #! ANDROID 12+ configuration:
   android_12:
-    color: "#2D2860" 
-    image:        assets/images/habittrack_light_circle_600.png  
-    icon_background_color: "#2D2860" 
+    # background color
+    color: "#2D2860" #"#534AB7"
+    # color_dark: "#042a49"
+
+    # center-logo
+    image: assets/images/habittrack_light_circle_600.png  
+    # image_dark: assets/images/logo/logo-splash2.png  
+
+    # center-logo background color
+    icon_background_color: "#2D2860" #"#534AB7"
+    # icon_background_color_dark: "#eeeeee"
+
+    # branding:
+    # The branding image dimensions must be 800x320 px.
     branding:      assets/images/habittrack_tagline_800.png
+    #branding_dark: assets/dart_dark.png
