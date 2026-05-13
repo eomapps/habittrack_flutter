@@ -14,7 +14,11 @@ class AppTheme {
       onSurface: AppColors.text,
     ),
     fontFamily: 'Nunito',
-    appBarTheme: AppBarTheme(backgroundColor: Colors.white, elevation: 0),
+    appBarTheme: AppBarTheme(
+      backgroundColor: AppColors.bg,
+      elevation: 0,
+      surfaceTintColor: Colors.transparent,
+    ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: Colors.white,
       selectedItemColor: AppColors.purple,
