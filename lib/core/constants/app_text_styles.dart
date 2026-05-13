@@ -90,7 +90,7 @@ class AppTextStyles {
     fontSize: 10,
     fontWeight: FontWeight.w700,
     color: AppColors.muted,
-    fontFamily: 'monospace',
+    fontFamily: 'Courier New',
   );
 
   // ── Splash screen ────────────────────────────────────
