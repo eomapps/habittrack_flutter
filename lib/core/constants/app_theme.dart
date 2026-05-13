@@ -6,16 +6,19 @@ class AppTheme {
 
   static ThemeData get light => ThemeData(
     useMaterial3: true,
+    scaffoldBackgroundColor: AppColors.bg,
+    primaryColor: AppColors.purple,
     colorScheme: ColorScheme.light(
       primary: AppColors.purple,
-      onPrimary: AppColors.buttonText,
+      surface: Colors.white,
+      onSurface: AppColors.text,
     ),
-    textTheme: TextTheme(
-      headlineLarge: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
-      bodyLarge: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-      bodyMedium: TextStyle(fontSize: 14, color: AppColors.muted),
-      bodySmall: TextStyle(fontSize: 10),
+    fontFamily: 'Nunito',
+    appBarTheme: AppBarTheme(backgroundColor: Colors.white, elevation: 0),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: Colors.white,
+      selectedItemColor: AppColors.purple,
+      unselectedItemColor: AppColors.muted,
     ),
-    buttonTheme: ButtonThemeData(buttonColor: AppColors.purple),
   );
 }
