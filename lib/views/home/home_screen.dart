@@ -35,8 +35,9 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () {
                 showModalBottomSheet(
                   context: context,
+                  isScrollControlled: true,
                   builder: (BuildContext context) {
-                    return AddEditHabitBottomSheet();
+                    return Wrap(children: [AddEditHabitBottomSheet()]);
                   },
                 );
               },
