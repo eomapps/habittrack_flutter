@@ -13,7 +13,7 @@ class AppColors {
   static const Color pink = Color(0xFFD4537E);
   static const Color bg = Color(0xFFF0EFF8);
   static const Color card = Colors.white;
-  static const Color card2 = Color(0xFFF7F6FC);
+  static const Color cardBg = Color(0xFFF7F6FC);
   static const Color text = Color(0xFF18172B);
   static final Color border = Color(0xFF534AB7).withOpacity(0.10);
   static final Color label = Color(0xFF534AB7).withOpacity(0.35);
