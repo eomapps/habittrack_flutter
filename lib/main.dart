@@ -13,7 +13,7 @@ void main() async {
 
   await DatabaseHelper.instance.database; // init db
 
-  await Future.delayed(const Duration(seconds: 2)); // so user can see branding
+  await Future.delayed(const Duration(milliseconds: 500)); // brief delay for branding
 
   FlutterNativeSplash.remove();
 
