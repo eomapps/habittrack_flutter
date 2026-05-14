@@ -3,6 +3,8 @@ import 'package:habittrack/core/constants/app_colors.dart';
 import 'package:habittrack/core/constants/app_dimens.dart';
 import 'package:habittrack/core/constants/app_text_styles.dart';
 import 'package:habittrack/data/models/habit.dart';
+import 'package:habittrack/viewmodels/habit_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class HabitCard extends StatefulWidget {
   final Habit habit;
@@ -51,22 +53,27 @@ class _HabitCardState extends State<HabitCard> {
             ),
           ),
           const SizedBox(width: 10),
-          Container(
-            height: AppDimens.checkCircleSize,
-            width: AppDimens.checkCircleSize,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: widget.isDone
-                  ? Color(int.parse('0xFF${widget.habit.colorHex}'))
-                  : AppColors.card,
-              boxShadow: widget.isDone ? [AppDimens.checkDoneShadow] : null,
-              border: widget.isDone
-                  ? null
-                  : Border.all(color: AppColors.border, width: 1.5),
+          GestureDetector(
+            onTap: () {
+              context.read<HabitViewModel>().toggleHabit(widget.habit);
+            },
+            child: Container(
+              height: AppDimens.checkCircleSize,
+              width: AppDimens.checkCircleSize,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: widget.isDone
+                    ? Color(int.parse('0xFF${widget.habit.colorHex}'))
+                    : AppColors.card,
+                boxShadow: widget.isDone ? [AppDimens.checkDoneShadow] : null,
+                border: widget.isDone
+                    ? null
+                    : Border.all(color: AppColors.border, width: 1.5),
+              ),
+              child: widget.isDone
+                  ? Icon(Icons.check, color: Colors.white)
+                  : null,
             ),
-            child: widget.isDone
-                ? Icon(Icons.check, color: Colors.white)
-                : null,
           ),
         ],
       ),
