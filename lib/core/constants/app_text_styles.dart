@@ -93,20 +93,6 @@ class AppTextStyles {
     fontFamily: 'Courier New',
   );
 
-  // ── Splash screen ────────────────────────────────────
-  static const TextStyle splashTitle = TextStyle(
-    fontSize: 24,
-    fontWeight: FontWeight.w700,
-    color: Colors.white,
-  );
-
-  static final TextStyle splashSubtitle = TextStyle(
-    fontSize: 12,
-    fontWeight: FontWeight.w500,
-    color: Colors.white.withOpacity(0.60),
-    letterSpacing: 0.04 * 12,
-  );
-
   // ── Empty state ──────────────────────────────────────
   static const TextStyle emptyStateTitle = TextStyle(
     fontSize: 15,
