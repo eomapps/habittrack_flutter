@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:habittrack/core/constants/app_colors.dart';
 import 'package:habittrack/core/constants/app_dimens.dart';
 import 'package:habittrack/core/constants/app_text_styles.dart';
+import 'package:habittrack/core/utils/ht_utils.dart';
 import 'package:habittrack/data/models/habit.dart';
 import 'package:habittrack/viewmodels/habit_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -45,7 +46,10 @@ class _HabitCardState extends State<HabitCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(widget.habit.title, style: AppTextStyles.habitName),
+                Text(
+                  HTUtils.getInSentenceCase(widget.habit.title),
+                  style: AppTextStyles.habitName,
+                ),
                 const SizedBox(width: 2),
                 Text(
                   '${widget.habit.streakCount} day streak',
