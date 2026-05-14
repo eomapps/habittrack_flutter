@@ -43,11 +43,35 @@ class HabitViewModel extends ChangeNotifier {
 
   Future<void> toggleHabit(Habit habit) async {
     final today = DateTime.now().toIso8601String().substring(0, 10);
+
+    // Don't let the user check off the same habit today twice
     if (habit.lastCheckedDate == today) {
       return;
     }
+
+    // The user never had had a streak (first-time), so now setting to 1
+    if (habit.lastCheckedDate == null) {
+      final updated = habit.copyWith(streakCount: 1, lastCheckedDate: today);
+      await updateHabit(updated);
+      return;
+    }
+
+    // habit.lastCheckedDate has value
+    //so we need to see how many days have passed since then
+    final lastChecked = DateTime.parse(habit.lastCheckedDate!);
+    final daysSinceLastCheck = DateTime.now().difference(lastChecked).inDays;
+
+    // if only 1 day has passed (it was yesterday) then increment newStreakCount by 1
+    // if > 1 day has passed, reset newStreakCount to 1 to start a new streak
+    int newStreakCount;
+    if (daysSinceLastCheck == 1) {
+      newStreakCount = habit.streakCount + 1;
+    } else {
+      newStreakCount = 1;
+    }
+
     final updated = habit.copyWith(
-      streakCount: habit.streakCount + 1,
+      streakCount: newStreakCount,
       lastCheckedDate: today,
     );
     await updateHabit(updated);
