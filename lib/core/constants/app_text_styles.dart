@@ -40,13 +40,13 @@ class AppTextStyles {
 
   // ── Bottom nav ───────────────────────────────────────
   static const TextStyle navLabel = TextStyle(
-    fontSize: 9,
+    fontSize: 11,
     fontWeight: FontWeight.w600,
     color: AppColors.muted,
   );
 
   static const TextStyle navLabelActive = TextStyle(
-    fontSize: 9,
+    fontSize: 11,
     fontWeight: FontWeight.w600,
     color: AppColors.purple,
   );
