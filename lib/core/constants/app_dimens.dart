@@ -25,10 +25,7 @@ class AppDimens {
     vertical: 16,
   );
 
-  static const paddingDateRow = EdgeInsets.symmetric(
-    horizontal: 16,
-    vertical: 8,
-  );
+  static const paddingDateRow = EdgeInsets.fromLTRB(16, 0, 16, 8);
 
   static const paddingSectionLabel = EdgeInsets.symmetric(
     horizontal: 16,
