@@ -65,7 +65,9 @@ class _HabitCardState extends State<HabitCard> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: widget.isDone
-                    ? Color(int.parse('0xFF${widget.habit.colorHex}'))
+                    ? Color(
+                        int.parse('0xFF${widget.habit.colorHex.substring(1)}'),
+                      )
                     : AppColors.card,
                 boxShadow: widget.isDone ? [AppDimens.checkDoneShadow] : null,
                 border: widget.isDone

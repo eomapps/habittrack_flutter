@@ -62,7 +62,7 @@ class _TodayScreenState extends State<TodayScreen> {
                       style: AppTextStyles.sectionLabel,
                     ),
                   ),
-                  ...done.map((habit) => HabitCard(habit: habit)),
+                  ...done.map((habit) => HabitCard(habit: habit, isDone: true)),
                 ],
               ],
             );
