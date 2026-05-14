@@ -32,7 +32,7 @@ class _TodayScreenState extends State<TodayScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: AppDimens.paddingDateRow,
           child: Text(HTUtils.getFormattedDate(), style: AppTextStyles.dateRow),
         ),
         Consumer<HabitViewModel>(
