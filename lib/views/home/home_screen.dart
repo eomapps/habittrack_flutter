@@ -1,4 +1,3 @@
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:habittrack/core/constants/app_colors.dart';
 import 'package:habittrack/core/constants/app_dimens.dart';
 import 'package:habittrack/core/constants/app_strings.dart';
