@@ -4,10 +4,10 @@ class ProgressScreen extends StatefulWidget {
   const ProgressScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() => ProgressScreenState();
+  State<ProgressScreen> createState() => _ProgressScreenState();
 }
 
-class ProgressScreenState extends State<ProgressScreen> {
+class _ProgressScreenState extends State<ProgressScreen> {
   @override
   Widget build(BuildContext context) {
     return Center(child: Text('You made progress'));

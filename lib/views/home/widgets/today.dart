@@ -6,10 +6,10 @@ class TodayScreen extends StatefulWidget {
   const TodayScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() => TodayScreenState();
+  State<TodayScreen> createState() => _TodayScreenState();
 }
 
-class TodayScreenState extends State<TodayScreen> {
+class _TodayScreenState extends State<TodayScreen> {
   @override
   Widget build(BuildContext context) {
     return Center(child: EmptyPlaceholder());
