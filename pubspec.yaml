@@ -55,11 +55,8 @@ flutter:
   uses-material-design: true
 
   assets:
-    -  assets/images/habittrack_light_960.png
-    -  assets/images/habittrack_tagline.png
-    -  assets/images/habittrack_tagline_800.png
-    -  assets/images/home_icon.svg
-    -  assets/images/habittrack_light_circle_600.png
+    -  assets/images/
+    -  assets/splash/
 
   fonts:
      - family: Nunito
@@ -102,7 +99,7 @@ flutter_native_splash:
   # general image for all platform (except android 12+):
   # allows you to specify an image used in the splash screen. It must be a
   # png file and should be sized for 4x pixel density.
-  image:                assets/images/habittrack_light_960.png
+  image:                assets/splash/habittrack_light_960.png
   #image_dark:          assets/splash-invert.png
   # platform-specific image. will override general image if active:
   #image_android:       assets/splash-android.png
@@ -124,7 +121,7 @@ flutter_native_splash:
 
   # general branding for all platform (except android 12+):
   # allows you to specify an image used as branding in the splash screen. should be png.
-  branding:      assets/images/habittrack_tagline_800.png
+  branding:      assets/splash/habittrack_wordmark.png
   #branding_dark: assets/dart_dark.png
   # platform-specific branding. will override general branding if active:
   #branding_android:      assets/brand-android.png
@@ -138,7 +135,7 @@ flutter_native_splash:
   # you can use bottom, bottomRight, and bottomLeft. The default values is 
   # bottom if not specified or specified something else.
   branding_mode: bottom                # default bottom
-  #branding_bottom_padding: 24          # default 0
+  branding_bottom_padding: 100          # default 0
   #branding_bottom_padding_android: 24  # default 0
   #branding_bottom_padding_ios: 24      # default 0
   #branding bottom padding web is not available yet.
@@ -156,7 +153,7 @@ flutter_native_splash:
     # color_dark: "#042a49"
 
     # center-logo
-    image: assets/images/habittrack_light_circle_600.png  
+    image: assets/splash/habittrack_light_circle_600.png  
     # image_dark: assets/images/logo/logo-splash2.png  
 
     # center-logo background color
@@ -165,7 +162,7 @@ flutter_native_splash:
 
     # branding:
     # The branding image dimensions must be 800x320 px.
-    branding:      assets/images/habittrack_tagline_800.png
+    branding:      assets/splash/habittrack_wordmark.png
     #branding_dark: assets/dart_dark.png
 
 flutter_launcher_icons:
