@@ -61,19 +61,35 @@ class _AddEditHabitBottomSheetState extends State<AddEditHabitBottomSheet> {
               controller: _habitNameController,
               decoration: InputDecoration(
                 fillColor: AppColors.cardBg,
-                border: OutlineInputBorder(
+                filled: true,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 9,
+                ),
+                enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(
                     AppDimens.radiusFormInput,
                   ),
-                  borderSide: BorderSide(color: AppColors.border),
+                  borderSide: BorderSide(color: AppColors.border, width: 1),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(
+                    AppDimens.radiusFormInput,
+                  ),
+                  borderSide: BorderSide(
+                    color: AppColors.border,
+                    width: 1,
+                  ), // same — no blue flash
                 ),
               ),
-            ), //TODO style
+            ),
+            const SizedBox(height: 14),
             Text(
               AppStrings.colorChoice.toUpperCase(),
               style: AppTextStyles.emptyStateSub,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _getColorChoice(AppColors.blue, 0),
                 _getColorChoice(AppColors.orange, 1),
@@ -143,6 +159,9 @@ class _AddEditHabitBottomSheetState extends State<AddEditHabitBottomSheet> {
                 )
               : null,
         ),
+        child: _selectedIndex == index
+            ? const Icon(Icons.check, color: Colors.white, size: 14)
+            : null,
       ),
     );
   }
