@@ -3,6 +3,10 @@ import 'package:habittrack/core/constants/app_colors.dart';
 import 'package:habittrack/core/constants/app_dimens.dart';
 import 'package:habittrack/core/constants/app_strings.dart';
 import 'package:habittrack/core/constants/app_text_styles.dart';
+import 'package:habittrack/data/models/habit.dart';
+import 'package:habittrack/viewmodels/habit_viewmodel.dart';
+import 'package:provider/provider.dart';
+import 'package:habittrack/core/utils/color_extensions.dart';
 
 class AddEditHabitBottomSheet extends StatefulWidget {
   const AddEditHabitBottomSheet({super.key});
@@ -13,6 +17,10 @@ class AddEditHabitBottomSheet extends StatefulWidget {
 }
 
 class _AddEditHabitBottomSheetState extends State<AddEditHabitBottomSheet> {
+  TextEditingController _habitNameController = TextEditingController();
+  int _selectedIndex = 0;
+  Color _selectedColor = AppColors.blue;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -49,15 +57,31 @@ class _AddEditHabitBottomSheetState extends State<AddEditHabitBottomSheet> {
               ),
             ),
             Text(AppStrings.habitName, style: AppTextStyles.emptyStateSub),
-            TextField(), //TODO style
+            TextField(
+              controller: _habitNameController,
+              decoration: InputDecoration(
+                fillColor: AppColors.cardBg,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(
+                    AppDimens.radiusFormInput,
+                  ),
+                  borderSide: BorderSide(color: AppColors.border),
+                ),
+              ),
+            ), //TODO style
             Text(
               AppStrings.colorChoice.toUpperCase(),
               style: AppTextStyles.emptyStateSub,
             ),
-            // TODO add colors
-            // Row(
-            //   children: [],
-            // )
+            Row(
+              children: [
+                _getColorChoice(AppColors.blue, 0),
+                _getColorChoice(AppColors.orange, 1),
+                _getColorChoice(AppColors.green, 2),
+                _getColorChoice(AppColors.purple, 3),
+                _getColorChoice(AppColors.pink, 4),
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.all(16),
               child: SizedBox(
@@ -74,7 +98,15 @@ class _AddEditHabitBottomSheetState extends State<AddEditHabitBottomSheet> {
                     ),
                   ),
                   onPressed: () {
-                    // TODO implement
+                    if (_habitNameController.text.isNotEmpty) {
+                      context.read<HabitViewModel>().insertHabit(
+                        Habit(
+                          title: _habitNameController.text,
+                          colorHex: _selectedColor.toHex(),
+                        ),
+                      );
+                      Navigator.pop(context);
+                    }
                   },
                   child: Text(
                     AppStrings.saveHabit,
@@ -84,6 +116,32 @@ class _AddEditHabitBottomSheetState extends State<AddEditHabitBottomSheet> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _getColorChoice(Color color, int index) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedIndex = index;
+          _selectedColor = color;
+        });
+      },
+      child: Container(
+        height: AppDimens.colorSwatchSize,
+        width: AppDimens.colorSwatchSize,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: color,
+          border: _selectedIndex == index
+              ? Border.all(
+                  color: Colors.black.withOpacity(0.35),
+                  width: 2,
+                  strokeAlign: BorderSide.strokeAlignOutside,
+                )
+              : null,
         ),
       ),
     );
