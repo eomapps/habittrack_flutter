@@ -35,7 +35,7 @@ MVVM using Provider. `HabitViewModel` extends `ChangeNotifier` and is the
 single source of truth for habit state. Screens consume it via
 `Consumer<HabitViewModel>` — no business logic in widgets.
 Persistence is handled by sqflite via a repository layer.
-
+```
 lib/
 ├── core/           # Theme, colors, text styles, constants
 ├── data/
@@ -45,7 +45,7 @@ lib/
 ├── viewmodels/     # HabitViewModel
 └── views/
 └── home/       # HomeScreen, TodayScreen, ProgressScreen, widgets
-
+```
 ## Getting Started
 
 ```bash
