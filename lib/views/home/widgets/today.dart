@@ -42,6 +42,7 @@ class _TodayScreenState extends State<TodayScreen> {
                 .toList();
 
             return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (notDone.isNotEmpty) ...[
                   Padding(
