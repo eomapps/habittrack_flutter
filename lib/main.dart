@@ -13,7 +13,9 @@ void main() async {
 
   await DatabaseHelper.instance.database; // init db
 
-  await Future.delayed(const Duration(milliseconds: 500)); // brief delay for branding
+  await Future.delayed(
+    const Duration(milliseconds: 500),
+  ); // brief delay for branding
 
   FlutterNativeSplash.remove();
 
@@ -37,6 +39,7 @@ class MyApp extends StatelessWidget {
       title: 'HabitTrack',
       theme: AppTheme.light,
       home: const HomeScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
