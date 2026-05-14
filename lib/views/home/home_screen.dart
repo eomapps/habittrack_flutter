@@ -4,6 +4,7 @@ import 'package:habittrack/core/constants/app_dimens.dart';
 import 'package:habittrack/core/constants/app_strings.dart';
 import 'package:habittrack/core/constants/app_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:habittrack/views/add_edit_habit/add_edit_habit_bottom_sheet.dart';
 import 'package:habittrack/views/home/widgets/progress.dart';
 import 'package:habittrack/views/home/widgets/today.dart';
 
@@ -32,7 +33,12 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.only(right: 12),
             child: GestureDetector(
               onTap: () {
-                // TODO implement to open the addeditbottomsheet
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AddEditHabitBottomSheet();
+                  },
+                );
               },
               behavior: HitTestBehavior.opaque,
               child: Container(
