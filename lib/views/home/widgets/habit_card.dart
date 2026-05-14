@@ -34,7 +34,9 @@ class _HabitCardState extends State<HabitCard> {
             width: AppDimens.colorDotSize,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Color(int.parse('0xFF${widget.habit.colorHex}')),
+              color: Color(
+                int.parse('0xFF${widget.habit.colorHex.substring(1)}'),
+              ),
             ),
           ),
           const SizedBox(width: 10),
