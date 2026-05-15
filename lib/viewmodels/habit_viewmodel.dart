@@ -1,6 +1,7 @@
 import 'package:habittrack/data/models/habit.dart';
 import 'package:habittrack/data/repositories/habit_repository.dart';
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 class HabitViewModel extends ChangeNotifier {
   final HabitRepository _repository;
@@ -75,5 +76,16 @@ class HabitViewModel extends ChangeNotifier {
       lastCheckedDate: today,
     );
     await updateHabit(updated);
+  }
+
+  List<Habit> get getAllHabitsSortedByStreak {
+    final sorted = List<Habit>.from(_habits);
+    sorted.sort((b, a) => a.streakCount.compareTo(b.streakCount));
+    return sorted;
+  }
+
+  int get maxStreak {
+    if (_habits.isEmpty) return 1;
+    return _habits.map((h) => h.streakCount).reduce(max);
   }
 }
