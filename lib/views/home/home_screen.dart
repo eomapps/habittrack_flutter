@@ -28,31 +28,33 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         centerTitle: false,
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 12),
-            child: GestureDetector(
-              onTap: () {
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  builder: (BuildContext context) {
-                    return Wrap(children: [AddEditHabitBottomSheet()]);
-                  },
-                );
-              },
-              behavior: HitTestBehavior.opaque,
-              child: Container(
-                height: AppDimens.fabSize,
-                width: AppDimens.fabSize,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.purple,
-                  boxShadow: [AppDimens.fabShadow],
-                ),
-                child: Icon(Icons.add, color: Colors.white, size: 20),
-              ),
-            ),
-          ),
+          _currentIndex == 0
+              ? Padding(
+                  padding: const EdgeInsets.only(right: 12),
+                  child: GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (BuildContext context) {
+                          return Wrap(children: [AddEditHabitBottomSheet()]);
+                        },
+                      );
+                    },
+                    behavior: HitTestBehavior.opaque,
+                    child: Container(
+                      height: AppDimens.fabSize,
+                      width: AppDimens.fabSize,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.purple,
+                        boxShadow: [AppDimens.fabShadow],
+                      ),
+                      child: Icon(Icons.add, color: Colors.white, size: 20),
+                    ),
+                  ),
+                )
+              : const SizedBox.shrink(),
         ],
       ),
       body: IndexedStack(index: _currentIndex, children: _tabs),
@@ -70,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
             label: AppStrings.today,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.view_timeline_rounded, size: 18),
+            icon: Icon(Icons.bar_chart_rounded, size: 18),
             label: AppStrings.progress,
           ),
         ],
