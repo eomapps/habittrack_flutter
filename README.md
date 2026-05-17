@@ -73,9 +73,18 @@ habittrack/
 
 ## Getting Started
 
+### Prerequisites
+
+- Flutter 3.x / Dart 3.x
+- VS Code with the [Flutter extension](https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter)
+- Android SDK via Android Studio (emulator / device builds)
+- Xcode (macOS only — required for iOS simulator and device builds)
+
+### Clone & run
+
 ```bash
+git clone https://github.com/eomapps/habittrack_flutter.git
+cd habittrack_flutter
 flutter pub get
 flutter run
 ```
-
-Requires Flutter 3.x and Dart 3.x.
