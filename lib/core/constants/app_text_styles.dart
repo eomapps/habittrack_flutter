@@ -38,6 +38,13 @@ class AppTextStyles {
     color: AppColors.muted,
   );
 
+  static const TextStyle progressStreak = TextStyle(
+    fontSize: 10,
+    fontWeight: FontWeight.w700,
+    color: AppColors.muted,
+    fontFamily: 'FiraCode',
+  );
+
   // ── Bottom nav ───────────────────────────────────────
   static const TextStyle navLabel = TextStyle(
     fontSize: 11,

@@ -52,9 +52,10 @@ class AppDimens {
     bottom: 20,
   );
 
-  static const paddingProgressBody = EdgeInsets.symmetric(
-    horizontal: 12,
-    vertical: 10,
+  static const paddingProgressBody = EdgeInsets.only(
+    left: 12,
+    right: 12,
+    bottom: 10,
   );
 
   static const paddingProgressRowPad = EdgeInsets.symmetric(
@@ -62,7 +63,7 @@ class AppDimens {
     vertical: 10,
   );
 
-  static const double progressRowGap = 10;
+  static const double progressRowGap = 5;
   static const double habitCardGap = 10;
 
   // component sizes
