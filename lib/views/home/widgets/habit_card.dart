@@ -55,7 +55,7 @@ class _HabitCardState extends State<HabitCard> {
                   widget.habit.streakCount > 0
                       ? '🔥 ${widget.habit.computedStreak} day streak'
                       : 'No streak yet',
-                  style: AppTextStyles.habitCardStreak,
+                  style: AppTextStyles.habitStreak,
                 ),
               ],
             ),
