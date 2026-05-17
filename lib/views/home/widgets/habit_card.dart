@@ -52,8 +52,10 @@ class _HabitCardState extends State<HabitCard> {
                 ),
                 const SizedBox(width: 2),
                 Text(
-                  '${widget.habit.computedStreak} day streak',
-                  style: AppTextStyles.habitStreak,
+                  widget.habit.streakCount > 0
+                      ? '🔥 ${widget.habit.computedStreak} day streak'
+                      : 'No streak yet',
+                  style: AppTextStyles.habitCardStreak,
                 ),
               ],
             ),
