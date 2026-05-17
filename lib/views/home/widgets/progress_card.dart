@@ -49,6 +49,7 @@ class ProgressCard extends StatelessWidget {
                   value: habit.streakCount / maxStreak,
                   backgroundColor: AppColors.bg,
                   minHeight: AppDimens.progressBarHeight,
+                  color: Color(int.parse('0xFF${habit.colorHex.substring(1)}')),
                 ),
                 const SizedBox(height: 2),
               ],
