@@ -15,6 +15,7 @@ class HabitViewModel extends ChangeNotifier {
 
   Future<void> getAllHabits() async {
     _isLoading = true;
+    notifyListeners();
     _habits.clear();
     _habits = await _repository.getAll();
     _isLoading = false;
