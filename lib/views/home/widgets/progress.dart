@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:habittrack/core/constants/app_dimens.dart';
 import 'package:habittrack/viewmodels/habit_viewmodel.dart';
 import 'package:habittrack/views/home/widgets/progress_card.dart';
+import 'package:habittrack/views/home/widgets/progress_placeholder.dart';
 import 'package:provider/provider.dart';
 
 class ProgressScreen extends StatefulWidget {
@@ -17,7 +18,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
     return Consumer<HabitViewModel>(
       builder: (context, value, child) {
         if (value.habits.isEmpty) {
-          // todo show placeholder
+          return ProgressPlaceholder();
         }
         return ListView.builder(
           itemCount: value.getAllHabitsSortedByStreak.length,
