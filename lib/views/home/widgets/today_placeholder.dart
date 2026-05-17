@@ -5,8 +5,8 @@ import 'package:habittrack/core/constants/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class EmptyPlaceholder extends StatelessWidget {
-  const EmptyPlaceholder({super.key});
+class TodayPlaceholder extends StatelessWidget {
+  const TodayPlaceholder({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -6,7 +6,7 @@ import 'package:habittrack/core/utils/ht_utils.dart';
 import 'package:habittrack/data/models/habit.dart';
 import 'package:habittrack/viewmodels/habit_viewmodel.dart';
 
-import 'package:habittrack/views/home/widgets/empty_placeholder.dart';
+import 'package:habittrack/views/home/widgets/today_placeholder.dart';
 import 'package:habittrack/views/home/widgets/habit_card.dart';
 import 'package:provider/provider.dart';
 
@@ -38,7 +38,7 @@ class _TodayScreenState extends State<TodayScreen> {
         Consumer<HabitViewModel>(
           builder: (context, value, child) {
             if (value.habits.isEmpty) {
-              return const Expanded(child: Center(child: EmptyPlaceholder()));
+              return const Expanded(child: Center(child: TodayPlaceholder()));
             }
 
             final today = DateTime.now().toIso8601String().substring(0, 10);
