@@ -5,6 +5,9 @@ import 'package:habittrack/core/constants/app_strings.dart';
 import 'package:habittrack/core/constants/app_text_styles.dart';
 
 class ProgressPlaceholder extends StatelessWidget {
+  const ProgressPlaceholder({super.key});
+
+  @override
   Widget build(BuildContext context) {
     final spacing = MediaQuery.of(context).size.height * 0.02;
 
@@ -24,19 +27,19 @@ class ProgressPlaceholder extends StatelessWidget {
             child: Center(
               child: Icon(
                 Icons.bar_chart_rounded,
-                color: AppColors.purpleLight,
+                color: AppColors.purpleMid,
                 size: 48,
               ),
             ),
           ),
           SizedBox(height: spacing),
-          Text(
+          const Text(
             AppStrings.noProgressYet,
             style: AppTextStyles.emptyStateTitle,
             textAlign: TextAlign.center,
           ),
           SizedBox(height: spacing),
-          Text(
+          const Text(
             AppStrings.addProgress,
             style: AppTextStyles.emptyStateSub,
             textAlign: TextAlign.center,
