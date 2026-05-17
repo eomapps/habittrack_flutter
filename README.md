@@ -42,7 +42,7 @@ keeping the data layer cleanly separated from the UI.
 ```
 habittrack/
 ├── assets/
-│   ├── fonts/          # Nunito 400–700
+│   ├── fonts/          # Nunito 400–700, FiraCode 500–700
 │   ├── icon/           # 1024px launcher icon source
 │   ├── images/
 │   └── splash/         # Splash assets, Android 12+ adaptive
@@ -58,7 +58,8 @@ habittrack/
 │   ├── viewmodels/     # HabitViewModel (ChangeNotifier)
 │   └── views/
 │       ├── add_edit_habit/ # AddEditHabitBottomSheet
-│       └── home/       # HomeScreen, TodayScreen, widgets
+│       └── home/           # HomeScreen (IndexedStack): TodayScreen, ProgressScreen
+│           └── widgets/    # HabitCard, ProgressCard, TodayPlaceholder, ProgressPlaceholder
 ├── pubspec.yaml
 └── README.md
 ```
