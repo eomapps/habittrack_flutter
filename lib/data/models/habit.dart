@@ -48,4 +48,19 @@ class Habit {
       lastCheckedDate: lastCheckedDate ?? this.lastCheckedDate,
     );
   }
+
+  int get computedStreak {
+    if (lastCheckedDate == null) return 0;
+
+    final lastDate = DateTime.parse(lastCheckedDate!);
+    final today = DateTime.now();
+    final lastOnly = DateTime(lastDate.year, lastDate.month, lastDate.day);
+    final todayOnly = DateTime(today.year, today.month, today.day);
+
+    final difference = todayOnly.difference(lastOnly).inDays;
+    // checked today or yesterday
+    if (difference == 0 || difference == 1) return streakCount;
+    // broken streak, restart 0
+    return 0;
+  }
 }
