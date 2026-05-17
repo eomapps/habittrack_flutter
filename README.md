@@ -65,7 +65,7 @@ habittrack/
 
 ## Roadmap
 
-- [ ] Progress charts and streak history visualization
+- [ ] Progress charts and streak history visualization (in development)
 - [ ] Habit edit and delete
 - [ ] Daily reminders / local notifications
 - [ ] Dark mode support
