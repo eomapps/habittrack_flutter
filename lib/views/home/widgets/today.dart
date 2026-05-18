@@ -3,7 +3,6 @@ import 'package:habittrack/core/constants/app_dimens.dart';
 import 'package:habittrack/core/constants/app_strings.dart';
 import 'package:habittrack/core/constants/app_text_styles.dart';
 import 'package:habittrack/core/utils/ht_utils.dart';
-import 'package:habittrack/data/models/habit.dart';
 import 'package:habittrack/viewmodels/habit_viewmodel.dart';
 
 import 'package:habittrack/views/home/widgets/today_placeholder.dart';
