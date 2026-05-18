@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:habittrack/core/constants/app_dimens.dart';
 import 'package:habittrack/viewmodels/habit_viewmodel.dart';
 import 'package:habittrack/views/home/widgets/progress_card.dart';
 import 'package:habittrack/views/home/widgets/progress_placeholder.dart';
@@ -17,13 +16,16 @@ class _ProgressScreenState extends State<ProgressScreen> {
   Widget build(BuildContext context) {
     return Consumer<HabitViewModel>(
       builder: (context, value, child) {
-        if (value.habits.isEmpty) {
-          return ProgressPlaceholder();
+        final habitsWithStreak = value.getAllHabitsSortedByStreak
+            .where((h) => h.computedStreak > 0)
+            .toList();
+        if (habitsWithStreak.isEmpty) {
+          return const ProgressPlaceholder();
         }
         return ListView.builder(
-          itemCount: value.getAllHabitsSortedByStreak.length,
+          itemCount: habitsWithStreak.length,
           itemBuilder: (context, index) {
-            final habit = value.getAllHabitsSortedByStreak[index];
+            final habit = habitsWithStreak[index];
             return ProgressCard(habit: habit, maxStreak: value.maxStreak);
           },
         );
