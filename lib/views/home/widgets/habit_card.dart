@@ -5,6 +5,7 @@ import 'package:habittrack/core/constants/app_text_styles.dart';
 import 'package:habittrack/core/utils/ht_utils.dart';
 import 'package:habittrack/data/models/habit.dart';
 import 'package:habittrack/viewmodels/habit_viewmodel.dart';
+import 'package:habittrack/views/add_edit_habit/add_edit_habit_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 class HabitCard extends StatefulWidget {
@@ -20,72 +21,89 @@ class HabitCard extends StatefulWidget {
 class _HabitCardState extends State<HabitCard> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.cardBg,
-        borderRadius: BorderRadius.circular(AppDimens.radiusCard),
-        border: Border.all(color: AppColors.border, width: 1),
-      ),
-      margin: AppDimens.paddingHabitCardMargin,
-      padding: AppDimens.paddingHabitCard,
-      child: Row(
-        children: [
-          Container(
-            height: AppDimens.colorDotSize,
-            width: AppDimens.colorDotSize,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(
-                int.parse('0xFF${widget.habit.colorHex.substring(1)}'),
-              ),
-            ),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
+    return GestureDetector(
+      onTap: () {
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          builder: (BuildContext context) {
+            return Wrap(
               children: [
-                Text(
-                  HTUtils.getInSentenceCase(widget.habit.title),
-                  style: AppTextStyles.habitName,
-                ),
-                const SizedBox(width: 2),
-                Text(
-                  widget.habit.streakCount > 0
-                      ? '🔥 ${widget.habit.computedStreak} day streak'
-                      : 'No streak yet',
-                  style: AppTextStyles.habitStreak,
-                ),
+                AddEditHabitBottomSheet(habit: widget.habit, isEdit: true),
               ],
-            ),
-          ),
-          const SizedBox(width: 10),
-          GestureDetector(
-            onTap: () {
-              context.read<HabitViewModel>().toggleHabit(widget.habit);
-            },
-            child: Container(
-              height: AppDimens.checkCircleSize,
-              width: AppDimens.checkCircleSize,
+            );
+          },
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.cardBg,
+          borderRadius: BorderRadius.circular(AppDimens.radiusCard),
+          border: Border.all(color: AppColors.border, width: 1),
+        ),
+        margin: AppDimens.paddingHabitCardMargin,
+        padding: AppDimens.paddingHabitCard,
+        child: Row(
+          children: [
+            Container(
+              height: AppDimens.colorDotSize,
+              width: AppDimens.colorDotSize,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: widget.isDone
-                    ? Color(
-                        int.parse('0xFF${widget.habit.colorHex.substring(1)}'),
-                      )
-                    : AppColors.card,
-                boxShadow: widget.isDone ? [AppDimens.checkDoneShadow] : null,
-                border: widget.isDone
-                    ? null
-                    : Border.all(color: AppColors.border, width: 1.5),
+                color: Color(
+                  int.parse('0xFF${widget.habit.colorHex.substring(1)}'),
+                ),
               ),
-              child: widget.isDone
-                  ? Icon(Icons.check, color: Colors.white)
-                  : null,
             ),
-          ),
-        ],
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    HTUtils.getInSentenceCase(widget.habit.title),
+                    style: AppTextStyles.habitName,
+                  ),
+                  const SizedBox(width: 2),
+                  Text(
+                    widget.habit.streakCount > 0
+                        ? '🔥 ${widget.habit.computedStreak} day streak'
+                        : 'No streak yet',
+                    style: AppTextStyles.habitStreak,
+                  ),
+                ],
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                context.read<HabitViewModel>().toggleHabit(widget.habit);
+              },
+              behavior: HitTestBehavior.opaque,
+              child: Container(
+                height: AppDimens.checkCircleSize,
+                width: AppDimens.checkCircleSize,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: widget.isDone
+                      ? Color(
+                          int.parse(
+                            '0xFF${widget.habit.colorHex.substring(1)}',
+                          ),
+                        )
+                      : AppColors.card,
+                  boxShadow: widget.isDone ? [AppDimens.checkDoneShadow] : null,
+                  border: widget.isDone
+                      ? null
+                      : Border.all(color: AppColors.border, width: 1.5),
+                ),
+                child: widget.isDone
+                    ? Icon(Icons.check, color: Colors.white)
+                    : null,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
