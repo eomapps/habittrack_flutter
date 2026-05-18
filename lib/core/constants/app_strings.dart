@@ -20,4 +20,6 @@ class AppStrings {
   static const String editHabit = 'Edit habit';
   static const String updateHabit = 'Update Habit';
   static const String deleteHabit = 'Delete Habit';
+  static const String confirmationPrompt = 'Are you sure?';
+  static const String yes = 'Yes';
 }
