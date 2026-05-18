@@ -3,6 +3,7 @@
 A lightweight, offline-first habit tracking app built with Flutter — running on both iOS and Android.
 
 ## Screenshots
+<!-- TODO: update screenshots with more data --> 
 
 | | Splash | Today (Empty) | Today (Active) | Add Habit |
 |---|:---:|:---:|:---:|:---:|
@@ -67,7 +68,7 @@ habittrack/
 ## Roadmap
 
 - [x] Progress charts and streak history visualization 
-- [ ] Habit edit and delete
+- [x] Habit edit and delete
 - [ ] Daily reminders / local notifications
 - [ ] Dark mode support
 - [ ] Riverpod branch — alternate state management implementation for comparison
