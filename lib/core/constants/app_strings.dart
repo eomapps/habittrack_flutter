@@ -17,4 +17,7 @@ class AppStrings {
   static const String newHabit = 'New habit';
   static const String noProgressYet = 'No progress yet';
   static const String addProgress = 'Add your habits and view streaks here.';
+  static const String editHabit = 'Edit habit';
+  static const String updateHabit = 'Update Habit';
+  static const String deleteHabit = 'Delete Habit';
 }

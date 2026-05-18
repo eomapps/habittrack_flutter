@@ -19,4 +19,5 @@ class AppColors {
   static final Color label = Color(0xFF534AB7).withOpacity(0.35);
   static const Color muted = Color(0xFF7A789A);
   static final Color emptyStateIconBg = purpleMid.withOpacity(0.20);
+  static const Color red = Colors.red;
 }
