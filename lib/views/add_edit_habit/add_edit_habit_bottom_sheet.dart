@@ -3,6 +3,7 @@ import 'package:habittrack/core/constants/app_colors.dart';
 import 'package:habittrack/core/constants/app_dimens.dart';
 import 'package:habittrack/core/constants/app_strings.dart';
 import 'package:habittrack/core/constants/app_text_styles.dart';
+import 'package:habittrack/core/utils/ht_utils.dart';
 import 'package:habittrack/data/models/habit.dart';
 import 'package:habittrack/viewmodels/habit_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -156,7 +157,9 @@ class _AddEditHabitBottomSheetState extends State<AddEditHabitBottomSheet> {
                 } else {
                   context.read<HabitViewModel>().insertHabit(
                     Habit(
-                      title: _habitNameController.text,
+                      title: HTUtils.getInSentenceCase(
+                        _habitNameController.text,
+                      ),
                       colorHex: _selectedColor.toHex(),
                     ),
                   );
