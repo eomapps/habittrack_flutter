@@ -23,6 +23,7 @@ class _HabitCardState extends State<HabitCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      key: const Key('habit-card-tap'),
       onTap: () {
         showModalBottomSheet(
           context: context,
@@ -77,6 +78,7 @@ class _HabitCardState extends State<HabitCard> {
               ),
             ),
             GestureDetector(
+              key: const Key('habit-check-tap'),
               onTap: () {
                 context.read<HabitViewModel>().toggleHabit(widget.habit);
               },
