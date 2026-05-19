@@ -7,8 +7,13 @@ A lightweight, offline-first habit tracking app built with Flutter — running o
 
 | | Splash | Today (Empty) | Today (Active) | Add Habit |
 |---|:---:|:---:|:---:|:---:|
-| **iOS** | <img src="docs/ios_splash.png" width="160"/> | <img src="docs/ios_home_empty.png" width="160"/> | <img src="docs/ios_habits.png" width="160"/> | <img src="docs/ios_add_habit.png" width="160"/> |
+| **iOS** | <img src="docs/ios_splash.png" width="160"/> | <img src="docs/ios_home_empty.png" width="160"/> | <img src="docs/ios_home_habits.png" width="160"/> | <img src="docs/ios_add_habit.png" width="160"/> |
 | **Android** | <img src="docs/android_splash.png" width="160"/> | <img src="docs/android_home.png" width="160"/> | <img src="docs/android_home_habits.png" width="160"/> | <img src="docs/android_add_habit.png" width="160"/> |
+
+| | Edit Habit | Progress |
+|---|:---:|:---:|
+| **iOS** | <img src="docs/ios_edit_habit.png" width="160"/> | <img src="docs/ios_progress.png" width="160"/> |
+| **Android** | <img src="docs/android_edit_habit.png" width="160"/> | <img src="docs/android_progress.png" width="160"/> |
 
 ## Features
 
