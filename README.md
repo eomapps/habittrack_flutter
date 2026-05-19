@@ -62,8 +62,15 @@ habittrack/
 │       ├── add_edit_habit/ # AddEditHabitBottomSheet
 │       └── home/           # HomeScreen (IndexedStack): TodayScreen, ProgressScreen
 │           └── widgets/    # HabitCard, ProgressCard, TodayPlaceholder, ProgressPlaceholder
-├── pubspec.yaml
-└── README.md
+├── test/
+│   ├── data/
+│   │   ├── models/         # Unit tests: Habit.computedStreak logic
+│   │   └── viewmodels/     # Unit tests: HabitViewModel streak logic (mockito)
+│   └── views/
+│       └── home/
+│           └── widgets/    # Widget tests: HabitCard rendering & interactions
+├── README.md
+└── pubspec.yaml
 ```
 
 ## Roadmap
