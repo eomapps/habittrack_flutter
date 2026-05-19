@@ -45,18 +45,6 @@ class _AddEditHabitBottomSheetState extends State<AddEditHabitBottomSheet> {
         (c) =>
             c == Color(int.parse('0xFF${widget.habit!.colorHex.substring(1)}')),
       );
-
-      // if (_selectedColor == Color(0xFF378ADD)) {
-      //   _selectedIndex = 0;
-      // } else if (_selectedColor == Color(0xFFD85A30)) {
-      //   _selectedIndex = 1;
-      // } else if (_selectedColor == Color(0xFF1D9E75)) {
-      //   _selectedIndex = 2;
-      // } else if (_selectedColor == Color(0xFF534AB7)) {
-      //   _selectedIndex = 3;
-      // } else if (_selectedColor == Color(0xFFD4537E)) {
-      //   _selectedIndex = 4;
-      // }
     }
   }
 
@@ -76,22 +64,36 @@ class _AddEditHabitBottomSheetState extends State<AddEditHabitBottomSheet> {
               children: [
                 Center(
                   child: Container(
-                    width: AppDimens.sheetHandleWidth, // 36
-                    height: AppDimens.sheetHandleHeight, // 4
+                    width: AppDimens.sheetHandleWidth,
+                    height: AppDimens.sheetHandleHeight,
                     decoration: BoxDecoration(
                       color: AppColors.border,
                       borderRadius: BorderRadius.circular(
                         AppDimens.radiusSheetHandle,
-                      ), // 2
+                      ),
                     ),
                   ),
                 ),
                 SizedBox(height: 14),
-                Text(
-                  widget.isEdit
-                      ? AppStrings.editHabit.toUpperCase()
-                      : AppStrings.newHabit.toUpperCase(),
-                  style: AppTextStyles.sheetTitle,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      widget.isEdit
+                          ? AppStrings.editHabit.toUpperCase()
+                          : AppStrings.newHabit.toUpperCase(),
+                      style: AppTextStyles.sheetTitle,
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      padding: EdgeInsets.zero,
+                      icon: Icon(Icons.cancel_outlined),
+                      constraints: const BoxConstraints(),
+                      visualDensity: VisualDensity.compact,
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -113,10 +115,7 @@ class _AddEditHabitBottomSheetState extends State<AddEditHabitBottomSheet> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(AppDimens.radiusFormInput),
-                borderSide: BorderSide(
-                  color: AppColors.border,
-                  width: 1,
-                ), // same — no blue flash
+                borderSide: BorderSide(color: AppColors.border, width: 1),
               ),
             ),
           ),
@@ -236,12 +235,6 @@ class _AddEditHabitBottomSheetState extends State<AddEditHabitBottomSheet> {
               setState(() {
                 _confirmedDelete = true;
               });
-              // if (_habitNameController.text.isNotEmpty) {
-              //   context.read<HabitViewModel>().deleteHabit(
-              //     widget.habit!,
-              //   );
-              //   Navigator.pop(context);
-              // }
             },
             child: Text(
               AppStrings.deleteHabit,
@@ -278,10 +271,8 @@ class _AddEditHabitBottomSheetState extends State<AddEditHabitBottomSheet> {
                   ),
                 ),
                 onPressed: () {
-                  if (_habitNameController.text.isNotEmpty) {
-                    context.read<HabitViewModel>().deleteHabit(widget.habit!);
-                    Navigator.pop(context);
-                  }
+                  context.read<HabitViewModel>().deleteHabit(widget.habit!);
+                  Navigator.pop(context);
                 },
                 child: Text(
                   AppStrings.yes.toUpperCase(),
