@@ -22,4 +22,6 @@ class AppStrings {
   static const String deleteHabit = 'Delete Habit';
   static const String confirmationPrompt = 'Are you sure?';
   static const String yes = 'Yes';
+  static const String noStreakYet = 'No streak yet';
+  static const String dayStreak = 'day streak';
 }

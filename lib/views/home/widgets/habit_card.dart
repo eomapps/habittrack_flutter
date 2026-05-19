@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:habittrack/core/constants/app_colors.dart';
 import 'package:habittrack/core/constants/app_dimens.dart';
+import 'package:habittrack/core/constants/app_strings.dart';
 import 'package:habittrack/core/constants/app_text_styles.dart';
 import 'package:habittrack/core/utils/ht_utils.dart';
 import 'package:habittrack/data/models/habit.dart';
@@ -68,8 +69,8 @@ class _HabitCardState extends State<HabitCard> {
                   const SizedBox(width: 2),
                   Text(
                     widget.habit.streakCount > 0
-                        ? '🔥 ${widget.habit.computedStreak} day streak'
-                        : 'No streak yet',
+                        ? '🔥 ${widget.habit.computedStreak} ${AppStrings.dayStreak}'
+                        : AppStrings.noStreakYet,
                     style: AppTextStyles.habitStreak,
                   ),
                 ],

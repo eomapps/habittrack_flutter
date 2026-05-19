@@ -1,3 +1,4 @@
+import 'package:habittrack/core/constants/app_strings.dart';
 import 'package:habittrack/core/constants/app_theme.dart';
 import 'package:habittrack/data/database/database_helper.dart';
 import 'package:habittrack/data/repositories/habit_repository.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'HabitTrack',
+      title: AppStrings.appTitle,
       theme: AppTheme.light,
       home: const HomeScreen(),
       debugShowCheckedModeBanner: false,
