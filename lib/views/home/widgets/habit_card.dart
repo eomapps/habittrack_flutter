@@ -6,7 +6,7 @@ import 'package:habittrack/core/constants/app_text_styles.dart';
 import 'package:habittrack/core/utils/ht_utils.dart';
 import 'package:habittrack/data/models/habit.dart';
 import 'package:habittrack/viewmodels/habit_viewmodel.dart';
-import 'package:habittrack/views/add_edit_habit/add_edit_habit_bottom_sheet.dart';
+import 'package:habittrack/views/add_edit_habit/add_edit_delete_habit_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 class HabitCard extends StatefulWidget {
@@ -31,7 +31,10 @@ class _HabitCardState extends State<HabitCard> {
           builder: (BuildContext context) {
             return Wrap(
               children: [
-                AddEditHabitBottomSheet(habit: widget.habit, isEdit: true),
+                AddEditDeleteHabitBottomSheet(
+                  habit: widget.habit,
+                  isEdit: true,
+                ),
               ],
             );
           },

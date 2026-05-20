@@ -4,7 +4,7 @@ import 'package:habittrack/core/constants/app_strings.dart';
 import 'package:habittrack/core/utils/ht_utils.dart';
 import 'package:habittrack/data/models/habit.dart';
 import 'package:habittrack/viewmodels/habit_viewmodel.dart';
-import 'package:habittrack/views/add_edit_habit/add_edit_habit_bottom_sheet.dart';
+import 'package:habittrack/views/add_edit_habit/add_edit_delete_habit_bottom_sheet.dart';
 import 'package:habittrack/views/home/widgets/habit_card.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
@@ -91,7 +91,7 @@ void main() {
       await tester.pumpWidget(buildHabitCard());
       await tester.tap(find.byKey(const Key('habit-card-tap')));
       await tester.pumpAndSettle();
-      expect(find.byType(AddEditHabitBottomSheet), findsOneWidget);
+      expect(find.byType(AddEditDeleteHabitBottomSheet), findsOneWidget);
     });
 
     testWidgets(

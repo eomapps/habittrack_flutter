@@ -9,18 +9,23 @@ import 'package:habittrack/viewmodels/habit_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:habittrack/core/utils/color_extensions.dart';
 
-class AddEditHabitBottomSheet extends StatefulWidget {
+class AddEditDeleteHabitBottomSheet extends StatefulWidget {
   final Habit? habit;
   final bool isEdit;
 
-  const AddEditHabitBottomSheet({super.key, this.isEdit = false, this.habit});
+  const AddEditDeleteHabitBottomSheet({
+    super.key,
+    this.isEdit = false,
+    this.habit,
+  });
 
   @override
-  State<AddEditHabitBottomSheet> createState() =>
-      _AddEditHabitBottomSheetState();
+  State<AddEditDeleteHabitBottomSheet> createState() =>
+      _AddEditDeleteHabitBottomSheetState();
 }
 
-class _AddEditHabitBottomSheetState extends State<AddEditHabitBottomSheet> {
+class _AddEditDeleteHabitBottomSheetState
+    extends State<AddEditDeleteHabitBottomSheet> {
   final TextEditingController _habitNameController = TextEditingController();
   int _selectedIndex = 0;
   Color _selectedColor = AppColors.blue;

@@ -3,7 +3,7 @@ import 'package:habittrack/core/constants/app_dimens.dart';
 import 'package:habittrack/core/constants/app_strings.dart';
 import 'package:habittrack/core/constants/app_text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:habittrack/views/add_edit_habit/add_edit_habit_bottom_sheet.dart';
+import 'package:habittrack/views/add_edit_habit/add_edit_delete_habit_bottom_sheet.dart';
 import 'package:habittrack/views/home/widgets/progress.dart';
 import 'package:habittrack/views/home/widgets/today.dart';
 
@@ -37,7 +37,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         context: context,
                         isScrollControlled: true,
                         builder: (BuildContext context) {
-                          return Wrap(children: [AddEditHabitBottomSheet()]);
+                          return Wrap(
+                            children: [AddEditDeleteHabitBottomSheet()],
+                          );
                         },
                       );
                     },
