@@ -203,7 +203,7 @@ class _AddEditHabitBottomSheetState extends State<AddEditHabitBottomSheet> {
           color: color,
           border: _selectedIndex == index
               ? Border.all(
-                  color: Colors.black.withOpacity(0.35),
+                  color: Colors.black.withValues(alpha: 0.35),
                   width: 2,
                   strokeAlign: BorderSide.strokeAlignOutside,
                 )
