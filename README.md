@@ -3,7 +3,7 @@
 A lightweight, offline-first habit tracking app built with Flutter — running on both iOS and Android.
 
 ## Screenshots
-<!-- TODO: update screenshots with more data --> 
+
 
 | | Splash | Today (Empty) | Today (Active) | Add Habit |
 |---|:---:|:---:|:---:|:---:|
