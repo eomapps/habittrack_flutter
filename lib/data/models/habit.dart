@@ -1,3 +1,5 @@
+import 'package:habittrack/core/constants/app_strings.dart';
+
 class Habit {
   final int? id;
   final String title;
@@ -58,9 +60,22 @@ class Habit {
     final todayOnly = DateTime(today.year, today.month, today.day);
 
     final difference = todayOnly.difference(lastOnly).inDays;
+
     // checked today or yesterday
     if (difference == 0 || difference == 1) return streakCount;
     // broken streak, restart 0
     return 0;
+  }
+
+  String get getStreakMessage {
+    if (streakCount > 0) {
+      if (computedStreak == 0) {
+        return 'Longest streak: ${streakCount}d';
+      } else {
+        return '🔥 $computedStreak ${AppStrings.dayStreak}';
+      }
+    } else {
+      return AppStrings.noStreakYet;
+    }
   }
 }
