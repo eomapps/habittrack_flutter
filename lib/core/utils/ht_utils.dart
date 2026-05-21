@@ -3,9 +3,8 @@ import 'package:intl/intl.dart';
 class HTUtils {
   HTUtils._();
 
-  static String getFormattedDate() {
-    final today = DateTime.now();
-    return DateFormat('EEEE, MMMM d').format(today);
+  static String getFormattedDate(DateTime? dateTime) {
+    return DateFormat('EEEE, MMMM d').format(dateTime ?? DateTime.now());
   }
 
   static String getInSentenceCase(String title) {
