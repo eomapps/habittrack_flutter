@@ -101,7 +101,7 @@ class _HabitCardState extends State<HabitCard> {
                       : Border.all(color: AppColors.border, width: 1.5),
                 ),
                 child: widget.isDone
-                    ? Icon(Icons.check, color: Colors.white)
+                    ? const Icon(Icons.check, color: Colors.white)
                     : null,
               ),
             ),
