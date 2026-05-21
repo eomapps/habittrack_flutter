@@ -1,11 +1,14 @@
 import 'package:habittrack/core/constants/app_strings.dart';
 
+const _nothingPassed = Object();
+
 class Habit {
   final int? id;
   final String title;
   final String colorHex;
   final int streakCount;
   final String? lastCheckedDate;
+  final bool toggledOn;
 
   Habit({
     this.id,
@@ -13,6 +16,7 @@ class Habit {
     required this.colorHex,
     this.streakCount = 0,
     this.lastCheckedDate,
+    this.toggledOn = false,
   });
 
   factory Habit.fromMap(Map<String, dynamic> map) {
@@ -22,6 +26,7 @@ class Habit {
       colorHex: map['color_hex'] as String,
       streakCount: map['streak_count'] as int,
       lastCheckedDate: map['last_checked_date'] as String?,
+      toggledOn: map['toggled_on'] == 1,
     );
   }
 
@@ -32,6 +37,7 @@ class Habit {
       'color_hex': colorHex,
       'streak_count': streakCount,
       'last_checked_date': lastCheckedDate,
+      'toggled_on': toggledOn ? 1 : 0,
     };
   }
 
@@ -40,14 +46,18 @@ class Habit {
     String? title,
     String? colorHex,
     int? streakCount,
-    String? lastCheckedDate,
+    Object? lastCheckedDate = _nothingPassed,
+    bool? toggledOn,
   }) {
     return Habit(
       id: id ?? this.id,
       title: title ?? this.title,
       colorHex: colorHex ?? this.colorHex,
       streakCount: streakCount ?? this.streakCount,
-      lastCheckedDate: lastCheckedDate ?? this.lastCheckedDate,
+      lastCheckedDate: lastCheckedDate == _nothingPassed
+          ? this.lastCheckedDate
+          : lastCheckedDate as String?,
+      toggledOn: toggledOn ?? this.toggledOn,
     );
   }
 

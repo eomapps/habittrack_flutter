@@ -44,39 +44,67 @@ class HabitViewModel extends ChangeNotifier {
   }
 
   Future<void> toggleHabit(Habit habit) async {
-    final today = DateTime.now().toIso8601String().substring(0, 10);
+    // was not toggled on before tap
+    if (!habit.toggledOn) {
+      final today = DateTime.now().toIso8601String().substring(0, 10);
 
-    // Don't let the user check off the same habit today twice
-    if (habit.lastCheckedDate == today) {
-      return;
-    }
+      // The user never had a streak (first-time), so now setting to 1
+      if (habit.lastCheckedDate == null) {
+        final updated = habit.copyWith(
+          streakCount: 1,
+          lastCheckedDate: today,
+          toggledOn: true,
+        );
+        await updateHabit(updated);
+        return;
+      }
 
-    // The user never had had a streak (first-time), so now setting to 1
-    if (habit.lastCheckedDate == null) {
-      final updated = habit.copyWith(streakCount: 1, lastCheckedDate: today);
+      // habit.lastCheckedDate has value
+      // so we need to see how many days have passed since then
+      final lastChecked = DateTime.parse(habit.lastCheckedDate!);
+      final daysSinceLastCheck = DateTime.now().difference(lastChecked).inDays;
+
+      // if only 1 day has passed (it was yesterday) then increment newStreakCount by 1
+      // if > 1 day has passed, reset newStreakCount to 1 to start a new streak
+      int newStreakCount;
+      if (daysSinceLastCheck == 1) {
+        newStreakCount = habit.streakCount + 1;
+      } else {
+        newStreakCount = 1;
+      }
+
+      final updated = habit.copyWith(
+        streakCount: newStreakCount,
+        lastCheckedDate: today,
+        toggledOn: true,
+      );
       await updateHabit(updated);
-      return;
-    }
-
-    // habit.lastCheckedDate has value
-    //so we need to see how many days have passed since then
-    final lastChecked = DateTime.parse(habit.lastCheckedDate!);
-    final daysSinceLastCheck = DateTime.now().difference(lastChecked).inDays;
-
-    // if only 1 day has passed (it was yesterday) then increment newStreakCount by 1
-    // if > 1 day has passed, reset newStreakCount to 1 to start a new streak
-    int newStreakCount;
-    if (daysSinceLastCheck == 1) {
-      newStreakCount = habit.streakCount + 1;
     } else {
-      newStreakCount = 1;
+      // was toggled on before tap
+      // streakCount is always >= 1 when toggledOn, so these two branches are exhaustive
+      if (habit.streakCount > 1) {
+        final lastChecked = DateTime.parse(habit.lastCheckedDate!);
+        final updatedCheckedDated = lastChecked.subtract(
+          const Duration(days: 1),
+        );
+        final updatedDateString = updatedCheckedDated
+            .toIso8601String()
+            .substring(0, 10);
+        final updated = habit.copyWith(
+          lastCheckedDate: updatedDateString,
+          toggledOn: false,
+          streakCount: habit.streakCount - 1,
+        );
+        await updateHabit(updated);
+      } else if (habit.streakCount == 1) {
+        final updated = habit.copyWith(
+          lastCheckedDate: null,
+          toggledOn: false,
+          streakCount: 0,
+        );
+        await updateHabit(updated);
+      }
     }
-
-    final updated = habit.copyWith(
-      streakCount: newStreakCount,
-      lastCheckedDate: today,
-    );
-    await updateHabit(updated);
   }
 
   List<Habit> get getAllHabitsSortedByStreak {
