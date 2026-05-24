@@ -46,10 +46,10 @@ void main() {
       expect(habit.computedStreak, 5);
     });
 
-    test('returns 0 when last checked 4 days ago', () {
-      final fourDaysAgo = makeLastCheckedDate(4);
+    test('returns 0 when last checked 2 days ago', () {
+      final twoDaysAgo = makeLastCheckedDate(2);
 
-      final habit = makeHabit(1, fourDaysAgo);
+      final habit = makeHabit(1, twoDaysAgo);
       expect(habit.computedStreak, 0);
     });
   });
