@@ -32,17 +32,39 @@ void main() {
         .substring(0, 10);
   }
 
-  group('database updates streakCount', () {
+  group('toggleHabit - check off', () {
     test(
-      'does not update repository when already checked today',
-      skip: 'Needs update: toggle now supports uncheck. See GitHub issue #18.',
+      'lastCheckedDate rolls back and toggledOn switches to false when streakCount > 1',
       () async {
-        final habit = makeHabit(1, makeLastCheckedDate(0));
-        await habitViewModel.toggleHabit(habit);
-        verifyNever(mockHabitRepository.update(any));
+        final habit = makeHabit(2, makeLastCheckedDate(0));
+        final updatedHabit = habit.copyWith(toggledOn: true);
+        await habitViewModel.toggleHabit(updatedHabit);
+        final captured =
+            verify(mockHabitRepository.update(captureAny)).captured.single
+                as Habit;
+        expect(captured.streakCount, updatedHabit.streakCount - 1);
+        expect(captured.lastCheckedDate, makeLastCheckedDate(1));
+        expect(captured.toggledOn, false);
       },
     );
 
+    test(
+      'lastCheckedDate rolls back and toggledOn switches to false when streakCount == 1',
+      () async {
+        final habit = makeHabit(1, makeLastCheckedDate(0));
+        final updatedHabit = habit.copyWith(toggledOn: true);
+        await habitViewModel.toggleHabit(updatedHabit);
+        final captured =
+            verify(mockHabitRepository.update(captureAny)).captured.single
+                as Habit;
+        expect(captured.streakCount, updatedHabit.streakCount - 1);
+        expect(captured.lastCheckedDate, null);
+        expect(captured.toggledOn, false);
+      },
+    );
+  });
+
+  group('toggleHabit - check on', () {
     test('updates repository to 1 when lastCheckedDate == null', () async {
       final habit = makeHabit(0, null);
       await habitViewModel.toggleHabit(habit);
