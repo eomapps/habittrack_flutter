@@ -73,7 +73,7 @@ habittrack/
 │   │   └── viewmodels/     # Unit tests: HabitViewModel streak logic (mockito)
 │   └── views/
 │       └── home/
-│           └── widgets/    # Widget tests: HabitCard rendering & interactions
+│           └── widgets/    # Widget tests: HabitCard, TodayScreen, AddEditDeleteHabitBottomSheet
 ├── README.md
 └── pubspec.yaml
 ```
