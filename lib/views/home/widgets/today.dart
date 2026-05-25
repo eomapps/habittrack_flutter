@@ -64,7 +64,7 @@ class _TodayScreenState extends State<TodayScreen> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       setState(() {
-        dateToday = HTUtils.getFormattedDate(widget.dateTime);
+        dateToday = HTUtils.getFormattedDate(DateTime.now());
       });
     }
   }
