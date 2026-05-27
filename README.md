@@ -4,23 +4,24 @@ A lightweight, offline-first habit tracking app built with Flutter — running o
 
 ## Screenshots
 
-
 | | Splash | Today (Empty) | Today (Active) | Add Habit |
 |---|:---:|:---:|:---:|:---:|
 | **iOS** | <img src="docs/ios_splash.png" width="160"/> | <img src="docs/ios_home_empty.png" width="160"/> | <img src="docs/ios_home_habits.png" width="160"/> | <img src="docs/ios_add_habit.png" width="160"/> |
 | **Android** | <img src="docs/android_splash.png" width="160"/> | <img src="docs/android_home.png" width="160"/> | <img src="docs/android_home_habits.png" width="160"/> | <img src="docs/android_add_habit.png" width="160"/> |
 
-| | Edit Habit | Progress |
+| | Edit Habit | Progress | 
 |---|:---:|:---:|
-| **iOS** | <img src="docs/ios_edit_habit.png" width="160"/> | <img src="docs/ios_progress.png" width="160"/> |
-| **Android** | <img src="docs/android_edit_habit.png" width="160"/> | <img src="docs/android_progress.png" width="160"/> |
+| **iOS** | <img src="docs/ios_edit_habit.png" width="160"/> | <img src="docs/ios_progress.png" width="160"/> | 
+| **Android** | <img src="docs/android_edit_habit.png" width="160"/> | <img src="docs/android_progress.png" width="160"/> | 
 
 ## Features
 
 - ✅ Track daily habits and maintain streaks
 - ✅ Color-coded habit cards for quick visual scanning
 - ✅ Separate "Not Done" / "Done Today" sections, updated in real time
-- ✅ Add habits via a BottomSheet with name and color picker
+- ✅ Add, edit, and delete habits via a BottomSheet with name and color picker
+- ✅ Progress charts and streak history visualization
+- ✅ Dark mode with system default and manual toggle in Settings
 - ✅ Polished splash screen on iOS and Android (including Android 12+ adaptive splash)
 - ✅ Custom launcher icons across both platforms
 - ✅ Fully offline — no account or login required
@@ -31,20 +32,16 @@ A lightweight, offline-first habit tracking app built with Flutter — running o
 
 | Layer | Choice | Notes |
 |---|---|---|
-| Language | Dart / Flutter | SDK `^3.11.5` |
-| State management | Provider | MVVM — `HabitViewModel` is the single source of truth |
-| Persistence | sqflite | Local SQLite, no backend |
+| Language | Dart / Flutter | SDK `^3.44.0` |
+| State management | Provider | MVVM — `HabitViewModel` and `SettingsViewmodel` are the sources of truth |
+| Persistence | sqflite + shared_preferences | SQLite for habits, shared_preferences for settings |
 | Fonts | Nunito (Google Fonts) | 400 / 500 / 600 / 700 weights |
 | Splash | flutter_native_splash | Android 12+ adaptive splash configured |
 | Icons | flutter_launcher_icons | 1024px source icon |
 
 ## Architecture
 
-MVVM using Provider. `HabitViewModel` extends `ChangeNotifier` and is the
-single source of truth for habit state. Screens consume it via
-`Consumer<HabitViewModel>` — no business logic in widgets.
-Persistence is handled by sqflite through a dedicated repository layer,
-keeping the data layer cleanly separated from the UI.
+MVVM using Provider. `HabitViewModel` extends `ChangeNotifier` and is the single source of truth for habit state. `SettingsViewmodel` manages user preferences including theme and notification settings, persisted via shared_preferences. Screens consume viewmodels via `context.watch` — no business logic in widgets. Persistence is handled by sqflite through a dedicated repository layer, keeping the data layer cleanly separated from the UI. Theming uses Flutter's `ThemeExtension` with a custom `AppColorTokens` class providing light and dark token sets.
 
 ```
 habittrack/
@@ -56,15 +53,16 @@ habittrack/
 ├── docs/               # README screenshots
 ├── lib/
 │   ├── core/
-│   │   ├── constants/  # Colors, text styles, dimensions, strings
-│   │   └── utils/      # Helper utilities
+│   │   ├── constants/  # Colors, tokens, text styles, dimensions, strings, theme
+│   │   └── utils/      # Helper utilities, context extensions
 │   ├── data/
 │   │   ├── database/   # DatabaseHelper (sqflite)
 │   │   ├── models/     # Habit
 │   │   └── repositories/
-│   ├── viewmodels/     # HabitViewModel (ChangeNotifier)
+│   ├── viewmodels/     # HabitViewModel, SettingsViewmodel (ChangeNotifier)
 │   └── views/
 │       ├── add_edit_habit/ # AddEditHabitBottomSheet
+│       ├── settings/       # SettingsScreen
 │       └── home/           # HomeScreen (IndexedStack): TodayScreen, ProgressScreen
 │           └── widgets/    # HabitCard, ProgressCard, TodayPlaceholder, ProgressPlaceholder
 ├── test/
@@ -80,12 +78,8 @@ habittrack/
 
 ## Roadmap
 
-- [x] Progress charts and streak history visualization 
-- [x] Habit edit and delete
-- [x] Unit and data layer tests with flutter_test and mockito
 - [ ] Widget tests — flutter_test, mockito (in progress)
 - [ ] Daily reminders / local notifications
-- [ ] Dark mode support
 - [ ] Riverpod branch — alternate state management implementation for comparison
 
 ## Getting Started
