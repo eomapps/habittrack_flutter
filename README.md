@@ -4,15 +4,24 @@ A lightweight, offline-first habit tracking app built with Flutter — running o
 
 ## Screenshots
 
-| | Splash | Today (Empty) | Today (Active) | Add Habit |
+**Light**
+
+| | Splash | Home (Empty) | Home (Active) | Add Habit |
 |---|:---:|:---:|:---:|:---:|
 | **iOS** | <img src="docs/ios_splash.png" width="160"/> | <img src="docs/ios_home_empty.png" width="160"/> | <img src="docs/ios_home_habits.png" width="160"/> | <img src="docs/ios_add_habit.png" width="160"/> |
-| **Android** | <img src="docs/android_splash.png" width="160"/> | <img src="docs/android_home.png" width="160"/> | <img src="docs/android_home_habits.png" width="160"/> | <img src="docs/android_add_habit.png" width="160"/> |
+| **Android** | <img src="docs/android_splash.png" width="160"/> | <img src="docs/android_home_empty.png" width="160"/> | <img src="docs/android_home_habits.png" width="160"/> | <img src="docs/android_add_habit.png" width="160"/> |
 
-| | Edit Habit | Progress | 
-|---|:---:|:---:|
-| **iOS** | <img src="docs/ios_edit_habit.png" width="160"/> | <img src="docs/ios_progress.png" width="160"/> | 
-| **Android** | <img src="docs/android_edit_habit.png" width="160"/> | <img src="docs/android_progress.png" width="160"/> | 
+| | Edit Habit | Progress | Settings |
+|---|:---:|:---:|:---:|
+| **iOS** | <img src="docs/ios_edit_habit.png" width="160"/> | <img src="docs/ios_progress.png" width="160"/> | <img src="docs/ios_settings.png" width="160"/> |
+| **Android** | <img src="docs/android_edit_habit.png" width="160"/> | <img src="docs/android_progress.png" width="160"/> | <img src="docs/android_settings.png" width="160"/> |
+
+**Dark**
+
+| | Home (Active) | Add Habit | Progress |
+|---|:---:|:---:|:---:|
+| **iOS** | <img src="docs/ios_home_habits_dark.png" width="160"/> | <img src="docs/ios_add_habit_dark.png" width="160"/> | <img src="docs/ios_progress_dark.png" width="160"/> |
+| **Android** | <img src="docs/android_home_habits_dark.png" width="160"/> | <img src="docs/android_add_habit_dark.png" width="160"/> | <img src="docs/android_progress_dark.png" width="160"/> |
 
 ## Features
 
@@ -70,15 +79,16 @@ habittrack/
 │   │   ├── models/         # Unit tests: Habit.computedStreak logic
 │   │   └── viewmodels/     # Unit tests: HabitViewModel streak logic (mockito)
 │   └── views/
+│       ├── add_edit_habit/ # Widget test: AddEditDeleteHabitBottomSheet
 │       └── home/
-│           └── widgets/    # Widget tests: HabitCard, TodayScreen, AddEditDeleteHabitBottomSheet
+│           └── widgets/    # Widget tests: HabitCard, ProgressCard, TodayScreen
 ├── README.md
 └── pubspec.yaml
 ```
 
 ## Roadmap
 
-- [ ] Widget tests — flutter_test, mockito (in progress)
+- [ ] Widget tests: ProgressScreen, SettingsScreen remaining
 - [ ] Daily reminders / local notifications
 - [ ] Riverpod branch — alternate state management implementation for comparison
 
