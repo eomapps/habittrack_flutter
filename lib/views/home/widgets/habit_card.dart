@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:habittrack/core/constants/app_colors.dart';
 import 'package:habittrack/core/constants/app_dimens.dart';
 import 'package:habittrack/core/constants/app_text_styles.dart';
 import 'package:habittrack/core/utils/context_extensions.dart';
