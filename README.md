@@ -35,7 +35,7 @@ A lightweight, offline-first habit tracking app built with Flutter — running o
 - ✅ Custom launcher icons across both platforms
 - ✅ Fully offline — no account or login required
 - ✅ Cross-platform: iOS and Android from a single codebase
-- ✅ Unit and data layer tests with flutter_test and mockito
+- ✅ Tested — unit tests (streak logic), widget tests (HabitCard, ProgressCard, TodayScreen, AddEditHabitBottomSheet), and data layer tests via flutter_test and mockito
 
 ## Tech Stack
 
@@ -71,7 +71,7 @@ habittrack/
 │   ├── viewmodels/     # HabitViewModel, SettingsViewmodel (ChangeNotifier)
 │   └── views/
 │       ├── add_edit_habit/ # AddEditHabitBottomSheet
-│       ├── settings/       # SettingsScreen
+│       ├── settings.dart   # SettingsScreen
 │       └── home/           # HomeScreen (IndexedStack): TodayScreen, ProgressScreen
 │           └── widgets/    # HabitCard, ProgressCard, TodayPlaceholder, ProgressPlaceholder
 ├── test/
@@ -88,7 +88,7 @@ habittrack/
 
 ## Roadmap
 
-- [ ] Widget tests: ProgressScreen, SettingsScreen remaining
+- [ ] Expand widget test coverage — ProgressScreen, SettingsScreen
 - [ ] Daily reminders / local notifications
 - [ ] Riverpod branch — alternate state management implementation for comparison
 
