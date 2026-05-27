@@ -24,4 +24,19 @@ class AppStrings {
   static const String yes = 'Yes';
   static const String noStreakYet = 'No streak yet';
   static const String dayStreak = 'day streak';
+  static const String settings = 'Settings';
+  static const String notifications = 'Notifications';
+  static const String enableNotifications = 'Enable notifications';
+  static const String notifyAt = 'Notify at';
+  static const String appearance = 'Appearance';
+  static const String appTheme = 'App theme';
+  static const String projectURL =
+      'https://github.com/eomapps/habittrack_flutter';
+  static const String attribution = 'by @eomapps';
+
+  static const String settingsAppThemeDark = 'settings_appThemeDark';
+  static const String settingsNotificationsEnabled =
+      'settings_notificationsEnabled';
+  static const String settingsNotificationHour = 'settings_notificationHour';
+  static const String settingsNotificationMins = 'settings_notificationMins';
 }

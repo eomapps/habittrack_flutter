@@ -1,85 +1,86 @@
-import 'package:habittrack/core/constants/app_colors.dart';
+import 'package:habittrack/core/constants/app_color_tokens.dart';
 import 'package:flutter/material.dart';
+import 'package:habittrack/core/constants/app_colors.dart';
 
 class AppTextStyles {
   AppTextStyles._();
 
   // ── App bar ──────────────────────────────────────────
-  static const TextStyle appBarTitle = TextStyle(
+  static TextStyle appBarTitle(BuildContext context) => TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.w700,
-    color: AppColors.text,
+    color: Theme.of(context).extension<AppColorTokens>()!.text,
   );
 
   // ── Home screen ──────────────────────────────────────
-  static const TextStyle dateRow = TextStyle(
+  static TextStyle dateRow(BuildContext context) => TextStyle(
     fontSize: 11,
     fontWeight: FontWeight.w600,
-    color: AppColors.muted,
+    color: Theme.of(context).extension<AppColorTokens>()!.muted,
     letterSpacing: 0.04 * 11,
   );
 
-  static final TextStyle sectionLabel = TextStyle(
+  static TextStyle sectionLabel(BuildContext context) => TextStyle(
     fontSize: 9,
     fontWeight: FontWeight.w700,
-    color: AppColors.label,
+    color: Theme.of(context).extension<AppColorTokens>()!.label,
     letterSpacing: 0.12 * 9,
   );
 
-  static const TextStyle habitName = TextStyle(
+  static TextStyle habitName(BuildContext context) => TextStyle(
     fontSize: 13,
     fontWeight: FontWeight.w600,
-    color: AppColors.text,
+    color: Theme.of(context).extension<AppColorTokens>()!.text,
   );
 
-  static const TextStyle habitStreak = TextStyle(
+  static TextStyle habitStreak(BuildContext context) => TextStyle(
     fontSize: 10,
     fontWeight: FontWeight.w500,
-    color: AppColors.muted,
+    color: Theme.of(context).extension<AppColorTokens>()!.muted,
   );
 
-  static const TextStyle progressStreak = TextStyle(
+  static TextStyle progressStreak(BuildContext context) => TextStyle(
     fontSize: 10,
     fontWeight: FontWeight.w700,
-    color: AppColors.muted,
+    color: Theme.of(context).extension<AppColorTokens>()!.muted,
     fontFamily: 'FiraCode',
   );
 
   // ── Bottom nav ───────────────────────────────────────
-  static const TextStyle navLabel = TextStyle(
+  static TextStyle navLabel(BuildContext context) => TextStyle(
     fontSize: 11,
     fontWeight: FontWeight.w600,
-    color: AppColors.muted,
+    color: Theme.of(context).extension<AppColorTokens>()!.muted,
   );
 
-  static const TextStyle navLabelActive = TextStyle(
+  static final TextStyle navLabelActive = TextStyle(
     fontSize: 11,
     fontWeight: FontWeight.w600,
     color: AppColors.purple,
   );
 
   // ── Add habit sheet ──────────────────────────────────
-  static const TextStyle sheetTitle = TextStyle(
+  static TextStyle sheetTitle(BuildContext context) => TextStyle(
     fontSize: 15,
     fontWeight: FontWeight.w700,
-    color: AppColors.text,
+    color: Theme.of(context).extension<AppColorTokens>()!.text,
   );
 
-  static const TextStyle formLabel = TextStyle(
+  static TextStyle formLabel(BuildContext context) => TextStyle(
     fontSize: 10,
     fontWeight: FontWeight.w700,
-    color: AppColors.muted,
+    color: Theme.of(context).extension<AppColorTokens>()!.muted,
     letterSpacing: 0.08 * 10,
   );
 
-  static const TextStyle formInput = TextStyle(
+  static TextStyle formInput(BuildContext context) => TextStyle(
     fontSize: 13,
     fontWeight: FontWeight.w400,
-    color: AppColors.text,
+    color: Theme.of(context).extension<AppColorTokens>()!.text,
     fontFamily: 'Nunito',
   );
 
-  static const TextStyle saveButton = TextStyle(
+  static final TextStyle saveButton = TextStyle(
     fontSize: 13,
     fontWeight: FontWeight.w700,
     color: Colors.white,
@@ -87,30 +88,30 @@ class AppTextStyles {
   );
 
   // ── Progress screen ──────────────────────────────────
-  static const TextStyle progressName = TextStyle(
+  static TextStyle progressName(BuildContext context) => TextStyle(
     fontSize: 12,
     fontWeight: FontWeight.w600,
-    color: AppColors.text,
+    color: Theme.of(context).extension<AppColorTokens>()!.text,
   );
 
-  static const TextStyle progressDayCount = TextStyle(
+  static TextStyle progressDayCount(BuildContext context) => TextStyle(
     fontSize: 10,
     fontWeight: FontWeight.w700,
-    color: AppColors.muted,
+    color: Theme.of(context).extension<AppColorTokens>()!.muted,
     fontFamily: 'Courier New',
   );
 
   // ── Empty state ──────────────────────────────────────
-  static const TextStyle emptyStateTitle = TextStyle(
+  static TextStyle emptyStateTitle(BuildContext context) => TextStyle(
     fontSize: 15,
     fontWeight: FontWeight.w700,
-    color: AppColors.text,
+    color: Theme.of(context).extension<AppColorTokens>()!.text,
   );
 
-  static const TextStyle emptyStateSub = TextStyle(
+  static TextStyle emptyStateSub(BuildContext context) => TextStyle(
     fontSize: 11,
     fontWeight: FontWeight.w500,
-    color: AppColors.muted,
+    color: Theme.of(context).extension<AppColorTokens>()!.muted,
     height: 1.6,
   );
 }

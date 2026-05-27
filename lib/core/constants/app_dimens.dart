@@ -1,4 +1,4 @@
-import 'package:habittrack/core/constants/app_colors.dart';
+import 'package:habittrack/core/constants/app_color_tokens.dart';
 import 'package:flutter/material.dart';
 
 class AppDimens {
@@ -81,8 +81,8 @@ class AppDimens {
   static const double navDotSize = 4;
 
   // borders & strokes
-  static final BorderSide checkCircleBorder = BorderSide(
-    color: AppColors.border,
+  static BorderSide checkCircleBorder(BuildContext context) => BorderSide(
+    color: Theme.of(context).extension<AppColorTokens>()!.border,
     width: 1.5,
   );
 

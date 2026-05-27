@@ -3,6 +3,7 @@ import 'package:habittrack/core/constants/app_colors.dart';
 import 'package:habittrack/core/constants/app_dimens.dart';
 import 'package:habittrack/core/constants/app_strings.dart';
 import 'package:habittrack/core/constants/app_text_styles.dart';
+import 'package:habittrack/core/utils/context_extensions.dart';
 
 class ProgressPlaceholder extends StatelessWidget {
   const ProgressPlaceholder({super.key});
@@ -19,7 +20,7 @@ class ProgressPlaceholder extends StatelessWidget {
             height: 64,
             width: 64,
             decoration: BoxDecoration(
-              color: AppColors.emptyStateIconBg,
+              color: context.colors.emptyStateIconBg,
               borderRadius: BorderRadius.circular(
                 AppDimens.radiusEmptyStateIconBox,
               ),
@@ -33,15 +34,15 @@ class ProgressPlaceholder extends StatelessWidget {
             ),
           ),
           SizedBox(height: spacing),
-          const Text(
+          Text(
             AppStrings.noProgressYet,
-            style: AppTextStyles.emptyStateTitle,
+            style: AppTextStyles.emptyStateTitle(context),
             textAlign: TextAlign.center,
           ),
           SizedBox(height: spacing),
-          const Text(
+          Text(
             AppStrings.addProgress,
-            style: AppTextStyles.emptyStateSub,
+            style: AppTextStyles.emptyStateSub(context),
             textAlign: TextAlign.center,
           ),
         ],

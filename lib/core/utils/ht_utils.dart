@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HTUtils {
   HTUtils._();
@@ -11,5 +12,12 @@ class HTUtils {
     final letter = title.substring(0, 1).toUpperCase();
     final endLetters = title.substring(1).toLowerCase();
     return '$letter$endLetters';
+  }
+
+  static Future<void> openUrl() async {
+    final Uri url = Uri.parse('https://github.com/eomapps/habittrack_flutter');
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
+    }
   }
 }

@@ -3,6 +3,7 @@ import 'package:habittrack/core/constants/app_colors.dart';
 import 'package:habittrack/core/constants/app_dimens.dart';
 import 'package:habittrack/core/constants/app_strings.dart';
 import 'package:habittrack/core/constants/app_text_styles.dart';
+import 'package:habittrack/core/utils/context_extensions.dart';
 import 'package:habittrack/core/utils/ht_utils.dart';
 import 'package:habittrack/data/models/habit.dart';
 import 'package:habittrack/viewmodels/habit_viewmodel.dart';
@@ -72,7 +73,7 @@ class _AddEditDeleteHabitBottomSheetState
                     width: AppDimens.sheetHandleWidth,
                     height: AppDimens.sheetHandleHeight,
                     decoration: BoxDecoration(
-                      color: AppColors.border,
+                      color: context.colors.border,
                       borderRadius: BorderRadius.circular(
                         AppDimens.radiusSheetHandle,
                       ),
@@ -87,7 +88,7 @@ class _AddEditDeleteHabitBottomSheetState
                       widget.isEdit
                           ? AppStrings.editHabit.toUpperCase()
                           : AppStrings.newHabit.toUpperCase(),
-                      style: AppTextStyles.sheetTitle,
+                      style: AppTextStyles.sheetTitle(context),
                     ),
                     IconButton(
                       onPressed: () {
@@ -103,12 +104,15 @@ class _AddEditDeleteHabitBottomSheetState
               ],
             ),
           ),
-          Text(AppStrings.habitName, style: AppTextStyles.emptyStateSub),
+          Text(
+            AppStrings.habitName,
+            style: AppTextStyles.emptyStateSub(context),
+          ),
           SizedBox(height: 6),
           TextField(
             controller: _habitNameController,
             decoration: InputDecoration(
-              fillColor: AppColors.cardBg,
+              fillColor: context.colors.cardBg,
               filled: true,
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 12,
@@ -116,16 +120,19 @@ class _AddEditDeleteHabitBottomSheetState
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(AppDimens.radiusFormInput),
-                borderSide: BorderSide(color: AppColors.border, width: 1),
+                borderSide: BorderSide(color: context.colors.border, width: 1),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(AppDimens.radiusFormInput),
-                borderSide: BorderSide(color: AppColors.border, width: 1),
+                borderSide: BorderSide(color: context.colors.border, width: 1),
               ),
             ),
           ),
           const SizedBox(height: 14),
-          Text(AppStrings.colorChoice, style: AppTextStyles.emptyStateSub),
+          Text(
+            AppStrings.colorChoice,
+            style: AppTextStyles.emptyStateSub(context),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
             child: Row(
@@ -262,7 +269,7 @@ class _AddEditDeleteHabitBottomSheetState
             children: [
               Text(
                 AppStrings.confirmationPrompt,
-                style: AppTextStyles.sheetTitle,
+                style: AppTextStyles.sheetTitle(context),
               ),
               ElevatedButton(
                 style: ButtonStyle(

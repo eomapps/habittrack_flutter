@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:habittrack/core/constants/app_colors.dart';
 import 'package:habittrack/core/constants/app_dimens.dart';
 import 'package:habittrack/core/constants/app_text_styles.dart';
+import 'package:habittrack/core/utils/context_extensions.dart';
 import 'package:habittrack/core/utils/ht_utils.dart';
 import 'package:habittrack/data/models/habit.dart';
 
@@ -15,9 +16,9 @@ class ProgressCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.cardBg,
+        color: context.colors.cardBg,
         borderRadius: BorderRadius.circular(AppDimens.radiusCard),
-        border: Border.all(color: AppColors.border, width: 1),
+        border: Border.all(color: context.colors.border, width: 1),
       ),
       margin: AppDimens.paddingProgressBody,
       padding: AppDimens.paddingProgressRowPad,
@@ -39,7 +40,7 @@ class ProgressCard extends StatelessWidget {
               children: [
                 Text(
                   HTUtils.getInSentenceCase(habit.title),
-                  style: AppTextStyles.progressName,
+                  style: AppTextStyles.progressName(context),
                 ),
                 SizedBox(height: AppDimens.progressRowGap),
                 LinearProgressIndicator(
@@ -47,7 +48,7 @@ class ProgressCard extends StatelessWidget {
                     AppDimens.radiusProgressBar,
                   ),
                   value: habit.streakCount / maxStreak,
-                  backgroundColor: AppColors.bg,
+                  backgroundColor: context.colors.bg,
                   minHeight: AppDimens.progressBarHeight,
                   color: Color(int.parse('0xFF${habit.colorHex.substring(1)}')),
                 ),
@@ -56,7 +57,10 @@ class ProgressCard extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          Text('${habit.computedStreak}d', style: AppTextStyles.progressStreak),
+          Text(
+            '${habit.computedStreak}d',
+            style: AppTextStyles.progressStreak(context),
+          ),
         ],
       ),
     );

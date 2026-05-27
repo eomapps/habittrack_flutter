@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-extension ColorX on Color {
+extension AppColorExtensions on Color {
   String toHex() =>
       '#${toARGB32().toRadixString(16).substring(2).toUpperCase()}';
 }

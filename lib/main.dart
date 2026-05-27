@@ -3,6 +3,7 @@ import 'package:habittrack/core/constants/app_theme.dart';
 import 'package:habittrack/data/database/database_helper.dart';
 import 'package:habittrack/data/repositories/habit_repository.dart';
 import 'package:habittrack/viewmodels/habit_viewmodel.dart';
+import 'package:habittrack/viewmodels/settings_viewmodel.dart';
 import 'package:habittrack/views/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -21,10 +22,14 @@ void main() async {
   FlutterNativeSplash.remove();
 
   HabitRepository habitRepository = HabitRepository(DatabaseHelper.instance);
+  SettingsViewmodel settingsViewmodel = SettingsViewmodel();
+  await settingsViewmodel.init();
+
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => HabitViewModel(habitRepository)),
+        ChangeNotifierProvider.value(value: settingsViewmodel),
       ],
       child: const MyApp(),
     ),
@@ -36,9 +41,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final settings = context.watch<SettingsViewmodel>();
     return MaterialApp(
       title: AppStrings.appTitle,
       theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: settings.getThemeDark() ? ThemeMode.dark : ThemeMode.light,
       home: const HomeScreen(),
       debugShowCheckedModeBanner: false,
     );

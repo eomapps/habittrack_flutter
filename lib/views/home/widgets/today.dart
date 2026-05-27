@@ -85,7 +85,7 @@ class _TodayScreenState extends State<TodayScreen> with WidgetsBindingObserver {
           padding: AppDimens.paddingDateRow,
           child: Text(
             dateToday,
-            style: AppTextStyles.dateRow,
+            style: AppTextStyles.dateRow(context),
             key: const Key('date-today-text'),
           ),
         ),
@@ -110,7 +110,7 @@ class _TodayScreenState extends State<TodayScreen> with WidgetsBindingObserver {
                     padding: AppDimens.paddingSectionLabel,
                     child: Text(
                       AppStrings.notDone,
-                      style: AppTextStyles.sectionLabel,
+                      style: AppTextStyles.sectionLabel(context),
                     ),
                   ),
                   ...notDone.map((habit) => HabitCard(habit: habit)),
@@ -120,7 +120,7 @@ class _TodayScreenState extends State<TodayScreen> with WidgetsBindingObserver {
                     padding: AppDimens.paddingSectionLabel,
                     child: Text(
                       AppStrings.doneToday,
-                      style: AppTextStyles.sectionLabel,
+                      style: AppTextStyles.sectionLabel(context),
                     ),
                   ),
                   ...done.map((habit) => HabitCard(habit: habit, isDone: true)),

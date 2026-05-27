@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:habittrack/core/constants/app_colors.dart';
 import 'package:habittrack/core/constants/app_dimens.dart';
 import 'package:habittrack/core/constants/app_text_styles.dart';
+import 'package:habittrack/core/utils/context_extensions.dart';
 import 'package:habittrack/core/utils/ht_utils.dart';
 import 'package:habittrack/data/models/habit.dart';
 import 'package:habittrack/viewmodels/habit_viewmodel.dart';
@@ -41,9 +42,9 @@ class _HabitCardState extends State<HabitCard> {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.cardBg,
+          color: context.colors.cardBg,
           borderRadius: BorderRadius.circular(AppDimens.radiusCard),
-          border: Border.all(color: AppColors.border, width: 1),
+          border: Border.all(color: context.colors.border, width: 1),
         ),
         margin: AppDimens.paddingHabitCardMargin,
         padding: AppDimens.paddingHabitCard,
@@ -67,12 +68,12 @@ class _HabitCardState extends State<HabitCard> {
                 children: [
                   Text(
                     HTUtils.getInSentenceCase(widget.habit.title),
-                    style: AppTextStyles.habitName,
+                    style: AppTextStyles.habitName(context),
                   ),
                   const SizedBox(width: 2),
                   Text(
                     widget.habit.getStreakMessage,
-                    style: AppTextStyles.habitStreak,
+                    style: AppTextStyles.habitStreak(context),
                   ),
                 ],
               ),
@@ -94,11 +95,11 @@ class _HabitCardState extends State<HabitCard> {
                             '0xFF${widget.habit.colorHex.substring(1)}',
                           ),
                         )
-                      : AppColors.card,
+                      : context.colors.card,
                   boxShadow: widget.isDone ? [AppDimens.checkDoneShadow] : null,
                   border: widget.isDone
                       ? null
-                      : Border.all(color: AppColors.border, width: 1.5),
+                      : Border.all(color: context.colors.border, width: 1.5),
                 ),
                 child: widget.isDone
                     ? const Icon(Icons.check, color: Colors.white)
