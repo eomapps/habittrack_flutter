@@ -59,10 +59,9 @@ class SettingsScreenState extends State<SettingsScreen> {
                       initialTime: viewModel.getNotificationTime(),
                     );
                     if (time != null) {
-                      context.read<SettingsViewmodel>().setNotificationTime(
-                        time.hour,
-                        time.minute,
-                      );
+                      if (mounted) {
+                        viewModel.setNotificationTime(time.hour, time.minute);
+                      }
                     }
                   },
                   title: Text(
