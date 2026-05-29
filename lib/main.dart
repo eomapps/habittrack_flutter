@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:habittrack/core/constants/app_strings.dart';
 import 'package:habittrack/core/constants/app_theme.dart';
+import 'package:habittrack/core/notifications/notification_service.dart';
 import 'package:habittrack/data/database/database_helper.dart';
 import 'package:habittrack/data/repositories/habit_repository.dart';
 import 'package:habittrack/viewmodels/habit_viewmodel.dart';
@@ -24,6 +27,9 @@ void main() async {
   HabitRepository habitRepository = HabitRepository(DatabaseHelper.instance);
   SettingsViewmodel settingsViewmodel = SettingsViewmodel();
   await settingsViewmodel.init();
+  await NotificationsService.instance.initNotificationsService(
+    settingsViewmodel,
+  );
 
   runApp(
     MultiProvider(
@@ -46,7 +52,7 @@ class MyApp extends StatelessWidget {
       title: AppStrings.appTitle,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
-      themeMode: settings.getThemeDark() ? ThemeMode.dark : ThemeMode.light,
+      themeMode: settings.themeDark ? ThemeMode.dark : ThemeMode.light,
       home: const HomeScreen(),
       debugShowCheckedModeBanner: false,
     );

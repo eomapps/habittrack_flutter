@@ -1,13 +1,17 @@
+import 'dart:async';
+
 import 'package:habittrack/core/constants/app_colors.dart';
 import 'package:habittrack/core/constants/app_dimens.dart';
 import 'package:habittrack/core/constants/app_strings.dart';
 import 'package:habittrack/core/constants/app_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:habittrack/core/notifications/notification_handler.dart';
 import 'package:habittrack/core/utils/context_extensions.dart';
 import 'package:habittrack/views/add_edit_habit/add_edit_delete_habit_bottom_sheet.dart';
 import 'package:habittrack/views/home/widgets/progress.dart';
 import 'package:habittrack/views/home/widgets/today.dart';
 import 'package:habittrack/views/settings.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,9 +20,45 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   int _currentIndex = 0;
   final List<Widget> _tabs = [TodayScreen(), ProgressScreen()];
+  late StreamSubscription _notificationSub;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _checkNotificationFlag(); // handles terminated case
+    _notificationSub = notificationTapStream.stream.listen((_) {
+      if (!mounted) return;
+      Navigator.of(context).popUntil((route) => route.isFirst);
+      setState(() => _currentIndex = 0);
+    });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) _checkNotificationFlag();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _notificationSub.cancel();
+    super.dispose();
+  }
+
+  Future<void> _checkNotificationFlag() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool(AppStrings.notificationTapped) ?? false) {
+      await prefs.remove(AppStrings.notificationTapped);
+      if (mounted) {
+        Navigator.of(context).popUntil((route) => route.isFirst);
+        setState(() => _currentIndex = 0);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

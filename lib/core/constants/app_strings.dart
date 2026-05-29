@@ -39,4 +39,12 @@ class AppStrings {
       'settings_notificationsEnabled';
   static const String settingsNotificationHour = 'settings_notificationHour';
   static const String settingsNotificationMins = 'settings_notificationMins';
+
+  static const String channelId = 'habit_track-id1';
+  static const String channelName = 'HabitTrack Notifications';
+  static const String channelDescription = 'HabitTrack Reminders';
+  static const String notificationTitle = 'Friendly Reminder';
+  static const String notificationBody = 'Have you done your habits?';
+  static const String notificationTapped = 'notification_tapped';
+  static const String androidDefaultIcon = '@mipmap/ic_launcher';
 }

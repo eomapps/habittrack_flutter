@@ -6,14 +6,9 @@ import 'package:habittrack/core/utils/ht_utils.dart';
 import 'package:habittrack/viewmodels/settings_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
-  @override
-  State<SettingsScreen> createState() => SettingsScreenState();
-}
-
-class SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<SettingsViewmodel>();
@@ -45,27 +40,27 @@ class SettingsScreenState extends State<SettingsScreen> {
               AppStrings.enableNotifications,
               style: AppTextStyles.habitName(context),
             ),
-            value: viewModel.getNotificationsEnabled(),
+            value: viewModel.notificationsEnabled,
             onChanged: (value) {
               context.read<SettingsViewmodel>().setNotifications(value);
             },
           ),
-          viewModel.getNotificationsEnabled()
+          viewModel.notificationsEnabled
               ? ListTile(
-                  trailing: Icon(Icons.timer),
+                  trailing: const Icon(Icons.timer),
                   onTap: () async {
                     final TimeOfDay? time = await showTimePicker(
                       context: context,
-                      initialTime: viewModel.getNotificationTime(),
+                      initialTime: viewModel.notificationTime,
                     );
-                    if (time != null) {
-                      if (mounted) {
+                    if (context.mounted) {
+                      if (time != null) {
                         viewModel.setNotificationTime(time.hour, time.minute);
                       }
                     }
                   },
                   title: Text(
-                    '${AppStrings.notifyAt} ${viewModel.getNotificationTime().hourOfPeriod}:${viewModel.getNotificationTime().minute.toString().padLeft(2, '0')} ${viewModel.getNotificationTime().period.name.toUpperCase()}',
+                    '${AppStrings.notifyAt} ${viewModel.notificationTime.hourOfPeriod}:${viewModel.notificationTime.minute.toString().padLeft(2, '0')} ${viewModel.notificationTime.period.name.toUpperCase()}',
                     style: AppTextStyles.habitName(context),
                   ),
                 )
@@ -79,17 +74,17 @@ class SettingsScreenState extends State<SettingsScreen> {
           ),
           SwitchListTile(
             title: Text(
-              viewModel.getThemeDark() ? 'Dark Mode' : 'Light Mode',
+              viewModel.themeDark ? 'Dark Mode' : 'Light Mode',
               style: AppTextStyles.habitName(context),
             ),
-            value: viewModel.getThemeDark(),
+            value: viewModel.themeDark,
             onChanged: (value) {
               context.read<SettingsViewmodel>().setThemeDark(value);
             },
           ),
-          Spacer(),
+          const Spacer(),
           SafeArea(
-            minimum: EdgeInsets.only(bottom: 16),
+            minimum: const EdgeInsets.only(bottom: 16),
             child: Center(
               child: GestureDetector(
                 onTap: () {
