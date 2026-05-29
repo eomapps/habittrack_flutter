@@ -24,12 +24,16 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   int _currentIndex = 0;
   final List<Widget> _tabs = [TodayScreen(), ProgressScreen()];
   late StreamSubscription _notificationSub;
+  bool _handlingNotificationTap = false;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    _checkNotificationFlag(); // handles terminated case
+    // Defer until after first frame so the navigator is ready and no
+    // partially-restored route (e.g. SettingsScreen from a previous task
+    // stack) is visible when popUntil fires.
+    WidgetsBinding.instance.addPostFrameCallback((_) => _checkNotificationFlag());
     _notificationSub = notificationTapStream.stream.listen((_) {
       if (!mounted) return;
       Navigator.of(context).popUntil((route) => route.isFirst);
@@ -50,13 +54,19 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   }
 
   Future<void> _checkNotificationFlag() async {
-    final prefs = await SharedPreferences.getInstance();
-    if (prefs.getBool(AppStrings.notificationTapped) ?? false) {
-      await prefs.remove(AppStrings.notificationTapped);
-      if (mounted) {
-        Navigator.of(context).popUntil((route) => route.isFirst);
-        setState(() => _currentIndex = 0);
+    if (_handlingNotificationTap) return;
+    _handlingNotificationTap = true;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      if (prefs.getBool(AppStrings.notificationTapped) ?? false) {
+        await prefs.remove(AppStrings.notificationTapped);
+        if (mounted) {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+          setState(() => _currentIndex = 0);
+        }
       }
+    } finally {
+      _handlingNotificationTap = false;
     }
   }
 
