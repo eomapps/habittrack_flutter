@@ -16,17 +16,15 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
+  // Start timer immediately — runs in background while init work happens
+  const kMinSplashDuration = Duration(milliseconds: 500);
+  final minSplash = Future.delayed(kMinSplashDuration);
+
   try {
-    await DatabaseHelper.instance.database; // init db
+    await DatabaseHelper.instance.database;
   } catch (e) {
     debugPrint('initialize db failed: $e');
   }
-
-  await Future.delayed(
-    const Duration(milliseconds: 500),
-  ); // brief delay for branding
-
-  FlutterNativeSplash.remove();
 
   HabitRepository habitRepository = HabitRepository(DatabaseHelper.instance);
   SettingsViewmodel settingsViewmodel = SettingsViewmodel();
@@ -43,6 +41,9 @@ void main() async {
   } catch (e) {
     debugPrint('initNotificationsService failed $e');
   }
+
+  await minSplash; // no-op if init already took ≥ 500ms
+  FlutterNativeSplash.remove();
 
   runApp(
     MultiProvider(
