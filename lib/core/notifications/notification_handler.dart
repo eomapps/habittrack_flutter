@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:habittrack/core/constants/app_strings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,8 +11,12 @@ final StreamController<void> notificationTapStream =
 void notificationTapBackground(
   NotificationResponse notificationResponse,
 ) async {
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.setBool(AppStrings.notificationTapped, true);
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(AppStrings.notificationTapped, true);
+  } catch (e) {
+    debugPrint('set notificationsTapped failed $e');
+  }
 }
 
 void notificationTapForeground(NotificationResponse notificationResponse) {

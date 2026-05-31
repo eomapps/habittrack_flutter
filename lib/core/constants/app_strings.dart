@@ -47,4 +47,9 @@ class AppStrings {
   static const String notificationBody = 'Have you done your habits?';
   static const String notificationTapped = 'notification_tapped';
   static const String androidDefaultIcon = '@mipmap/ic_launcher';
+
+  static const String errorInsertHabitFailed = 'Failed to save habit';
+  static const String errorUpdateHabitFailed = 'Failed to update habit';
+  static const String errorDeleteHabitFailed = 'Failed to delete habit';
+  static const String errorGetAllHabitsFailed = 'Failed to get all habits';
 }

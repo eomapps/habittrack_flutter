@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/rendering.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:habittrack/core/constants/app_strings.dart';
@@ -80,40 +81,48 @@ class NotificationsService {
   }
 
   Future<void> scheduleNotification() async {
-    final notificationTime = viewmodel.notificationTime;
-    var scheduledDate = tz.TZDateTime(
-      tz.local,
-      DateTime.now().year,
-      DateTime.now().month,
-      DateTime.now().day,
-      notificationTime.hour,
-      notificationTime.minute,
-    );
-    if (scheduledDate.isBefore(tz.TZDateTime.now(tz.local))) {
-      scheduledDate = scheduledDate.add(const Duration(days: 1));
-    }
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-      id: 0,
-      title: AppStrings.notificationTitle,
-      body: AppStrings.notificationBody,
-      scheduledDate: scheduledDate,
-      notificationDetails: const NotificationDetails(
-        iOS: DarwinNotificationDetails(),
-        android: AndroidNotificationDetails(
-          AppStrings.channelId,
-          AppStrings.channelName,
-          channelDescription: AppStrings.channelDescription,
-          priority: Priority.high,
-          importance: Importance.high,
-          fullScreenIntent: true,
+    try {
+      final notificationTime = viewmodel.notificationTime;
+      var scheduledDate = tz.TZDateTime(
+        tz.local,
+        DateTime.now().year,
+        DateTime.now().month,
+        DateTime.now().day,
+        notificationTime.hour,
+        notificationTime.minute,
+      );
+      if (scheduledDate.isBefore(tz.TZDateTime.now(tz.local))) {
+        scheduledDate = scheduledDate.add(const Duration(days: 1));
+      }
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        id: 0,
+        title: AppStrings.notificationTitle,
+        body: AppStrings.notificationBody,
+        scheduledDate: scheduledDate,
+        notificationDetails: const NotificationDetails(
+          iOS: DarwinNotificationDetails(),
+          android: AndroidNotificationDetails(
+            AppStrings.channelId,
+            AppStrings.channelName,
+            channelDescription: AppStrings.channelDescription,
+            priority: Priority.high,
+            importance: Importance.high,
+            fullScreenIntent: true,
+          ),
         ),
-      ),
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      matchDateTimeComponents: DateTimeComponents.time,
-    );
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        matchDateTimeComponents: DateTimeComponents.time,
+      );
+    } catch (e) {
+      debugPrint('scheduleNotification failed: $e');
+    }
   }
 
   Future<void> cancelNotification(int id) async {
-    await flutterLocalNotificationsPlugin.cancel(id: id);
+    try {
+      await flutterLocalNotificationsPlugin.cancel(id: id);
+    } catch (e) {
+      debugPrint('cancelNotification failed: $e');
+    }
   }
 }

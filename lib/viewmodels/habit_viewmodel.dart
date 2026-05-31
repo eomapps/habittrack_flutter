@@ -1,3 +1,4 @@
+import 'package:habittrack/core/constants/app_strings.dart';
 import 'package:habittrack/data/models/habit.dart';
 import 'package:habittrack/data/repositories/habit_repository.dart';
 import 'package:flutter/material.dart';
@@ -9,37 +10,59 @@ class HabitViewModel extends ChangeNotifier {
 
   List<Habit> _habits = [];
   bool _isLoading = false;
+  String? _error;
+  String? get error => _error;
 
   List<Habit> get habits => _habits;
   bool get isLoading => _isLoading;
 
   Future<void> getAllHabits() async {
-    _isLoading = true;
-    notifyListeners();
-    _habits.clear();
-    _habits = await _repository.getAll();
-    _isLoading = false;
+    try {
+      _isLoading = true;
+      notifyListeners();
+      _habits.clear();
+      _habits = await _repository.getAll();
+      _isLoading = false;
+    } catch (e) {
+      debugPrint('getAllHabits failed: $e');
+      _error = AppStrings.errorGetAllHabitsFailed;
+    }
     notifyListeners();
   }
 
   Future<void> insertHabit(Habit habit) async {
-    final insertedHabit = await _repository.insert(habit);
-    _habits.add(insertedHabit);
+    try {
+      final insertedHabit = await _repository.insert(habit);
+      _habits.add(insertedHabit);
+    } catch (e) {
+      debugPrint('insertHabit failed: $e');
+      _error = AppStrings.errorInsertHabitFailed;
+    }
     notifyListeners();
   }
 
   Future<void> updateHabit(Habit habit) async {
-    await _repository.update(habit);
-    final index = _habits.indexWhere((h) => h.id == habit.id);
-    if (index != -1) {
-      _habits[index] = habit;
+    try {
+      await _repository.update(habit);
+      final index = _habits.indexWhere((h) => h.id == habit.id);
+      if (index != -1) {
+        _habits[index] = habit;
+      }
+    } catch (e) {
+      debugPrint('updateHabit failed: $e');
+      _error = AppStrings.errorUpdateHabitFailed;
     }
     notifyListeners();
   }
 
   Future<void> deleteHabit(Habit habit) async {
-    await _repository.delete(habit.id!);
-    _habits.removeWhere((h) => h.id == habit.id);
+    try {
+      await _repository.delete(habit.id!);
+      _habits.removeWhere((h) => h.id == habit.id);
+    } catch (e) {
+      debugPrint('deleteHabit failed: $e');
+      _error = AppStrings.errorDeleteHabitFailed;
+    }
     notifyListeners();
   }
 
@@ -117,4 +140,6 @@ class HabitViewModel extends ChangeNotifier {
     if (_habits.isEmpty) return 1;
     return _habits.map((h) => h.streakCount).reduce(max);
   }
+
+  void clearError() => _error = null;
 }

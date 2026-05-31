@@ -7,14 +7,23 @@ class SettingsViewmodel extends ChangeNotifier {
   late SharedPreferences _prefs;
 
   Future<void> init() async {
-    _prefs = await SharedPreferences.getInstance();
+    try {
+      _prefs = await SharedPreferences.getInstance();
+    } catch (e) {
+      debugPrint('SettingViewmodel init failed $e');
+      rethrow;
+    }
   }
 
   Future<void> setNotifications(bool notificationsEnabled) async {
-    await _prefs.setBool(
-      AppStrings.settingsNotificationsEnabled,
-      notificationsEnabled,
-    );
+    try {
+      await _prefs.setBool(
+        AppStrings.settingsNotificationsEnabled,
+        notificationsEnabled,
+      );
+    } catch (e) {
+      debugPrint('setNotifications value failed $e');
+    }
     if (notificationsEnabled) {
       await NotificationsService.instance.scheduleNotification();
     } else {
@@ -27,11 +36,15 @@ class SettingsViewmodel extends ChangeNotifier {
       _prefs.getBool(AppStrings.settingsNotificationsEnabled) ?? true;
 
   Future<void> setNotificationTime(int hours, int mins) async {
-    await _prefs.setInt(AppStrings.settingsNotificationHour, hours);
-    await _prefs.setInt(AppStrings.settingsNotificationMins, mins);
-    if (notificationsEnabled) {
-      await NotificationsService.instance.cancelNotification(0);
-      await NotificationsService.instance.scheduleNotification();
+    try {
+      await _prefs.setInt(AppStrings.settingsNotificationHour, hours);
+      await _prefs.setInt(AppStrings.settingsNotificationMins, mins);
+      if (notificationsEnabled) {
+        await NotificationsService.instance.cancelNotification(0);
+        await NotificationsService.instance.scheduleNotification();
+      }
+    } catch (e) {
+      debugPrint('setNotificationTime failed $e');
     }
     notifyListeners();
   }
@@ -43,7 +56,11 @@ class SettingsViewmodel extends ChangeNotifier {
   }
 
   Future<void> setThemeDark(bool useThemeDark) async {
-    await _prefs.setBool(AppStrings.settingsAppThemeDark, useThemeDark);
+    try {
+      await _prefs.setBool(AppStrings.settingsAppThemeDark, useThemeDark);
+    } catch (e) {
+      debugPrint('setThemeDark failed $e');
+    }
     notifyListeners();
   }
 

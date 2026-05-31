@@ -7,11 +7,13 @@ import 'package:habittrack/core/constants/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:habittrack/core/notifications/notification_handler.dart';
 import 'package:habittrack/core/utils/context_extensions.dart';
+import 'package:habittrack/viewmodels/habit_viewmodel.dart';
 import 'package:habittrack/views/add_edit_habit/add_edit_delete_habit_bottom_sheet.dart';
 import 'package:habittrack/views/home/widgets/progress.dart';
 import 'package:habittrack/views/home/widgets/today.dart';
 import 'package:habittrack/views/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   final List<Widget> _tabs = [TodayScreen(), ProgressScreen()];
   late StreamSubscription _notificationSub;
   bool _handlingNotificationTap = false;
+  late HabitViewModel _vm;
 
   @override
   void initState() {
@@ -33,7 +36,11 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     // Defer until after first frame so the navigator is ready and no
     // partially-restored route (e.g. SettingsScreen from a previous task
     // stack) is visible when popUntil fires.
-    WidgetsBinding.instance.addPostFrameCallback((_) => _checkNotificationFlag());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkNotificationFlag();
+      _vm = context.read<HabitViewModel>();
+      _vm.addListener(_onViewModelChange);
+    });
     _notificationSub = notificationTapStream.stream.listen((_) {
       if (!mounted) return;
       Navigator.of(context).popUntil((route) => route.isFirst);
@@ -50,7 +57,17 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _notificationSub.cancel();
+    _vm.removeListener(_onViewModelChange);
     super.dispose();
+  }
+
+  void _onViewModelChange() {
+    if (_vm.error != null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(_vm.error!)));
+      _vm.clearError();
+    }
   }
 
   Future<void> _checkNotificationFlag() async {
@@ -65,6 +82,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           setState(() => _currentIndex = 0);
         }
       }
+    } catch (e) {
+      debugPrint('_checkNotificationFlag failed $e');
     } finally {
       _handlingNotificationTap = false;
     }
