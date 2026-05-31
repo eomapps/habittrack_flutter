@@ -13,7 +13,7 @@ class NotificationsService {
   NotificationsService._internal();
   static final NotificationsService instance = NotificationsService._internal();
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-  late SettingsViewmodel viewmodel;
+  SettingsViewmodel? viewmodel;
 
   Future<void> _configureTimeZone() async {
     tz.initializeTimeZones();
@@ -60,9 +60,9 @@ class NotificationsService {
               ?.requestPermissions(alert: true, badge: true, sound: true);
 
       if (grantedNotificationPermission != null) {
-        viewmodel.setNotifications(grantedNotificationPermission);
+        viewmodel!.setNotifications(grantedNotificationPermission);
       } else {
-        viewmodel.setNotifications(viewmodel.notificationsEnabled);
+        viewmodel!.setNotifications(viewmodel!.notificationsEnabled);
       }
     } else if (Platform.isAndroid) {
       final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
@@ -73,16 +73,20 @@ class NotificationsService {
       final bool? grantedNotificationPermission = await androidImplementation
           ?.requestNotificationsPermission();
       if (grantedNotificationPermission != null) {
-        viewmodel.setNotifications(grantedNotificationPermission);
+        viewmodel!.setNotifications(grantedNotificationPermission);
       } else {
-        viewmodel.setNotifications(viewmodel.notificationsEnabled);
+        viewmodel!.setNotifications(viewmodel!.notificationsEnabled);
       }
     }
   }
 
   Future<void> scheduleNotification() async {
+    if (viewmodel == null) {
+      debugPrint('scheduleNotification called before initNotificationsService');
+      return;
+    }
     try {
-      final notificationTime = viewmodel.notificationTime;
+      final notificationTime = viewmodel!.notificationTime;
       var scheduledDate = tz.TZDateTime(
         tz.local,
         DateTime.now().year,
