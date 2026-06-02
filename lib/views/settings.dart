@@ -1,3 +1,4 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:habittrack/core/constants/app_dimens.dart';
 import 'package:habittrack/core/constants/app_strings.dart';
@@ -41,8 +42,21 @@ class SettingsScreen extends StatelessWidget {
               style: AppTextStyles.habitName(context),
             ),
             value: viewModel.notificationsEnabled,
-            onChanged: (value) {
-              context.read<SettingsViewmodel>().setNotifications(value);
+            onChanged: (value) async {
+              if (!value) {
+                context.read<SettingsViewmodel>().setNotifications(false);
+                return;
+              }
+              final canEnable = await viewModel.canEnableNotifications();
+              if (!context.mounted) return;
+              if (canEnable == true) {
+                context.read<SettingsViewmodel>().setNotifications(true);
+              } else {
+                showDialog(
+                  context: context,
+                  builder: (_) => _buildNotificationsBlockedDialog(context),
+                );
+              }
             },
           ),
           viewModel.notificationsEnabled
@@ -65,6 +79,26 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 )
               : const SizedBox.shrink(),
+          if (viewModel.notificationsBlockedByOS)
+            ListTile(
+              title: Text(
+                AppStrings.checkNotificationsPermission,
+                style: AppTextStyles.habitName(context),
+              ),
+              trailing: const Icon(Icons.refresh),
+              onTap: () async {
+                final canEnable = await viewModel.canEnableNotifications();
+                if (!context.mounted) return;
+                if (canEnable == true) {
+                  context.read<SettingsViewmodel>().setNotifications(true);
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (_) => _buildNotificationsBlockedDialog(context),
+                  );
+                }
+              },
+            ),
           Padding(
             padding: AppDimens.paddingDateRow,
             child: Text(
@@ -99,6 +133,28 @@ class SettingsScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildNotificationsBlockedDialog(BuildContext context) {
+    return AlertDialog(
+      title: const Text(AppStrings.notificationsBlocked),
+      content: const Text(AppStrings.openSettingsPrompt),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text(AppStrings.cancel),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+            AppSettings.openAppSettings();
+          },
+          child: const Text(AppStrings.openSettings),
+        ),
+      ],
     );
   }
 }

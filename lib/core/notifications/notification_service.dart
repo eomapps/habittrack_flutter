@@ -59,10 +59,16 @@ class NotificationsService {
               >()
               ?.requestPermissions(alert: true, badge: true, sound: true);
 
-      if (grantedNotificationPermission != null) {
-        viewmodel!.setNotifications(grantedNotificationPermission);
-      } else {
-        viewmodel!.setNotifications(viewmodel!.notificationsEnabled);
+      if (grantedNotificationPermission == true &&
+          viewmodel!.notificationsEnabled) {
+        await scheduleNotification();
+      } else if (grantedNotificationPermission == false) {
+        if (!viewmodel!.hasNotificationsPreferenceBeenSet) {
+          await viewmodel!.setNotifications(false);
+        } else {
+          await cancelNotification(0);
+        }
+        viewmodel!.setNotificationsBlockedByOS(true);
       }
     } else if (Platform.isAndroid) {
       final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
@@ -72,12 +78,41 @@ class NotificationsService {
               >();
       final bool? grantedNotificationPermission = await androidImplementation
           ?.requestNotificationsPermission();
-      if (grantedNotificationPermission != null) {
-        viewmodel!.setNotifications(grantedNotificationPermission);
-      } else {
-        viewmodel!.setNotifications(viewmodel!.notificationsEnabled);
+      if (grantedNotificationPermission == true &&
+          viewmodel!.notificationsEnabled) {
+        await scheduleNotification();
+      } else if (grantedNotificationPermission == false) {
+        if (!viewmodel!.hasNotificationsPreferenceBeenSet) {
+          await viewmodel!.setNotifications(false);
+        } else {
+          await cancelNotification(0);
+        }
+        viewmodel!.setNotificationsBlockedByOS(true);
       }
     }
+  }
+
+  Future<bool?> hasPermission() async {
+    bool? hasPermissions;
+    if (Platform.isIOS) {
+      final permissions = await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin
+          >()
+          ?.checkPermissions();
+      hasPermissions = permissions?.isEnabled;
+    } else if (Platform.isAndroid) {
+      final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
+          flutterLocalNotificationsPlugin
+              .resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin
+              >();
+      if (androidImplementation != null) {
+        hasPermissions = await androidImplementation.areNotificationsEnabled();
+      }
+    }
+
+    return hasPermissions;
   }
 
   Future<void> scheduleNotification() async {

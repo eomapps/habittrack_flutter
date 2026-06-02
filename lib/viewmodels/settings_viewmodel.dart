@@ -5,6 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsViewmodel extends ChangeNotifier {
   late SharedPreferences _prefs;
+  bool _notificationsBlockedByOS = false;
+  bool get notificationsBlockedByOS => _notificationsBlockedByOS;
 
   Future<void> init() async {
     try {
@@ -15,7 +17,17 @@ class SettingsViewmodel extends ChangeNotifier {
     }
   }
 
+  Future<bool?> canEnableNotifications() async {
+    return NotificationsService.instance.hasPermission();
+  }
+
+  void setNotificationsBlockedByOS(bool blocked) {
+    _notificationsBlockedByOS = blocked;
+    notifyListeners();
+  }
+
   Future<void> setNotifications(bool notificationsEnabled) async {
+    _notificationsBlockedByOS = false;
     try {
       await _prefs.setBool(
         AppStrings.settingsNotificationsEnabled,
@@ -34,6 +46,9 @@ class SettingsViewmodel extends ChangeNotifier {
 
   bool get notificationsEnabled =>
       _prefs.getBool(AppStrings.settingsNotificationsEnabled) ?? true;
+
+  bool get hasNotificationsPreferenceBeenSet =>
+      _prefs.getBool(AppStrings.settingsNotificationsEnabled) != null;
 
   Future<void> setNotificationTime(int hours, int mins) async {
     try {

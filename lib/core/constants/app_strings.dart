@@ -52,4 +52,12 @@ class AppStrings {
   static const String errorUpdateHabitFailed = 'Failed to update habit';
   static const String errorDeleteHabitFailed = 'Failed to delete habit';
   static const String errorGetAllHabitsFailed = 'Failed to get all habits';
+
+  static const String checkNotificationsPermission =
+      'Check notification permission';
+  static const String notificationsBlocked = 'Notifications Blocked';
+  static const String openSettingsPrompt =
+      'To enable notifications, please grant permission in your device Settings.';
+  static const String cancel = 'Cancel';
+  static const String openSettings = 'Open Settings';
 }
