@@ -33,6 +33,7 @@ A lightweight, offline-first habit tracking app built with Flutter — running o
 - ✅ Dark mode with system default and manual toggle in Settings
 - ✅ Polished splash screen on iOS and Android (including Android 12+ adaptive splash)
 - ✅ Custom launcher icons across both platforms
+- ✅ Daily reminder notification with OS permission handling and graceful denial UX
 - ✅ Fully offline — no account or login required
 - ✅ Cross-platform: iOS and Android from a single codebase
 - ✅ Tested — unit tests (streak logic), widget tests (HabitCard, ProgressCard, TodayScreen, AddEditHabitBottomSheet), and data layer tests via flutter_test and mockito
@@ -47,6 +48,7 @@ A lightweight, offline-first habit tracking app built with Flutter — running o
 | Fonts | Nunito (Google Fonts) | 400 / 500 / 600 / 700 weights |
 | Splash | flutter_native_splash | Android 12+ adaptive splash configured |
 | Icons | flutter_launcher_icons | 1024px source icon |
+| Notifications | flutter_local_notifications + timezone + flutter_timezone | Scheduled daily reminder; OS permission request with denial UX |
 
 ## Architecture
 
@@ -62,8 +64,9 @@ habittrack/
 ├── docs/               # README screenshots
 ├── lib/
 │   ├── core/
-│   │   ├── constants/  # Colors, tokens, text styles, dimensions, strings, theme
-│   │   └── utils/      # Helper utilities, context extensions
+│   │   ├── constants/     # Colors, tokens, text styles, dimensions, strings, theme
+│   │   ├── notifications/ # NotificationService (scheduling) + NotificationHandler (tap routing)
+│   │   └── utils/         # Helper utilities, context extensions
 │   ├── data/
 │   │   ├── database/   # DatabaseHelper (sqflite)
 │   │   ├── models/     # Habit
@@ -89,7 +92,6 @@ habittrack/
 ## Roadmap
 
 - [ ] Expand widget test coverage — ProgressScreen, SettingsScreen
-- [ ] Daily reminders / local notifications
 - [ ] Riverpod branch — alternate state management implementation for comparison
 
 ## Getting Started
