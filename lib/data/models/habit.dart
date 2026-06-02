@@ -80,7 +80,7 @@ class Habit {
   String get getStreakMessage {
     if (streakCount > 0) {
       if (computedStreak == 0) {
-        return 'Longest streak: ${streakCount}d';
+        return '${AppStrings.longestStreak}${streakCount}d';
       } else {
         return '🔥 $computedStreak ${AppStrings.dayStreak}';
       }

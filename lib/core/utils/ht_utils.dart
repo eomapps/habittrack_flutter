@@ -1,3 +1,4 @@
+import 'package:habittrack/core/constants/app_strings.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -15,7 +16,7 @@ class HTUtils {
   }
 
   static Future<void> openUrl() async {
-    final Uri url = Uri.parse('https://github.com/eomapps/habittrack_flutter');
+    final Uri url = Uri.parse(AppStrings.projectURL);
     if (!await launchUrl(url)) {
       throw Exception('Could not launch $url');
     }

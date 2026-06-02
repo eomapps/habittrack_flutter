@@ -60,4 +60,8 @@ class AppStrings {
       'To enable notifications, please grant permission in your device Settings.';
   static const String cancel = 'Cancel';
   static const String openSettings = 'Open Settings';
+
+  static const String darkMode = 'Dark Mode';
+  static const String lightMode = 'Light Mode';
+  static const String longestStreak = 'Longest streak: ';
 }

@@ -108,7 +108,7 @@ class SettingsScreen extends StatelessWidget {
           ),
           SwitchListTile(
             title: Text(
-              viewModel.themeDark ? 'Dark Mode' : 'Light Mode',
+              viewModel.themeDark ? AppStrings.darkMode : AppStrings.lightMode,
               style: AppTextStyles.habitName(context),
             ),
             value: viewModel.themeDark,
