@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:habittrack/core/constants/app_theme.dart';
 import 'package:habittrack/core/utils/ht_utils.dart';
 import 'package:habittrack/data/models/habit.dart';
 import 'package:habittrack/views/home/widgets/progress_card.dart';
@@ -17,6 +18,7 @@ void main() {
 
   Widget buildProgressCard() {
     return MaterialApp(
+      theme: AppTheme.light,
       home: Scaffold(
         body: ProgressCard(habit: testHabit, maxStreak: testStreak),
       ),

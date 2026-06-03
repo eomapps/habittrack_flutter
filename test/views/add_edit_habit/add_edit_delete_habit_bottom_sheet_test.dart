@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:habittrack/core/constants/app_strings.dart';
+import 'package:habittrack/core/constants/app_theme.dart';
 import 'package:habittrack/core/utils/ht_utils.dart';
 import 'package:habittrack/data/models/habit.dart';
 import 'package:habittrack/viewmodels/habit_viewmodel.dart';
@@ -35,6 +36,7 @@ void main() {
     return ChangeNotifierProvider<HabitViewModel>.value(
       value: habitViewModel,
       child: MaterialApp(
+        theme: AppTheme.light,
         home: Scaffold(
           body: AddEditDeleteHabitBottomSheet(habit: testHabit, isEdit: isEdit),
         ),
