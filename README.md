@@ -36,7 +36,7 @@ A lightweight, offline-first habit tracking app built with Flutter — running o
 - ✅ Daily reminder notification with OS permission handling and graceful denial UX
 - ✅ Fully offline — no account or login required
 - ✅ Cross-platform: iOS and Android from a single codebase
-- ✅ Tested — unit tests (streak logic), widget tests (HabitCard, ProgressCard, TodayScreen, AddEditHabitBottomSheet), and data layer tests via flutter_test and mockito
+- ✅ Tested — unit tests (streak logic), widget tests (HabitCard, ProgressCard, TodayScreen, ProgressScreen, SettingsScreen, AddEditHabitBottomSheet), and data layer tests via flutter_test and mockito
 
 ## Tech Stack
 
@@ -76,14 +76,16 @@ habittrack/
 │       ├── add_edit_habit/ # AddEditHabitBottomSheet
 │       ├── settings.dart   # SettingsScreen
 │       └── home/           # HomeScreen (IndexedStack): TodayScreen, ProgressScreen
-│           └── widgets/    # HabitCard, ProgressCard, TodayPlaceholder, ProgressPlaceholder
+│           └── widgets/    # HabitCard, ProgressCard, TodayScreen, ProgressScreen, TodayPlaceholder, ProgressPlaceholder
 ├── test/
 │   ├── data/
 │   │   ├── models/         # Unit tests: Habit.computedStreak logic
 │   │   └── viewmodels/     # Unit tests: HabitViewModel streak logic (mockito)
 │   └── views/
 │       ├── add_edit_habit/ # Widget test: AddEditDeleteHabitBottomSheet
+│       ├── settings_test.dart  # Widget tests: SettingsScreen
 │       └── home/
+│           ├── progress_screen_test.dart  # Widget tests: ProgressScreen
 │           └── widgets/    # Widget tests: HabitCard, ProgressCard, TodayScreen
 ├── README.md
 └── pubspec.yaml
@@ -91,7 +93,6 @@ habittrack/
 
 ## Roadmap
 
-- [ ] Expand widget test coverage — ProgressScreen, SettingsScreen
 - [ ] Riverpod branch — alternate state management implementation for comparison
 
 ## Getting Started
