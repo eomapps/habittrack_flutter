@@ -91,6 +91,31 @@ void main() {
               as Habit;
       expect(captured.streakCount, 1);
     });
+
+    test(
+      'allHabitsDoneToday is true after toggling the last unchecked habit on',
+      () async {
+        final alreadyDone = makeHabit(3, makeLastCheckedDate(0));
+        final lastHabit = makeHabit(1, makeLastCheckedDate(1));
+        final updatedLastHabit = lastHabit.copyWith(
+          toggledOn: true,
+          lastCheckedDate: makeLastCheckedDate(0),
+          streakCount: 2,
+        );
+        when(
+          mockHabitRepository.getAll(),
+        ).thenAnswer((_) async => [alreadyDone, lastHabit]);
+        await habitViewModel.getAllHabits();
+        expect(habitViewModel.allHabitsDoneToday, false);
+
+        when(
+          mockHabitRepository.getAll(),
+        ).thenAnswer((_) async => [alreadyDone, updatedLastHabit]);
+        await habitViewModel.toggleHabit(lastHabit);
+        await habitViewModel.getAllHabits();
+        expect(habitViewModel.allHabitsDoneToday, true);
+      },
+    );
   });
 
   group('allHabitsDoneToday', () {
@@ -99,31 +124,31 @@ void main() {
     });
 
     test('returns true when all habits were checked today', () async {
-      when(mockHabitRepository.getAll()).thenAnswer(
-        (_) async => [
-          makeHabit(1, makeLastCheckedDate(0)),
-          makeHabit(2, makeLastCheckedDate(0)),
-        ],
-      );
+      final habitOne = makeHabit(1, makeLastCheckedDate(0));
+      final habitTwo = makeHabit(2, makeLastCheckedDate(0));
+      when(
+        mockHabitRepository.getAll(),
+      ).thenAnswer((_) async => [habitOne, habitTwo]);
       await habitViewModel.getAllHabits();
       expect(habitViewModel.allHabitsDoneToday, true);
     });
 
     test('returns false when some habits were not checked today', () async {
-      when(mockHabitRepository.getAll()).thenAnswer(
-        (_) async => [
-          makeHabit(1, makeLastCheckedDate(0)),
-          makeHabit(2, makeLastCheckedDate(1)),
-        ],
-      );
+      final habitOne = makeHabit(1, makeLastCheckedDate(0));
+      final habitTwo = makeHabit(2, makeLastCheckedDate(1));
+      when(
+        mockHabitRepository.getAll(),
+      ).thenAnswer((_) async => [habitOne, habitTwo]);
       await habitViewModel.getAllHabits();
       expect(habitViewModel.allHabitsDoneToday, false);
     });
 
     test('returns false when no habits were checked today', () async {
-      when(mockHabitRepository.getAll()).thenAnswer(
-        (_) async => [makeHabit(1, null), makeHabit(2, makeLastCheckedDate(1))],
-      );
+      final habitOne = makeHabit(1, null);
+      final habitTwo = makeHabit(2, makeLastCheckedDate(1));
+      when(
+        mockHabitRepository.getAll(),
+      ).thenAnswer((_) async => [habitOne, habitTwo]);
       await habitViewModel.getAllHabits();
       expect(habitViewModel.allHabitsDoneToday, false);
     });
