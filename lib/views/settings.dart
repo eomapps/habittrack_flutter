@@ -37,6 +37,7 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
           SwitchListTile(
+            key: const Key('settings-notifications-switch'),
             title: Text(
               AppStrings.enableNotifications,
               style: AppTextStyles.habitName(context),
@@ -107,6 +108,7 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
           SwitchListTile(
+            key: const Key('settings-themes-switch'),
             title: Text(
               viewModel.themeDark ? AppStrings.darkMode : AppStrings.lightMode,
               style: AppTextStyles.habitName(context),
