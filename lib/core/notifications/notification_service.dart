@@ -115,7 +115,7 @@ class NotificationsService {
     return hasPermissions;
   }
 
-  Future<void> scheduleNotification() async {
+  Future<void> scheduleNotification({bool allDoneToday = false}) async {
     if (viewmodel == null) {
       debugPrint('scheduleNotification called before initNotificationsService');
       return;
@@ -130,13 +130,19 @@ class NotificationsService {
         notificationTime.hour,
         notificationTime.minute,
       );
-      if (scheduledDate.isBefore(tz.TZDateTime.now(tz.local))) {
+      final isToday = !scheduledDate.isBefore(tz.TZDateTime.now(tz.local));
+      if (!isToday) {
         scheduledDate = scheduledDate.add(const Duration(days: 1));
       }
+      final useCongratsMessage = allDoneToday && isToday;
       await flutterLocalNotificationsPlugin.zonedSchedule(
         id: 0,
-        title: AppStrings.notificationTitle,
-        body: AppStrings.notificationBody,
+        title: useCongratsMessage
+            ? AppStrings.notificationCongratulationsTitle
+            : AppStrings.notificationTitle,
+        body: useCongratsMessage
+            ? AppStrings.notificationCongratulationsBody
+            : AppStrings.notificationBody,
         scheduledDate: scheduledDate,
         notificationDetails: const NotificationDetails(
           iOS: DarwinNotificationDetails(),

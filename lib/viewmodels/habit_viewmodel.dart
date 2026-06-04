@@ -1,4 +1,5 @@
 import 'package:habittrack/core/constants/app_strings.dart';
+import 'package:habittrack/core/notifications/notification_service.dart';
 import 'package:habittrack/data/models/habit.dart';
 import 'package:habittrack/data/repositories/habit_repository.dart';
 import 'package:flutter/material.dart';
@@ -71,36 +72,33 @@ class HabitViewModel extends ChangeNotifier {
     if (!habit.toggledOn) {
       final today = DateTime.now().toIso8601String().substring(0, 10);
 
+      final Habit updated;
       // The user never had a streak (first-time), so now setting to 1
       if (habit.lastCheckedDate == null) {
-        final updated = habit.copyWith(
+        updated = habit.copyWith(
           streakCount: 1,
           lastCheckedDate: today,
           toggledOn: true,
         );
-        await updateHabit(updated);
-        return;
-      }
-
-      // habit.lastCheckedDate has value
-      // so we need to see how many days have passed since then
-      final lastChecked = DateTime.parse(habit.lastCheckedDate!);
-      final daysSinceLastCheck = DateTime.now().difference(lastChecked).inDays;
-
-      // if only 1 day has passed (it was yesterday) then increment newStreakCount by 1
-      // if > 1 day has passed, reset newStreakCount to 1 to start a new streak
-      int newStreakCount;
-      if (daysSinceLastCheck == 1) {
-        newStreakCount = habit.streakCount + 1;
       } else {
-        newStreakCount = 1;
-      }
+        // habit.lastCheckedDate has value
+        // so we need to see how many days have passed since then
+        final lastChecked = DateTime.parse(habit.lastCheckedDate!);
+        final daysSinceLastCheck = DateTime.now()
+            .difference(lastChecked)
+            .inDays;
 
-      final updated = habit.copyWith(
-        streakCount: newStreakCount,
-        lastCheckedDate: today,
-        toggledOn: true,
-      );
+        // if only 1 day has passed (it was yesterday) then increment newStreakCount by 1
+        // if > 1 day has passed, reset newStreakCount to 1 to start a new streak
+        final newStreakCount = daysSinceLastCheck == 1
+            ? habit.streakCount + 1
+            : 1;
+        updated = habit.copyWith(
+          streakCount: newStreakCount,
+          lastCheckedDate: today,
+          toggledOn: true,
+        );
+      }
       await updateHabit(updated);
     } else {
       // was toggled on before tap
@@ -128,6 +126,11 @@ class HabitViewModel extends ChangeNotifier {
         await updateHabit(updated);
       }
     }
+
+    final service = NotificationsService.instance;
+    if (service.viewmodel?.notificationsEnabled == true) {
+      await service.scheduleNotification(allDoneToday: allHabitsDoneToday);
+    }
   }
 
   List<Habit> get getAllHabitsSortedByStreak {
@@ -142,4 +145,10 @@ class HabitViewModel extends ChangeNotifier {
   }
 
   void clearError() => _error = null;
+
+  bool get allHabitsDoneToday {
+    if (_habits.isEmpty) return false;
+    final today = DateTime.now().toIso8601String().substring(0, 10);
+    return _habits.every((h) => h.lastCheckedDate == today);
+  }
 }

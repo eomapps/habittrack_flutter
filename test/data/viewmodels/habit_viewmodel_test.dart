@@ -92,4 +92,40 @@ void main() {
       expect(captured.streakCount, 1);
     });
   });
+
+  group('allHabitsDoneToday', () {
+    test('returns false when habits list is empty', () {
+      expect(habitViewModel.allHabitsDoneToday, false);
+    });
+
+    test('returns true when all habits were checked today', () async {
+      when(mockHabitRepository.getAll()).thenAnswer(
+        (_) async => [
+          makeHabit(1, makeLastCheckedDate(0)),
+          makeHabit(2, makeLastCheckedDate(0)),
+        ],
+      );
+      await habitViewModel.getAllHabits();
+      expect(habitViewModel.allHabitsDoneToday, true);
+    });
+
+    test('returns false when some habits were not checked today', () async {
+      when(mockHabitRepository.getAll()).thenAnswer(
+        (_) async => [
+          makeHabit(1, makeLastCheckedDate(0)),
+          makeHabit(2, makeLastCheckedDate(1)),
+        ],
+      );
+      await habitViewModel.getAllHabits();
+      expect(habitViewModel.allHabitsDoneToday, false);
+    });
+
+    test('returns false when no habits were checked today', () async {
+      when(mockHabitRepository.getAll()).thenAnswer(
+        (_) async => [makeHabit(1, null), makeHabit(2, makeLastCheckedDate(1))],
+      );
+      await habitViewModel.getAllHabits();
+      expect(habitViewModel.allHabitsDoneToday, false);
+    });
+  });
 }

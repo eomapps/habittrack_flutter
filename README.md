@@ -36,7 +36,7 @@ A lightweight, offline-first habit tracking app built with Flutter — running o
 - ✅ Daily reminder notification with OS permission handling and graceful denial UX
 - ✅ Fully offline — no account or login required
 - ✅ Cross-platform: iOS and Android from a single codebase
-- ✅ Tested — unit tests (streak logic), widget tests (HabitCard, ProgressCard, TodayScreen, ProgressScreen, SettingsScreen, AddEditHabitBottomSheet), and data layer tests via flutter_test and mockito
+- ✅ Tested — unit tests (streak logic, allHabitsDoneToday getter), widget tests (HabitCard, ProgressCard, TodayScreen, ProgressScreen, SettingsScreen, AddEditHabitBottomSheet), and data layer tests via flutter_test and mockito
 
 ## Tech Stack
 
@@ -80,7 +80,7 @@ habittrack/
 ├── test/
 │   ├── data/
 │   │   ├── models/         # Unit tests: Habit.computedStreak logic
-│   │   └── viewmodels/     # Unit tests: HabitViewModel streak logic (mockito)
+│   │   └── viewmodels/     # Unit tests: HabitViewModel streak logic, allHabitsDoneToday getter (mockito)
 │   └── views/
 │       ├── add_edit_habit/ # Widget test: AddEditDeleteHabitBottomSheet
 │       ├── settings_test.dart  # Widget tests: SettingsScreen
