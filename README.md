@@ -43,7 +43,7 @@ A lightweight, offline-first habit tracking app built with Flutter — running o
 | Layer | Choice | Notes |
 |---|---|---|
 | Language | Dart / Flutter | SDK `^3.44.0` |
-| State management | Provider | MVVM — `HabitViewModel` and `SettingsViewmodel` are the sources of truth |
+| State management | Riverpod | MVVM — `HabitViewModel` and `SettingsViewmodel` are the sources of truth |
 | Persistence | sqflite + shared_preferences | SQLite for habits, shared_preferences for settings |
 | Fonts | Nunito (Google Fonts) | 400 / 500 / 600 / 700 weights |
 | Splash | flutter_native_splash | Android 12+ adaptive splash configured |
@@ -52,7 +52,7 @@ A lightweight, offline-first habit tracking app built with Flutter — running o
 
 ## Architecture
 
-MVVM using Provider. `HabitViewModel` extends `ChangeNotifier` and is the single source of truth for habit state. `SettingsViewmodel` manages user preferences including theme and notification settings, persisted via shared_preferences. Screens consume viewmodels via `context.watch` — no business logic in widgets. Persistence is handled by sqflite through a dedicated repository layer, keeping the data layer cleanly separated from the UI. Theming uses Flutter's `ThemeExtension` with a custom `AppColorTokens` class providing light and dark token sets.
+MVVM using Riverpod. `HabitViewModel` extends `StateNotifier<List<Habit>>` and is the single source of truth for habit state. `SettingsViewmodel` extends `Notifier<SettingsState>` and manages user preferences including theme and notification settings, persisted via shared_preferences. Screens consume viewmodels via `ref.watch` — no business logic in widgets. Persistence is handled by sqflite through a dedicated repository layer, keeping the data layer cleanly separated from the UI. Theming uses Flutter's `ThemeExtension` with a custom `AppColorTokens` class providing light and dark token sets.
 
 ```
 habittrack/
@@ -71,7 +71,7 @@ habittrack/
 │   │   ├── database/   # DatabaseHelper (sqflite)
 │   │   ├── models/     # Habit
 │   │   └── repositories/
-│   ├── viewmodels/     # HabitViewModel, SettingsViewmodel (ChangeNotifier)
+│   ├── viewmodels/     # HabitViewModel (StateNotifier), SettingsViewmodel (Notifier)
 │   └── views/
 │       ├── add_edit_habit/ # AddEditHabitBottomSheet
 │       ├── settings.dart   # SettingsScreen
@@ -91,9 +91,9 @@ habittrack/
 └── pubspec.yaml
 ```
 
-## Roadmap
+## Alternate Implementations
 
-- [ ] Riverpod branch — alternate state management implementation for comparison
+- [Provider](https://github.com/eomapps/habittrack_flutter/blob/main/README.md) — original implementation using `provider`
 
 ## Getting Started
 
