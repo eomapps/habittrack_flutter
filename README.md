@@ -91,9 +91,9 @@ habittrack/
 └── pubspec.yaml
 ```
 
-## Roadmap
+## Alternate Implementations
 
-- [ ] Riverpod branch — alternate state management implementation for comparison
+- [Riverpod](https://github.com/eomapps/habittrack_flutter/blob/feature/riverpod/README.md) — same app re-implemented with `flutter_riverpod` using `StateNotifier` and `Notifier`
 
 ## Getting Started
 
