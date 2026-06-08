@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:habittrack/core/constants/app_strings.dart';
 import 'package:habittrack/core/notifications/notification_service.dart';
 import 'package:habittrack/data/models/habit.dart';
@@ -5,66 +6,55 @@ import 'package:habittrack/data/repositories/habit_repository.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-class HabitViewModel extends ChangeNotifier {
+class HabitViewModel extends StateNotifier<List<Habit>> {
   final HabitRepository _repository;
-  HabitViewModel(this._repository);
-
-  List<Habit> _habits = [];
   bool _isLoading = false;
   String? _error;
-  String? get error => _error;
 
-  List<Habit> get habits => _habits;
+  String? get error => _error;
   bool get isLoading => _isLoading;
+
+  HabitViewModel(this._repository) : super([]);
 
   Future<void> getAllHabits() async {
     try {
       _isLoading = true;
-      notifyListeners();
-      _habits.clear();
-      _habits = await _repository.getAll();
+      state = await _repository.getAll();
       _isLoading = false;
     } catch (e) {
       debugPrint('getAllHabits failed: $e');
       _error = AppStrings.errorGetAllHabitsFailed;
     }
-    notifyListeners();
   }
 
   Future<void> insertHabit(Habit habit) async {
     try {
       final insertedHabit = await _repository.insert(habit);
-      _habits.add(insertedHabit);
+      state = [...state, insertedHabit];
     } catch (e) {
       debugPrint('insertHabit failed: $e');
       _error = AppStrings.errorInsertHabitFailed;
     }
-    notifyListeners();
   }
 
   Future<void> updateHabit(Habit habit) async {
     try {
       await _repository.update(habit);
-      final index = _habits.indexWhere((h) => h.id == habit.id);
-      if (index != -1) {
-        _habits[index] = habit;
-      }
+      state = [for (final h in state) h.id == habit.id ? habit : h];
     } catch (e) {
       debugPrint('updateHabit failed: $e');
       _error = AppStrings.errorUpdateHabitFailed;
     }
-    notifyListeners();
   }
 
   Future<void> deleteHabit(Habit habit) async {
     try {
       await _repository.delete(habit.id!);
-      _habits.removeWhere((h) => h.id == habit.id);
+      state = state.where((h) => h.id != habit.id).toList();
     } catch (e) {
       debugPrint('deleteHabit failed: $e');
       _error = AppStrings.errorDeleteHabitFailed;
     }
-    notifyListeners();
   }
 
   Future<void> toggleHabit(Habit habit) async {
@@ -134,21 +124,21 @@ class HabitViewModel extends ChangeNotifier {
   }
 
   List<Habit> get getAllHabitsSortedByStreak {
-    final sorted = List<Habit>.from(_habits);
+    final sorted = List<Habit>.from(state);
     sorted.sort((b, a) => a.streakCount.compareTo(b.streakCount));
     return sorted;
   }
 
   int get maxStreak {
-    if (_habits.isEmpty) return 1;
-    return _habits.map((h) => h.streakCount).reduce(max);
+    if (state.isEmpty) return 1;
+    return state.map((h) => h.streakCount).reduce(max);
   }
 
   void clearError() => _error = null;
 
   bool get allHabitsDoneToday {
-    if (_habits.isEmpty) return false;
+    if (state.isEmpty) return false;
     final today = DateTime.now().toIso8601String().substring(0, 10);
-    return _habits.every((h) => h.lastCheckedDate == today);
+    return state.every((h) => h.lastCheckedDate == today);
   }
 }

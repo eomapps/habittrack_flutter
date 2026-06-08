@@ -1,35 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:habittrack/viewmodels/habit_viewmodel.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:habittrack/main.dart';
 import 'package:habittrack/views/home/widgets/progress_card.dart';
 import 'package:habittrack/views/home/widgets/progress_placeholder.dart';
-import 'package:provider/provider.dart';
 
-class ProgressScreen extends StatefulWidget {
+class ProgressScreen extends ConsumerStatefulWidget {
   const ProgressScreen({super.key});
 
   @override
-  State<ProgressScreen> createState() => _ProgressScreenState();
+  ConsumerState<ProgressScreen> createState() => _ProgressScreenState();
 }
 
-class _ProgressScreenState extends State<ProgressScreen> {
+class _ProgressScreenState extends ConsumerState<ProgressScreen> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<HabitViewModel>(
-      builder: (context, value, child) {
-        final habitsWithStreak = value.getAllHabitsSortedByStreak
-            .where((h) => h.computedStreak > 0)
-            .toList();
-        if (habitsWithStreak.isEmpty) {
-          return const ProgressPlaceholder();
-        }
-        return ListView.builder(
-          itemCount: habitsWithStreak.length,
-          itemBuilder: (context, index) {
-            final habit = habitsWithStreak[index];
-            return ProgressCard(habit: habit, maxStreak: value.maxStreak);
-          },
-        );
-      },
-    );
+    ref.watch(habitProvider);
+    final notifier = ref.read(habitProvider.notifier);
+    final habitsWithStreak = notifier.getAllHabitsSortedByStreak
+        .where((h) => h.computedStreak > 0)
+        .toList();
+    final maxStreak = notifier.maxStreak;
+    return habitsWithStreak.isEmpty
+        ? Center(child: ProgressPlaceholder())
+        : ListView.builder(
+            itemCount: habitsWithStreak.length,
+            itemBuilder: (context, index) {
+              final habit = habitsWithStreak[index];
+              return ProgressCard(habit: habit, maxStreak: maxStreak);
+            },
+          );
   }
 }

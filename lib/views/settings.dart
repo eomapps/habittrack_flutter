@@ -1,18 +1,19 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:habittrack/core/constants/app_dimens.dart';
 import 'package:habittrack/core/constants/app_strings.dart';
 import 'package:habittrack/core/constants/app_text_styles.dart';
 import 'package:habittrack/core/utils/ht_utils.dart';
-import 'package:habittrack/viewmodels/settings_viewmodel.dart';
-import 'package:provider/provider.dart';
+import 'package:habittrack/main.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final viewModel = context.watch<SettingsViewmodel>();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final settings = ref.watch(settingsProvider);
+    final notifier = ref.read(settingsProvider.notifier);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -42,16 +43,16 @@ class SettingsScreen extends StatelessWidget {
               AppStrings.enableNotifications,
               style: AppTextStyles.habitName(context),
             ),
-            value: viewModel.notificationsEnabled,
+            value: settings.notificationsEnabled,
             onChanged: (value) async {
               if (!value) {
-                context.read<SettingsViewmodel>().setNotifications(false);
+                notifier.setNotifications(false);
                 return;
               }
-              final canEnable = await viewModel.canEnableNotifications();
+              final canEnable = await notifier.canEnableNotifications();
               if (!context.mounted) return;
               if (canEnable == true) {
-                context.read<SettingsViewmodel>().setNotifications(true);
+                notifier.setNotifications(true);
               } else {
                 showDialog(
                   context: context,
@@ -60,27 +61,27 @@ class SettingsScreen extends StatelessWidget {
               }
             },
           ),
-          viewModel.notificationsEnabled
+          settings.notificationsEnabled
               ? ListTile(
                   trailing: const Icon(Icons.timer),
                   onTap: () async {
                     final TimeOfDay? time = await showTimePicker(
                       context: context,
-                      initialTime: viewModel.notificationTime,
+                      initialTime: notifier.notificationTime,
                     );
                     if (context.mounted) {
                       if (time != null) {
-                        viewModel.setNotificationTime(time.hour, time.minute);
+                        notifier.setNotificationTime(time.hour, time.minute);
                       }
                     }
                   },
                   title: Text(
-                    '${AppStrings.notifyAt} ${viewModel.notificationTime.hourOfPeriod}:${viewModel.notificationTime.minute.toString().padLeft(2, '0')} ${viewModel.notificationTime.period.name.toUpperCase()}',
+                    '${AppStrings.notifyAt} ${settings.notificationTime.hourOfPeriod}:${settings.notificationTime.minute.toString().padLeft(2, '0')} ${settings.notificationTime.period.name.toUpperCase()}',
                     style: AppTextStyles.habitName(context),
                   ),
                 )
               : const SizedBox.shrink(),
-          if (viewModel.notificationsBlockedByOS)
+          if (settings.notificationsBlockedByOS)
             ListTile(
               title: Text(
                 AppStrings.checkNotificationsPermission,
@@ -88,10 +89,10 @@ class SettingsScreen extends StatelessWidget {
               ),
               trailing: const Icon(Icons.refresh),
               onTap: () async {
-                final canEnable = await viewModel.canEnableNotifications();
+                final canEnable = await notifier.canEnableNotifications();
                 if (!context.mounted) return;
                 if (canEnable == true) {
-                  context.read<SettingsViewmodel>().setNotifications(true);
+                  notifier.setNotifications(true);
                 } else {
                   showDialog(
                     context: context,
@@ -110,12 +111,12 @@ class SettingsScreen extends StatelessWidget {
           SwitchListTile(
             key: const Key('settings-themes-switch'),
             title: Text(
-              viewModel.themeDark ? AppStrings.darkMode : AppStrings.lightMode,
+              settings.themeDark ? AppStrings.darkMode : AppStrings.lightMode,
               style: AppTextStyles.habitName(context),
             ),
-            value: viewModel.themeDark,
+            value: settings.themeDark,
             onChanged: (value) {
-              context.read<SettingsViewmodel>().setThemeDark(value);
+              notifier.setThemeDark(value);
             },
           ),
           const Spacer(),

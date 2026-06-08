@@ -1,12 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:habittrack/core/constants/app_strings.dart';
 import 'package:habittrack/core/notifications/notification_service.dart';
+import 'package:habittrack/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SettingsViewmodel extends ChangeNotifier {
+class SettingsState {
+  final bool notificationsEnabled;
+  final TimeOfDay notificationTime;
+  final bool themeDark;
+  final bool notificationsBlockedByOS;
+
+  const SettingsState({
+    required this.notificationsEnabled,
+    required this.notificationTime,
+    required this.themeDark,
+    required this.notificationsBlockedByOS,
+  });
+}
+
+class SettingsViewmodel extends Notifier<SettingsState> {
   late SharedPreferences _prefs;
-  bool _notificationsBlockedByOS = false;
-  bool get notificationsBlockedByOS => _notificationsBlockedByOS;
+
+  @override
+  SettingsState build() {
+    return SettingsState(
+      notificationsEnabled: notificationsEnabled,
+      notificationTime: notificationTime,
+      themeDark: themeDark,
+      notificationsBlockedByOS: false,
+    );
+  }
 
   Future<void> init() async {
     try {
@@ -22,12 +46,15 @@ class SettingsViewmodel extends ChangeNotifier {
   }
 
   void setNotificationsBlockedByOS(bool blocked) {
-    _notificationsBlockedByOS = blocked;
-    notifyListeners();
+    state = SettingsState(
+      notificationsEnabled: state.notificationsEnabled,
+      notificationTime: state.notificationTime,
+      themeDark: themeDark,
+      notificationsBlockedByOS: blocked,
+    );
   }
 
   Future<void> setNotifications(bool notificationsEnabled) async {
-    _notificationsBlockedByOS = false;
     try {
       await _prefs.setBool(
         AppStrings.settingsNotificationsEnabled,
@@ -37,11 +64,18 @@ class SettingsViewmodel extends ChangeNotifier {
       debugPrint('setNotifications value failed $e');
     }
     if (notificationsEnabled) {
-      await NotificationsService.instance.scheduleNotification();
+      await NotificationsService.instance.scheduleNotification(
+        allDoneToday: ref.read(habitProvider.notifier).allHabitsDoneToday,
+      );
     } else {
       await NotificationsService.instance.cancelNotification(0);
     }
-    notifyListeners();
+    state = SettingsState(
+      notificationsEnabled: notificationsEnabled,
+      notificationTime: notificationTime,
+      themeDark: themeDark,
+      notificationsBlockedByOS: state.notificationsBlockedByOS,
+    );
   }
 
   bool get notificationsEnabled =>
@@ -56,12 +90,19 @@ class SettingsViewmodel extends ChangeNotifier {
       await _prefs.setInt(AppStrings.settingsNotificationMins, mins);
       if (notificationsEnabled) {
         await NotificationsService.instance.cancelNotification(0);
-        await NotificationsService.instance.scheduleNotification();
+        await NotificationsService.instance.scheduleNotification(
+          allDoneToday: ref.read(habitProvider.notifier).allHabitsDoneToday,
+        );
       }
     } catch (e) {
       debugPrint('setNotificationTime failed $e');
     }
-    notifyListeners();
+    state = SettingsState(
+      notificationsEnabled: notificationsEnabled,
+      notificationTime: notificationTime,
+      themeDark: themeDark,
+      notificationsBlockedByOS: state.notificationsBlockedByOS,
+    );
   }
 
   TimeOfDay get notificationTime {
@@ -76,7 +117,12 @@ class SettingsViewmodel extends ChangeNotifier {
     } catch (e) {
       debugPrint('setThemeDark failed $e');
     }
-    notifyListeners();
+    state = SettingsState(
+      notificationsEnabled: state.notificationsEnabled,
+      notificationTime: state.notificationTime,
+      themeDark: useThemeDark,
+      notificationsBlockedByOS: state.notificationsBlockedByOS,
+    );
   }
 
   bool get themeDark =>

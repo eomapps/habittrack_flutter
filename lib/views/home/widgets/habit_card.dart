@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:habittrack/core/constants/app_dimens.dart';
 import 'package:habittrack/core/constants/app_text_styles.dart';
 import 'package:habittrack/core/utils/context_extensions.dart';
 import 'package:habittrack/core/utils/ht_utils.dart';
 import 'package:habittrack/data/models/habit.dart';
-import 'package:habittrack/viewmodels/habit_viewmodel.dart';
+import 'package:habittrack/main.dart';
 import 'package:habittrack/views/add_edit_habit/add_edit_delete_habit_bottom_sheet.dart';
-import 'package:provider/provider.dart';
 
-class HabitCard extends StatefulWidget {
+class HabitCard extends ConsumerStatefulWidget {
   final Habit habit;
   final bool isDone;
 
   const HabitCard({super.key, required this.habit, this.isDone = false});
 
   @override
-  State<HabitCard> createState() => _HabitCardState();
+  ConsumerState<HabitCard> createState() => _HabitCardState();
 }
 
-class _HabitCardState extends State<HabitCard> {
+class _HabitCardState extends ConsumerState<HabitCard> {
   @override
   Widget build(BuildContext context) {
+    ref.watch(habitProvider);
     return GestureDetector(
       key: const Key('habit-card-tap'),
       onTap: () {
@@ -80,7 +81,7 @@ class _HabitCardState extends State<HabitCard> {
             GestureDetector(
               key: const Key('habit-check-tap'),
               onTap: () {
-                context.read<HabitViewModel>().toggleHabit(widget.habit);
+                ref.read(habitProvider.notifier).toggleHabit(widget.habit);
               },
               behavior: HitTestBehavior.opaque,
               child: Container(

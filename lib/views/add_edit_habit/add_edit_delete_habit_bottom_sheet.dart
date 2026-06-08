@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:habittrack/core/constants/app_colors.dart';
 import 'package:habittrack/core/constants/app_dimens.dart';
 import 'package:habittrack/core/constants/app_strings.dart';
@@ -6,11 +7,10 @@ import 'package:habittrack/core/constants/app_text_styles.dart';
 import 'package:habittrack/core/utils/context_extensions.dart';
 import 'package:habittrack/core/utils/ht_utils.dart';
 import 'package:habittrack/data/models/habit.dart';
-import 'package:habittrack/viewmodels/habit_viewmodel.dart';
-import 'package:provider/provider.dart';
 import 'package:habittrack/core/utils/color_extensions.dart';
+import 'package:habittrack/main.dart';
 
-class AddEditDeleteHabitBottomSheet extends StatefulWidget {
+class AddEditDeleteHabitBottomSheet extends ConsumerStatefulWidget {
   final Habit? habit;
   final bool isEdit;
 
@@ -21,12 +21,12 @@ class AddEditDeleteHabitBottomSheet extends StatefulWidget {
   });
 
   @override
-  State<AddEditDeleteHabitBottomSheet> createState() =>
+  ConsumerState<AddEditDeleteHabitBottomSheet> createState() =>
       _AddEditDeleteHabitBottomSheetState();
 }
 
 class _AddEditDeleteHabitBottomSheetState
-    extends State<AddEditDeleteHabitBottomSheet> {
+    extends ConsumerState<AddEditDeleteHabitBottomSheet> {
   final TextEditingController _habitNameController = TextEditingController();
   int _selectedIndex = 0;
   Color _selectedColor = AppColors.blue;
@@ -164,16 +164,18 @@ class _AddEditDeleteHabitBottomSheetState
                     title: _habitNameController.text,
                     colorHex: _selectedColor.toHex(),
                   );
-                  context.read<HabitViewModel>().updateHabit(updated);
+                  ref.read(habitProvider.notifier).updateHabit(updated);
                 } else {
-                  context.read<HabitViewModel>().insertHabit(
-                    Habit(
-                      title: HTUtils.getInSentenceCase(
-                        _habitNameController.text,
-                      ),
-                      colorHex: _selectedColor.toHex(),
-                    ),
-                  );
+                  ref
+                      .read(habitProvider.notifier)
+                      .insertHabit(
+                        Habit(
+                          title: HTUtils.getInSentenceCase(
+                            _habitNameController.text,
+                          ),
+                          colorHex: _selectedColor.toHex(),
+                        ),
+                      );
                 }
                 Navigator.pop(context);
               },
@@ -283,7 +285,7 @@ class _AddEditDeleteHabitBottomSheetState
                   ),
                 ),
                 onPressed: () {
-                  context.read<HabitViewModel>().deleteHabit(widget.habit!);
+                  ref.read(habitProvider.notifier).deleteHabit(widget.habit!);
                   Navigator.pop(context);
                 },
                 child: Text(
