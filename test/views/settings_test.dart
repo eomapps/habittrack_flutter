@@ -109,23 +109,20 @@ void main() {
       },
     );
 
-    testWidgets(
-      'shows blocked dialog when tapped ON with permission denied',
-      (WidgetTester tester) async {
-        when(mockSettingsViewmodel.notificationsEnabled).thenReturn(false);
-        when(mockSettingsViewmodel.notificationsBlockedByOS).thenReturn(true);
-        when(
-          mockSettingsViewmodel.canEnableNotifications(),
-        ).thenAnswer((_) async => false);
-        await tester.pumpWidget(buildSettingsScreen());
-        await tester.tap(
-          find.byKey(const Key('settings-notifications-switch')),
-        );
-        await tester.pumpAndSettle();
-        expect(find.byType(AlertDialog), findsOneWidget);
-        expect(find.text(AppStrings.notificationsBlocked), findsOneWidget);
-      },
-    );
+    testWidgets('shows blocked dialog when tapped ON with permission denied', (
+      WidgetTester tester,
+    ) async {
+      when(mockSettingsViewmodel.notificationsEnabled).thenReturn(false);
+      when(mockSettingsViewmodel.notificationsBlockedByOS).thenReturn(true);
+      when(
+        mockSettingsViewmodel.canEnableNotifications(),
+      ).thenAnswer((_) async => false);
+      await tester.pumpWidget(buildSettingsScreen());
+      await tester.tap(find.byKey(const Key('settings-notifications-switch')));
+      await tester.pumpAndSettle();
+      expect(find.byType(AlertDialog), findsOneWidget);
+      expect(find.text(AppStrings.notificationsBlocked), findsOneWidget);
+    });
   });
 
   group('notification time tile', () {
@@ -174,7 +171,7 @@ void main() {
     testWidgets('is hidden when notificationsBlockedByOS == false', (
       WidgetTester tester,
     ) async {
-      when(mockSettingsViewmodel.notificationsEnabled).thenReturn(true);
+      when(mockSettingsViewmodel.notificationsBlockedByOS).thenReturn(false);
       await tester.pumpWidget(buildSettingsScreen());
       expect(find.text(AppStrings.checkNotificationsPermission), findsNothing);
     });
@@ -194,19 +191,18 @@ void main() {
       expect(tester.widget<Switch>(switchFinder).value, isTrue);
     });
 
-    testWidgets(
-      'shows Light Mode label and is OFF when themeDark == false',
-      (WidgetTester tester) async {
-        when(mockSettingsViewmodel.themeDark).thenReturn(false);
-        await tester.pumpWidget(buildSettingsScreen());
-        expect(find.text(AppStrings.lightMode), findsOneWidget);
-        final switchFinder = find.descendant(
-          of: find.byKey(const Key('settings-themes-switch')),
-          matching: find.byType(Switch),
-        );
-        expect(tester.widget<Switch>(switchFinder).value, isFalse);
-      },
-    );
+    testWidgets('shows Light Mode label and is OFF when themeDark == false', (
+      WidgetTester tester,
+    ) async {
+      when(mockSettingsViewmodel.themeDark).thenReturn(false);
+      await tester.pumpWidget(buildSettingsScreen());
+      expect(find.text(AppStrings.lightMode), findsOneWidget);
+      final switchFinder = find.descendant(
+        of: find.byKey(const Key('settings-themes-switch')),
+        matching: find.byType(Switch),
+      );
+      expect(tester.widget<Switch>(switchFinder).value, isFalse);
+    });
 
     testWidgets('calls setThemeDark with toggled value when tapped', (
       WidgetTester tester,
