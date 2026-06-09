@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:habittrack/core/constants/app_strings.dart';
 import 'package:habittrack/core/constants/app_theme.dart';
 import 'package:habittrack/data/models/habit.dart';
+import 'package:habittrack/main.dart';
 import 'package:habittrack/viewmodels/habit_viewmodel.dart';
 import 'package:habittrack/views/home/widgets/progress.dart';
 import 'package:habittrack/views/home/widgets/progress_card.dart';
 import 'package:habittrack/views/home/widgets/progress_placeholder.dart';
 import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
-
 import '../../data/viewmodels/habit_viewmodel_test.mocks.dart';
 
 void main() {
@@ -39,8 +39,8 @@ void main() {
   });
 
   Widget buildProgressScreen() {
-    return ChangeNotifierProvider<HabitViewModel>.value(
-      value: habitViewModel,
+    return ProviderScope(
+      overrides: [habitProvider.overrideWith((ref) => habitViewModel)],
       child: MaterialApp(
         theme: AppTheme.light,
         home: Scaffold(body: ProgressScreen()),

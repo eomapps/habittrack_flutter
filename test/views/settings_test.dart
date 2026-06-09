@@ -1,40 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:habittrack/core/constants/app_strings.dart';
 import 'package:habittrack/core/constants/app_theme.dart';
+import 'package:habittrack/main.dart';
 import 'package:habittrack/viewmodels/settings_viewmodel.dart';
 import 'package:habittrack/views/settings.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
 
-import 'settings_test.mocks.dart';
+class FakeSettingsViewModel extends SettingsViewmodel {
+  final SettingsState initialState;
+  bool setNotificationsCalled = false;
+  bool? setNotificationsArg;
+  bool setNotificationsTimeTimeCalled = false;
+  TimeOfDay? setNotificationsTimeArg;
+  bool setThemeCalled = false;
+  bool? setThemeArg;
+  bool setNotificationsBlockedByOSCalled = false;
+  bool? setNotificationsBlockedByOSArg;
+  bool? canEnablePermissions;
 
-@GenerateMocks([SettingsViewmodel])
+  FakeSettingsViewModel(this.initialState);
+
+  @override
+  build() => initialState;
+
+  @override
+  Future<void> setNotifications(bool value) async {
+    setNotificationsCalled = true;
+    setNotificationsArg = value;
+  }
+
+  @override
+  Future<void> setNotificationTime(int hours, int mins) async {
+    setNotificationsTimeTimeCalled = true;
+    setNotificationsTimeArg = TimeOfDay(hour: hours, minute: mins);
+  }
+
+  @override
+  Future<void> setThemeDark(bool useThemeDark) async {
+    setThemeCalled = true;
+    setThemeArg = useThemeDark;
+  }
+
+  @override
+  void setNotificationsBlockedByOS(bool blocked) async {
+    setNotificationsBlockedByOSCalled = true;
+    setNotificationsBlockedByOSArg = blocked;
+  }
+
+  @override
+  Future<bool?> canEnableNotifications() async {
+    return canEnablePermissions;
+  }
+}
+
 void main() {
-  late MockSettingsViewmodel mockSettingsViewmodel;
-
-  setUp(() {
-    mockSettingsViewmodel = MockSettingsViewmodel();
-    when(mockSettingsViewmodel.notificationsEnabled).thenReturn(true);
-    when(mockSettingsViewmodel.notificationsBlockedByOS).thenReturn(false);
-    when(mockSettingsViewmodel.themeDark).thenReturn(false);
-    when(
-      mockSettingsViewmodel.notificationTime,
-    ).thenReturn(const TimeOfDay(hour: 9, minute: 0));
-    when(
-      mockSettingsViewmodel.canEnableNotifications(),
-    ).thenAnswer((_) async => true);
-    when(mockSettingsViewmodel.setNotifications(any)).thenAnswer((_) async {});
-    when(mockSettingsViewmodel.setThemeDark(any)).thenAnswer((_) async {});
-    when(
-      mockSettingsViewmodel.setNotificationTime(any, any),
-    ).thenAnswer((_) async {});
-  });
-
-  Widget buildSettingsScreen() {
-    return ChangeNotifierProvider<SettingsViewmodel>.value(
-      value: mockSettingsViewmodel,
+  Widget buildSettingsScreen({FakeSettingsViewModel? fake}) {
+    final fakeSettingsViewModel = FakeSettingsViewModel(
+      SettingsState(
+        notificationsEnabled: true,
+        notificationTime: const TimeOfDay(hour: 9, minute: 0),
+        themeDark: false,
+        notificationsBlockedByOS: false,
+      ),
+    );
+    return ProviderScope(
+      overrides: [
+        settingsProvider.overrideWith(() => fake ?? fakeSettingsViewModel),
+      ],
       child: MaterialApp(theme: AppTheme.light, home: SettingsScreen()),
     );
   }
@@ -78,8 +111,14 @@ void main() {
     testWidgets('is OFF when notificationsEnabled == false', (
       WidgetTester tester,
     ) async {
-      when(mockSettingsViewmodel.notificationsEnabled).thenReturn(false);
-      await tester.pumpWidget(buildSettingsScreen());
+      final settingsState = SettingsState(
+        notificationsEnabled: false,
+        notificationTime: TimeOfDay(hour: 9, minute: 0),
+        themeDark: false,
+        notificationsBlockedByOS: false,
+      );
+      final settings = FakeSettingsViewModel(settingsState);
+      await tester.pumpWidget(buildSettingsScreen(fake: settings));
       final switchFinder = find.descendant(
         of: find.byKey(const Key('settings-notifications-switch')),
         matching: find.byType(Switch),
@@ -90,51 +129,63 @@ void main() {
     testWidgets('calls setNotifications(false) when tapped OFF', (
       WidgetTester tester,
     ) async {
-      await tester.pumpWidget(buildSettingsScreen());
+      final settingsState = SettingsState(
+        notificationsEnabled: true,
+        notificationTime: TimeOfDay(hour: 9, minute: 0),
+        themeDark: false,
+        notificationsBlockedByOS: false,
+      );
+      final settings = FakeSettingsViewModel(settingsState);
+      await tester.pumpWidget(buildSettingsScreen(fake: settings));
       await tester.tap(find.byKey(const Key('settings-notifications-switch')));
       await tester.pumpAndSettle();
-      verify(mockSettingsViewmodel.setNotifications(false)).called(1);
+      expect(settings.setNotificationsCalled, isTrue);
+      expect(settings.setNotificationsArg, false);
     });
 
     testWidgets(
       'calls setNotifications(true) when tapped ON with permission granted',
       (WidgetTester tester) async {
-        when(mockSettingsViewmodel.notificationsEnabled).thenReturn(false);
-        await tester.pumpWidget(buildSettingsScreen());
+        final settingsState = SettingsState(
+          notificationsEnabled: false,
+          notificationTime: TimeOfDay(hour: 9, minute: 0),
+          themeDark: false,
+          notificationsBlockedByOS: false,
+        );
+        final settings = FakeSettingsViewModel(settingsState);
+        settings.canEnablePermissions = true;
+        await tester.pumpWidget(buildSettingsScreen(fake: settings));
         await tester.tap(
           find.byKey(const Key('settings-notifications-switch')),
         );
         await tester.pumpAndSettle();
-        verify(mockSettingsViewmodel.setNotifications(true)).called(1);
+        expect(settings.setNotificationsArg, isTrue);
       },
     );
 
-    testWidgets(
-      'shows blocked dialog when tapped ON with permission denied',
-      (WidgetTester tester) async {
-        when(mockSettingsViewmodel.notificationsEnabled).thenReturn(false);
-        when(mockSettingsViewmodel.notificationsBlockedByOS).thenReturn(true);
-        when(
-          mockSettingsViewmodel.canEnableNotifications(),
-        ).thenAnswer((_) async => false);
-        await tester.pumpWidget(buildSettingsScreen());
-        await tester.tap(
-          find.byKey(const Key('settings-notifications-switch')),
-        );
-        await tester.pumpAndSettle();
-        expect(find.byType(AlertDialog), findsOneWidget);
-        expect(find.text(AppStrings.notificationsBlocked), findsOneWidget);
-      },
-    );
+    testWidgets('shows blocked dialog when tapped ON with permission denied', (
+      WidgetTester tester,
+    ) async {
+      final settingsState = SettingsState(
+        notificationsEnabled: false,
+        notificationTime: TimeOfDay(hour: 9, minute: 0),
+        themeDark: false,
+        notificationsBlockedByOS: true,
+      );
+      final settings = FakeSettingsViewModel(settingsState);
+      settings.canEnablePermissions = false;
+      await tester.pumpWidget(buildSettingsScreen(fake: settings));
+      await tester.tap(find.byKey(const Key('settings-notifications-switch')));
+      await tester.pumpAndSettle();
+      expect(find.byType(AlertDialog), findsOneWidget);
+      expect(find.text(AppStrings.notificationsBlocked), findsOneWidget);
+    });
   });
 
   group('notification time tile', () {
     testWidgets('is visible when notifications are enabled', (
       WidgetTester tester,
     ) async {
-      when(
-        mockSettingsViewmodel.canEnableNotifications(),
-      ).thenAnswer((_) async => true);
       await tester.pumpWidget(buildSettingsScreen());
       expect(find.byIcon(Icons.timer), findsOneWidget);
     });
@@ -142,18 +193,28 @@ void main() {
     testWidgets('is hidden when notifications are disabled', (
       WidgetTester tester,
     ) async {
-      when(mockSettingsViewmodel.notificationsEnabled).thenReturn(false);
-      await tester.pumpWidget(buildSettingsScreen());
+      final settingsState = SettingsState(
+        notificationsEnabled: false,
+        notificationTime: TimeOfDay(hour: 9, minute: 0),
+        themeDark: false,
+        notificationsBlockedByOS: false,
+      );
+      final settings = FakeSettingsViewModel(settingsState);
+      await tester.pumpWidget(buildSettingsScreen(fake: settings));
       expect(find.byIcon(Icons.timer), findsNothing);
     });
 
     testWidgets('label shows the current notificationTime', (
       WidgetTester tester,
     ) async {
-      when(
-        mockSettingsViewmodel.notificationTime,
-      ).thenReturn(const TimeOfDay(hour: 8, minute: 30));
-      await tester.pumpWidget(buildSettingsScreen());
+      final settingsState = SettingsState(
+        notificationsEnabled: true,
+        notificationTime: TimeOfDay(hour: 8, minute: 30),
+        themeDark: false,
+        notificationsBlockedByOS: false,
+      );
+      final settings = FakeSettingsViewModel(settingsState);
+      await tester.pumpWidget(buildSettingsScreen(fake: settings));
       expect(find.textContaining('8:30'), findsOneWidget);
     });
   });
@@ -162,8 +223,14 @@ void main() {
     testWidgets('is visible when notificationsBlockedByOS == true', (
       WidgetTester tester,
     ) async {
-      when(mockSettingsViewmodel.notificationsBlockedByOS).thenReturn(true);
-      await tester.pumpWidget(buildSettingsScreen());
+      final settingsState = SettingsState(
+        notificationsEnabled: true,
+        notificationTime: TimeOfDay(hour: 9, minute: 00),
+        themeDark: false,
+        notificationsBlockedByOS: true,
+      );
+      final settings = FakeSettingsViewModel(settingsState);
+      await tester.pumpWidget(buildSettingsScreen(fake: settings));
       expect(
         find.text(AppStrings.checkNotificationsPermission),
         findsOneWidget,
@@ -174,7 +241,6 @@ void main() {
     testWidgets('is hidden when notificationsBlockedByOS == false', (
       WidgetTester tester,
     ) async {
-      when(mockSettingsViewmodel.notificationsEnabled).thenReturn(true);
       await tester.pumpWidget(buildSettingsScreen());
       expect(find.text(AppStrings.checkNotificationsPermission), findsNothing);
     });
@@ -184,8 +250,14 @@ void main() {
     testWidgets('shows Dark Mode label and is ON when themeDark == true', (
       WidgetTester tester,
     ) async {
-      when(mockSettingsViewmodel.themeDark).thenReturn(true);
-      await tester.pumpWidget(buildSettingsScreen());
+      final settingsState = SettingsState(
+        notificationsEnabled: true,
+        notificationTime: TimeOfDay(hour: 9, minute: 00),
+        themeDark: true,
+        notificationsBlockedByOS: true,
+      );
+      final settings = FakeSettingsViewModel(settingsState);
+      await tester.pumpWidget(buildSettingsScreen(fake: settings));
       expect(find.text(AppStrings.darkMode), findsOneWidget);
       final switchFinder = find.descendant(
         of: find.byKey(const Key('settings-themes-switch')),
@@ -194,28 +266,32 @@ void main() {
       expect(tester.widget<Switch>(switchFinder).value, isTrue);
     });
 
-    testWidgets(
-      'shows Light Mode label and is OFF when themeDark == false',
-      (WidgetTester tester) async {
-        when(mockSettingsViewmodel.themeDark).thenReturn(false);
-        await tester.pumpWidget(buildSettingsScreen());
-        expect(find.text(AppStrings.lightMode), findsOneWidget);
-        final switchFinder = find.descendant(
-          of: find.byKey(const Key('settings-themes-switch')),
-          matching: find.byType(Switch),
-        );
-        expect(tester.widget<Switch>(switchFinder).value, isFalse);
-      },
-    );
+    testWidgets('shows Light Mode label and is OFF when themeDark == false', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(buildSettingsScreen());
+      expect(find.text(AppStrings.lightMode), findsOneWidget);
+      final switchFinder = find.descendant(
+        of: find.byKey(const Key('settings-themes-switch')),
+        matching: find.byType(Switch),
+      );
+      expect(tester.widget<Switch>(switchFinder).value, isFalse);
+    });
 
     testWidgets('calls setThemeDark with toggled value when tapped', (
       WidgetTester tester,
     ) async {
-      when(mockSettingsViewmodel.themeDark).thenReturn(false);
-      await tester.pumpWidget(buildSettingsScreen());
+      final settingsState = SettingsState(
+        notificationsEnabled: false,
+        notificationTime: TimeOfDay(hour: 9, minute: 0),
+        themeDark: false,
+        notificationsBlockedByOS: false,
+      );
+      final settings = FakeSettingsViewModel(settingsState);
+      await tester.pumpWidget(buildSettingsScreen(fake: settings));
       await tester.tap(find.byKey(const Key('settings-themes-switch')));
       await tester.pumpAndSettle();
-      verify(mockSettingsViewmodel.setThemeDark(true)).called(1);
+      expect(settings.setThemeArg, isTrue);
     });
   });
 }
