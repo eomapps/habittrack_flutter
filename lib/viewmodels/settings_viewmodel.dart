@@ -17,6 +17,21 @@ class SettingsState {
     required this.themeDark,
     required this.notificationsBlockedByOS,
   });
+
+  SettingsState copyWith({
+    bool? notificationsEnabled,
+    bool? themeDark,
+    bool? notificationsBlockedByOS,
+    TimeOfDay? notificationTime,
+  }) {
+    return SettingsState(
+      notificationsEnabled: notificationsEnabled ?? this.notificationsEnabled,
+      themeDark: themeDark ?? this.themeDark,
+      notificationsBlockedByOS:
+          notificationsBlockedByOS ?? this.notificationsBlockedByOS,
+      notificationTime: notificationTime ?? this.notificationTime,
+    );
+  }
 }
 
 class SettingsViewmodel extends Notifier<SettingsState> {
@@ -46,12 +61,7 @@ class SettingsViewmodel extends Notifier<SettingsState> {
   }
 
   void setNotificationsBlockedByOS(bool blocked) {
-    state = SettingsState(
-      notificationsEnabled: state.notificationsEnabled,
-      notificationTime: state.notificationTime,
-      themeDark: themeDark,
-      notificationsBlockedByOS: blocked,
-    );
+    state = state.copyWith(notificationsBlockedByOS: blocked);
   }
 
   Future<void> setNotifications(bool notificationsEnabled) async {
@@ -70,12 +80,7 @@ class SettingsViewmodel extends Notifier<SettingsState> {
     } else {
       await NotificationsService.instance.cancelNotification(0);
     }
-    state = SettingsState(
-      notificationsEnabled: notificationsEnabled,
-      notificationTime: notificationTime,
-      themeDark: themeDark,
-      notificationsBlockedByOS: state.notificationsBlockedByOS,
-    );
+    state = state.copyWith(notificationsEnabled: notificationsEnabled);
   }
 
   bool get notificationsEnabled =>
@@ -97,12 +102,7 @@ class SettingsViewmodel extends Notifier<SettingsState> {
     } catch (e) {
       debugPrint('setNotificationTime failed $e');
     }
-    state = SettingsState(
-      notificationsEnabled: notificationsEnabled,
-      notificationTime: notificationTime,
-      themeDark: themeDark,
-      notificationsBlockedByOS: state.notificationsBlockedByOS,
-    );
+    state = state.copyWith(notificationTime: notificationTime);
   }
 
   TimeOfDay get notificationTime {
@@ -117,12 +117,7 @@ class SettingsViewmodel extends Notifier<SettingsState> {
     } catch (e) {
       debugPrint('setThemeDark failed $e');
     }
-    state = SettingsState(
-      notificationsEnabled: state.notificationsEnabled,
-      notificationTime: state.notificationTime,
-      themeDark: useThemeDark,
-      notificationsBlockedByOS: state.notificationsBlockedByOS,
-    );
+    state = state.copyWith(themeDark: useThemeDark);
   }
 
   bool get themeDark =>
