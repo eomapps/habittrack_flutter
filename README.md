@@ -1,5 +1,7 @@
 # HabitTrack
 
+[![Flutter](https://github.com/eomapps/habittrack_flutter/actions/workflows/main.yaml/badge.svg)](https://github.com/eomapps/habittrack_flutter/actions/workflows/main.yaml)
+
 A lightweight, offline-first habit tracking app built with Flutter — running on both iOS and Android.
 
 ## Screenshots
