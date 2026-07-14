@@ -14,6 +14,7 @@ class NotificationsService {
   static final NotificationsService instance = NotificationsService._internal();
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   SettingsViewmodel? viewmodel;
+  bool allDoneToday = false;
 
   Future<void> _configureTimeZone() async {
     tz.initializeTimeZones();
@@ -22,9 +23,11 @@ class NotificationsService {
   }
 
   Future<void> initNotificationsService(
-    SettingsViewmodel settingsViewmodel,
-  ) async {
+    SettingsViewmodel settingsViewmodel, {
+    bool allDoneToday = false,
+  }) async {
     viewmodel = settingsViewmodel;
+    this.allDoneToday = allDoneToday;
     await _configureTimeZone();
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     const AndroidInitializationSettings initializationSettingsAndroid =
@@ -115,7 +118,7 @@ class NotificationsService {
     return hasPermissions;
   }
 
-  Future<void> scheduleNotification({bool allDoneToday = false}) async {
+  Future<void> scheduleNotification() async {
     if (viewmodel == null) {
       debugPrint('scheduleNotification called before initNotificationsService');
       return;

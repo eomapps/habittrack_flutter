@@ -74,9 +74,10 @@ class SettingsViewmodel extends Notifier<SettingsState> {
       debugPrint('setNotifications value failed $e');
     }
     if (notificationsEnabled) {
-      await NotificationsService.instance.scheduleNotification(
-        allDoneToday: ref.read(habitProvider.notifier).allHabitsDoneToday,
-      );
+      NotificationsService.instance.allDoneToday = ref
+          .read(habitProvider.notifier)
+          .allHabitsDoneToday;
+      await NotificationsService.instance.scheduleNotification();
     } else {
       await NotificationsService.instance.cancelNotification(0);
     }
@@ -95,9 +96,10 @@ class SettingsViewmodel extends Notifier<SettingsState> {
       await _prefs.setInt(AppStrings.settingsNotificationMins, mins);
       if (notificationsEnabled) {
         await NotificationsService.instance.cancelNotification(0);
-        await NotificationsService.instance.scheduleNotification(
-          allDoneToday: ref.read(habitProvider.notifier).allHabitsDoneToday,
-        );
+        NotificationsService.instance.allDoneToday = ref
+            .read(habitProvider.notifier)
+            .allHabitsDoneToday;
+        await NotificationsService.instance.scheduleNotification();
       }
     } catch (e) {
       debugPrint('setNotificationTime failed $e');

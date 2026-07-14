@@ -36,6 +36,10 @@ void main() async {
     debugPrint('initialize db failed: $e');
   }
 
+  HabitRepository habitRepository = HabitRepository(DatabaseHelper.instance);
+  HabitViewModel habitViewModel = HabitViewModel(habitRepository);
+  await habitViewModel.getAllHabits();
+
   SettingsViewmodel settingsViewmodel = SettingsViewmodel();
   try {
     await settingsViewmodel.init();
@@ -46,6 +50,7 @@ void main() async {
   try {
     await NotificationsService.instance.initNotificationsService(
       settingsViewmodel,
+      allDoneToday: habitViewModel.allHabitsDoneToday,
     );
   } catch (e) {
     debugPrint('initNotificationsService failed $e');
@@ -56,7 +61,10 @@ void main() async {
 
   runApp(
     ProviderScope(
-      overrides: [settingsProvider.overrideWith(() => settingsViewmodel)],
+      overrides: [
+        habitProvider.overrideWith((ref) => habitViewModel),
+        settingsProvider.overrideWith(() => settingsViewmodel),
+      ],
       child: const MyApp(),
     ),
   );
