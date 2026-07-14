@@ -128,8 +128,9 @@ class HabitViewModel extends ChangeNotifier {
     }
 
     final service = NotificationsService.instance;
+    service.allDoneToday = allHabitsDoneToday;
     if (service.viewmodel?.notificationsEnabled == true) {
-      await service.scheduleNotification(allDoneToday: allHabitsDoneToday);
+      await service.scheduleNotification();
     }
   }
 

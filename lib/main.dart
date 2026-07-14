@@ -27,6 +27,9 @@ void main() async {
   }
 
   HabitRepository habitRepository = HabitRepository(DatabaseHelper.instance);
+  HabitViewModel habitViewModel = HabitViewModel(habitRepository);
+  await habitViewModel.getAllHabits();
+
   SettingsViewmodel settingsViewmodel = SettingsViewmodel();
   try {
     await settingsViewmodel.init();
@@ -37,6 +40,7 @@ void main() async {
   try {
     await NotificationsService.instance.initNotificationsService(
       settingsViewmodel,
+      allDoneToday: habitViewModel.allHabitsDoneToday,
     );
   } catch (e) {
     debugPrint('initNotificationsService failed $e');
@@ -48,7 +52,7 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => HabitViewModel(habitRepository)),
+        ChangeNotifierProvider.value(value: habitViewModel),
         ChangeNotifierProvider.value(value: settingsViewmodel),
       ],
       child: const MyApp(),
