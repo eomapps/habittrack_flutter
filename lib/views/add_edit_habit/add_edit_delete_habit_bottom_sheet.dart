@@ -56,147 +56,166 @@ class _AddEditDeleteHabitBottomSheetState
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: AppDimens.paddingSheet,
-      decoration: BoxDecoration(borderRadius: AppDimens.radiusBottomSheet),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: AppDimens.paddingSheetHandleTitle,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Container(
-                    width: AppDimens.sheetHandleWidth,
-                    height: AppDimens.sheetHandleHeight,
-                    decoration: BoxDecoration(
-                      color: context.colors.border,
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.viewInsetsOf(context).bottom,
+      ),
+      child: Container(
+        width: double.infinity,
+        padding: AppDimens.paddingSheet,
+        decoration: BoxDecoration(borderRadius: AppDimens.radiusBottomSheet),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: AppDimens.paddingSheetHandleTitle,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      width: AppDimens.sheetHandleWidth,
+                      height: AppDimens.sheetHandleHeight,
+                      decoration: BoxDecoration(
+                        color: context.colors.border,
+                        borderRadius: BorderRadius.circular(
+                          AppDimens.radiusSheetHandle,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 14),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        widget.isEdit
+                            ? AppStrings.editHabit.toUpperCase()
+                            : AppStrings.newHabit.toUpperCase(),
+                        style: AppTextStyles.sheetTitle(context),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        padding: EdgeInsets.zero,
+                        icon: Icon(Icons.cancel_outlined),
+                        constraints: const BoxConstraints(),
+                        visualDensity: VisualDensity.compact,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Text(
+              AppStrings.habitName,
+              style: AppTextStyles.emptyStateSub(context),
+            ),
+            SizedBox(height: 6),
+            TextField(
+              controller: _habitNameController,
+              decoration: InputDecoration(
+                fillColor: context.colors.cardBg,
+                filled: true,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 9,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(
+                    AppDimens.radiusFormInput,
+                  ),
+                  borderSide: BorderSide(
+                    color: context.colors.border,
+                    width: 1,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(
+                    AppDimens.radiusFormInput,
+                  ),
+                  borderSide: BorderSide(
+                    color: context.colors.border,
+                    width: 1,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 14),
+            Text(
+              AppStrings.colorChoice,
+              style: AppTextStyles.emptyStateSub(context),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _getColorChoice(AppColors.blue, 0),
+                  _getColorChoice(AppColors.orange, 1),
+                  _getColorChoice(AppColors.green, 2),
+                  _getColorChoice(AppColors.purple, 3),
+                  _getColorChoice(AppColors.pink, 4),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(AppColors.purple),
+                  shape: WidgetStateProperty.all<OutlinedBorder>(
+                    RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
-                        AppDimens.radiusSheetHandle,
+                        AppDimens.radiusButton,
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: 14),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      widget.isEdit
-                          ? AppStrings.editHabit.toUpperCase()
-                          : AppStrings.newHabit.toUpperCase(),
-                      style: AppTextStyles.sheetTitle(context),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      padding: EdgeInsets.zero,
-                      icon: Icon(Icons.cancel_outlined),
-                      constraints: const BoxConstraints(),
-                      visualDensity: VisualDensity.compact,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Text(
-            AppStrings.habitName,
-            style: AppTextStyles.emptyStateSub(context),
-          ),
-          SizedBox(height: 6),
-          TextField(
-            controller: _habitNameController,
-            decoration: InputDecoration(
-              fillColor: context.colors.cardBg,
-              filled: true,
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 9,
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppDimens.radiusFormInput),
-                borderSide: BorderSide(color: context.colors.border, width: 1),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppDimens.radiusFormInput),
-                borderSide: BorderSide(color: context.colors.border, width: 1),
-              ),
-            ),
-          ),
-          const SizedBox(height: 14),
-          Text(
-            AppStrings.colorChoice,
-            style: AppTextStyles.emptyStateSub(context),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _getColorChoice(AppColors.blue, 0),
-                _getColorChoice(AppColors.orange, 1),
-                _getColorChoice(AppColors.green, 2),
-                _getColorChoice(AppColors.purple, 3),
-                _getColorChoice(AppColors.pink, 4),
-              ],
-            ),
-          ),
-          const SizedBox(height: 16),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: WidgetStatePropertyAll(AppColors.purple),
-                shape: WidgetStateProperty.all<OutlinedBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppDimens.radiusButton),
-                  ),
-                ),
-              ),
-              onPressed: () {
-                if (widget.isEdit) {
-                  final updated = widget.habit!.copyWith(
-                    title: _habitNameController.text,
-                    colorHex: _selectedColor.toHex(),
-                  );
-                  ref.read(habitProvider.notifier).updateHabit(updated);
-                } else {
-                  ref
-                      .read(habitProvider.notifier)
-                      .insertHabit(
-                        Habit(
-                          title: HTUtils.getInSentenceCase(
-                            _habitNameController.text,
+                onPressed: () {
+                  if (widget.isEdit) {
+                    final updated = widget.habit!.copyWith(
+                      title: _habitNameController.text,
+                      colorHex: _selectedColor.toHex(),
+                    );
+                    ref.read(habitProvider.notifier).updateHabit(updated);
+                  } else {
+                    ref
+                        .read(habitProvider.notifier)
+                        .insertHabit(
+                          Habit(
+                            title: HTUtils.getInSentenceCase(
+                              _habitNameController.text,
+                            ),
+                            colorHex: _selectedColor.toHex(),
                           ),
-                          colorHex: _selectedColor.toHex(),
-                        ),
-                      );
-                }
-                Navigator.pop(context);
-              },
-              child: Text(
-                widget.isEdit ? AppStrings.updateHabit : AppStrings.saveHabit,
-                style: AppTextStyles.saveButton,
+                        );
+                  }
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  widget.isEdit
+                      ? AppStrings.updateHabit
+                      : AppStrings.saveHabit,
+                  style: AppTextStyles.saveButton,
+                ),
               ),
             ),
-          ),
-          if (widget.isEdit) ...[
-            SizedBox(
-              width: double.infinity,
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 200),
-                child: _confirmedDelete
-                    ? _makeConfirmationRow()
-                    : _makeDeleteButton(),
+            if (widget.isEdit) ...[
+              SizedBox(
+                width: double.infinity,
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 200),
+                  child: _confirmedDelete
+                      ? _makeConfirmationRow()
+                      : _makeDeleteButton(),
+                ),
               ),
-            ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
