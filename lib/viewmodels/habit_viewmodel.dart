@@ -17,6 +17,8 @@ class HabitViewModel extends ChangeNotifier {
   List<Habit> get habits => _habits;
   bool get isLoading => _isLoading;
 
+  String get _today => DateTime.now().toIso8601String().substring(0, 10);
+
   Future<void> getAllHabits() async {
     try {
       _isLoading = true;
@@ -24,6 +26,7 @@ class HabitViewModel extends ChangeNotifier {
       _habits.clear();
       _habits = await _repository.getAll();
       _isLoading = false;
+      await resetTogglesForNewDay();
     } catch (e) {
       debugPrint('getAllHabits failed: $e');
       _error = AppStrings.errorGetAllHabitsFailed;
@@ -67,11 +70,35 @@ class HabitViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// The on/off flag only means "checked today."
+  /// A new calendar day turns it off. The streak and the last-checked date stay.
+  Future<void> resetTogglesForNewDay() async {
+    final today = _today;
+    for (var i = 0; i < _habits.length; i++) {
+      final habit = _habits[i];
+      if (!habit.toggledOn || habit.lastCheckedDate == today) continue;
+
+      final updated = habit.copyWith(toggledOn: false);
+      try {
+        await _repository.update(updated);
+        _habits[i] = updated;
+      } catch (e) {
+        debugPrint('resetTogglesForNewDay failed: $e');
+        _error = AppStrings.errorUpdateHabitFailed;
+      }
+    }
+    notifyListeners();
+  }
+
   Future<void> toggleHabit(Habit habit) async {
+    final today = _today;
+    // A switch left on from an earlier day is not "on" for today.
+    if (habit.toggledOn && habit.lastCheckedDate != today) {
+      habit = habit.copyWith(toggledOn: false);
+    }
+
     // was not toggled on before tap
     if (!habit.toggledOn) {
-      final today = DateTime.now().toIso8601String().substring(0, 10);
-
       final Habit updated;
       // The user never had a streak (first-time), so now setting to 1
       if (habit.lastCheckedDate == null) {
@@ -149,7 +176,7 @@ class HabitViewModel extends ChangeNotifier {
 
   bool get allHabitsDoneToday {
     if (_habits.isEmpty) return false;
-    final today = DateTime.now().toIso8601String().substring(0, 10);
+    final today = _today;
     return _habits.every((h) => h.lastCheckedDate == today);
   }
 }

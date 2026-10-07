@@ -64,6 +64,34 @@ void main() {
     );
   });
 
+  group('resetTogglesForNewDay', () {
+    test('turns the switch off when the last check was not today', () async {
+      final stale = makeHabit(3, makeLastCheckedDate(1)).copyWith(
+        id: 1,
+        toggledOn: true,
+      );
+      final checkedToday = makeHabit(2, makeLastCheckedDate(0)).copyWith(
+        id: 2,
+        toggledOn: true,
+      );
+      when(
+        mockHabitRepository.getAll(),
+      ).thenAnswer((_) async => [stale, checkedToday]);
+
+      await habitViewModel.getAllHabits();
+
+      final captured =
+          verify(mockHabitRepository.update(captureAny)).captured.single
+              as Habit;
+      expect(captured.id, 1);
+      expect(captured.toggledOn, false);
+      expect(captured.streakCount, 3);
+      expect(captured.lastCheckedDate, makeLastCheckedDate(1));
+      expect(habitViewModel.habits[0].toggledOn, false);
+      expect(habitViewModel.habits[1].toggledOn, true);
+    });
+  });
+
   group('toggleHabit - check on', () {
     test('updates repository to 1 when lastCheckedDate == null', () async {
       final habit = makeHabit(0, null);
@@ -82,6 +110,23 @@ void main() {
               as Habit;
       expect(captured.streakCount, 4);
     });
+
+    test(
+      'a switch left on from yesterday checks the habit for today',
+      () async {
+        final habit = makeHabit(
+          3,
+          makeLastCheckedDate(1),
+        ).copyWith(toggledOn: true);
+        await habitViewModel.toggleHabit(habit);
+        final captured =
+            verify(mockHabitRepository.update(captureAny)).captured.single
+                as Habit;
+        expect(captured.toggledOn, true);
+        expect(captured.lastCheckedDate, makeLastCheckedDate(0));
+        expect(captured.streakCount, 4);
+      },
+    );
 
     test('updates repository to 1 if daysSinceLastCheck > 1', () async {
       final habit = makeHabit(4, makeLastCheckedDate(2));

@@ -33,6 +33,21 @@ void main() {
     );
   }
 
+  group('timeUntilNextMidnight', () {
+    test('keeps the leftover seconds before midnight', () {
+      final now = DateTime(2026, 10, 6, 23, 59, 20);
+      final wait = timeUntilNextMidnight(now);
+
+      expect(wait, const Duration(seconds: 40));
+      expect(now.add(wait), DateTime(2026, 10, 7));
+    });
+
+    test('from earlier in the day lands on the next midnight', () {
+      final now = DateTime(2026, 10, 6, 20, 29);
+      expect(now.add(timeUntilNextMidnight(now)), DateTime(2026, 10, 7));
+    });
+  });
+
   group('TodayScreen date display', () {
     testWidgets('displays today\'s date', (WidgetTester tester) async {
       String dateToday = HTUtils.getFormattedDate(DateTime.now());
@@ -81,6 +96,35 @@ void main() {
       expect(find.text(AppStrings.notDone), findsNothing);
       expect(find.text(AppStrings.doneToday), findsOneWidget);
       expect(find.text(doneHabit.title), findsOneWidget);
+    });
+
+    testWidgets('a yesterday check is switched off when Today loads', (
+      WidgetTester tester,
+    ) async {
+      final yesterday = DateTime.now()
+          .subtract(const Duration(days: 1))
+          .toIso8601String()
+          .substring(0, 10);
+      final habit = Habit(
+        id: 1,
+        title: 'Exercise',
+        colorHex: '#FF0000',
+        streakCount: 3,
+        lastCheckedDate: yesterday,
+        toggledOn: true,
+      );
+      when(mockHabitRepository.getAll()).thenAnswer((_) async => [habit]);
+
+      await tester.pumpWidget(buildTodayScreen());
+      await tester.pumpAndSettle();
+
+      final saved =
+          verify(mockHabitRepository.update(captureAny)).captured.single
+              as Habit;
+      expect(saved.toggledOn, false);
+      expect(saved.lastCheckedDate, yesterday);
+      expect(find.text(AppStrings.notDone), findsOneWidget);
+      expect(find.text(AppStrings.doneToday), findsNothing);
     });
 
     testWidgets('habits split correctly across both sections', (
