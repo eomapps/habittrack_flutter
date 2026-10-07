@@ -10,6 +10,13 @@ import 'package:habittrack/views/home/widgets/today_placeholder.dart';
 import 'package:habittrack/views/home/widgets/habit_card.dart';
 import 'package:habittrack/main.dart';
 
+/// How long until the next local midnight. Keeps the leftover seconds,
+/// so a check at 11:59 still waits until 12:00.
+Duration timeUntilNextMidnight(DateTime now) {
+  final nextMidnight = DateTime(now.year, now.month, now.day + 1);
+  return nextMidnight.difference(now);
+}
+
 class TodayScreen extends ConsumerStatefulWidget {
   final DateTime? dateTime;
   const TodayScreen({super.key, this.dateTime});
@@ -35,30 +42,24 @@ class _TodayScreenState extends ConsumerState<TodayScreen>
   }
 
   void _initTimer() {
-    final now = DateTime.now().add(Duration(days: 1));
-    final nextMidnight = DateTime(now.year, now.month, now.day);
-    final durationToUse = nextMidnight.difference(DateTime.now());
-    if (durationToUse.inMinutes <= 0) {
-      if (HTUtils.getFormattedDate(DateTime.now()) != dateToday) {
-        setState(() {
-          dateToday = HTUtils.getFormattedDate(DateTime.now());
-        });
-      }
-      timer = Timer(Duration(hours: 24), () => onEnd());
-    } else {
-      timer = Timer(Duration(minutes: durationToUse.inMinutes), () => onEnd());
-    }
+    timer = Timer(timeUntilNextMidnight(DateTime.now()), onEnd);
   }
 
   void onEnd() {
     if (mounted) {
-      if (HTUtils.getFormattedDate(DateTime.now()) != dateToday) {
-        setState(() {
-          dateToday = HTUtils.getFormattedDate(DateTime.now());
-        });
-      }
+      _refreshForNewDay();
       _initTimer();
     }
+  }
+
+  void _refreshForNewDay() {
+    final nowLabel = HTUtils.getFormattedDate(DateTime.now());
+    if (nowLabel == dateToday) return;
+
+    setState(() {
+      dateToday = nowLabel;
+    });
+    ref.read(habitProvider.notifier).resetTogglesForNewDay();
   }
 
   @override
@@ -67,6 +68,7 @@ class _TodayScreenState extends ConsumerState<TodayScreen>
       setState(() {
         dateToday = HTUtils.getFormattedDate(DateTime.now());
       });
+      ref.read(habitProvider.notifier).resetTogglesForNewDay();
     }
   }
 

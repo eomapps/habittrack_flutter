@@ -14,6 +14,8 @@ class HabitViewModel extends StateNotifier<List<Habit>> {
   String? get error => _error;
   bool get isLoading => _isLoading;
 
+  String get _today => DateTime.now().toIso8601String().substring(0, 10);
+
   HabitViewModel(this._repository) : super([]);
 
   Future<void> getAllHabits() async {
@@ -21,6 +23,7 @@ class HabitViewModel extends StateNotifier<List<Habit>> {
       _isLoading = true;
       state = await _repository.getAll();
       _isLoading = false;
+      await resetTogglesForNewDay();
     } catch (e) {
       debugPrint('getAllHabits failed: $e');
       _error = AppStrings.errorGetAllHabitsFailed;
@@ -57,11 +60,25 @@ class HabitViewModel extends StateNotifier<List<Habit>> {
     }
   }
 
+  /// The on/off flag only means "checked today."
+  /// A new calendar day turns it off. The streak and the last-checked date stay.
+  Future<void> resetTogglesForNewDay() async {
+    final today = _today;
+    for (final habit in state) {
+      if (!habit.toggledOn || habit.lastCheckedDate == today) continue;
+      await updateHabit(habit.copyWith(toggledOn: false));
+    }
+  }
+
   Future<void> toggleHabit(Habit habit) async {
+    final today = _today;
+    // A switch left on from an earlier day is not "on" for today.
+    if (habit.toggledOn && habit.lastCheckedDate != today) {
+      habit = habit.copyWith(toggledOn: false);
+    }
+
     // was not toggled on before tap
     if (!habit.toggledOn) {
-      final today = DateTime.now().toIso8601String().substring(0, 10);
-
       final Habit updated;
       // The user never had a streak (first-time), so now setting to 1
       if (habit.lastCheckedDate == null) {
@@ -139,7 +156,7 @@ class HabitViewModel extends StateNotifier<List<Habit>> {
 
   bool get allHabitsDoneToday {
     if (state.isEmpty) return false;
-    final today = DateTime.now().toIso8601String().substring(0, 10);
+    final today = _today;
     return state.every((h) => h.lastCheckedDate == today);
   }
 }
