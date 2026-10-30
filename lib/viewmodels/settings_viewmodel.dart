@@ -79,7 +79,7 @@ class SettingsViewmodel extends Notifier<SettingsState> {
           .allHabitsDoneToday;
       await NotificationsService.instance.scheduleNotification();
     } else {
-      await NotificationsService.instance.cancelNotification(0);
+      await NotificationsService.instance.cancelAllNotifications();
     }
     state = state.copyWith(notificationsEnabled: notificationsEnabled);
   }
@@ -95,7 +95,7 @@ class SettingsViewmodel extends Notifier<SettingsState> {
       await _prefs.setInt(AppStrings.settingsNotificationHour, hours);
       await _prefs.setInt(AppStrings.settingsNotificationMins, mins);
       if (notificationsEnabled) {
-        await NotificationsService.instance.cancelNotification(0);
+        await NotificationsService.instance.cancelAllNotifications();
         NotificationsService.instance.allDoneToday = ref
             .read(habitProvider.notifier)
             .allHabitsDoneToday;

@@ -5,6 +5,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:habittrack/core/constants/app_strings.dart';
 import 'package:habittrack/core/notifications/notification_handler.dart';
+import 'package:habittrack/core/notifications/notification_plan.dart';
 import 'package:habittrack/viewmodels/settings_viewmodel.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -69,7 +70,7 @@ class NotificationsService {
         if (!viewmodel!.hasNotificationsPreferenceBeenSet) {
           await viewmodel!.setNotifications(false);
         } else {
-          await cancelNotification(0);
+          await cancelAllNotifications();
         }
         viewmodel!.setNotificationsBlockedByOS(true);
       }
@@ -88,7 +89,7 @@ class NotificationsService {
         if (!viewmodel!.hasNotificationsPreferenceBeenSet) {
           await viewmodel!.setNotifications(false);
         } else {
-          await cancelNotification(0);
+          await cancelAllNotifications();
         }
         viewmodel!.setNotificationsBlockedByOS(true);
       }
@@ -124,45 +125,48 @@ class NotificationsService {
       return;
     }
     try {
+      // Clears the whole window, including the old repeating notification
+      // (id 0) left over from earlier versions of the app.
+      await cancelAllNotifications();
       final notificationTime = viewmodel!.notificationTime;
-      var scheduledDate = tz.TZDateTime(
-        tz.local,
-        DateTime.now().year,
-        DateTime.now().month,
-        DateTime.now().day,
-        notificationTime.hour,
-        notificationTime.minute,
+      final planned = planNotifications(
+        now: tz.TZDateTime.now(tz.local),
+        hour: notificationTime.hour,
+        minute: notificationTime.minute,
+        allDoneToday: allDoneToday,
       );
-      final isToday = !scheduledDate.isBefore(tz.TZDateTime.now(tz.local));
-      if (!isToday) {
-        scheduledDate = scheduledDate.add(const Duration(days: 1));
-      }
-      final useCongratsMessage = allDoneToday && isToday;
-      await flutterLocalNotificationsPlugin.zonedSchedule(
-        id: 0,
-        title: useCongratsMessage
-            ? AppStrings.notificationCongratulationsTitle
-            : AppStrings.notificationTitle,
-        body: useCongratsMessage
-            ? AppStrings.notificationCongratulationsBody
-            : AppStrings.notificationBody,
-        scheduledDate: scheduledDate,
-        notificationDetails: const NotificationDetails(
-          iOS: DarwinNotificationDetails(),
-          android: AndroidNotificationDetails(
-            AppStrings.channelId,
-            AppStrings.channelName,
-            channelDescription: AppStrings.channelDescription,
-            priority: Priority.high,
-            importance: Importance.high,
-            fullScreenIntent: true,
+      for (final notification in planned) {
+        await flutterLocalNotificationsPlugin.zonedSchedule(
+          id: notification.id,
+          title: notification.isCongratulations
+              ? AppStrings.notificationCongratulationsTitle
+              : AppStrings.notificationTitle,
+          body: notification.isCongratulations
+              ? AppStrings.notificationCongratulationsBody
+              : AppStrings.notificationBody,
+          scheduledDate: notification.scheduledDate,
+          notificationDetails: const NotificationDetails(
+            iOS: DarwinNotificationDetails(),
+            android: AndroidNotificationDetails(
+              AppStrings.channelId,
+              AppStrings.channelName,
+              channelDescription: AppStrings.channelDescription,
+              priority: Priority.high,
+              importance: Importance.high,
+              fullScreenIntent: true,
+            ),
           ),
-        ),
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-        matchDateTimeComponents: DateTimeComponents.time,
-      );
+          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        );
+      }
     } catch (e) {
       debugPrint('scheduleNotification failed: $e');
+    }
+  }
+
+  Future<void> cancelAllNotifications() async {
+    for (var id = 0; id < notificationDaysAhead; id++) {
+      await cancelNotification(id);
     }
   }
 
