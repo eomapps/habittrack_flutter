@@ -38,7 +38,7 @@ A lightweight, offline-first habit tracking app built with Flutter — running o
 - ✅ Daily reminder notification with OS permission handling and graceful denial UX
 - ✅ Fully offline — no account or login required
 - ✅ Cross-platform: iOS and Android from a single codebase
-- ✅ Tested — unit tests (streak logic, allHabitsDoneToday getter, toggle transition), widget tests (HabitCard, ProgressCard, TodayScreen, ProgressScreen, SettingsScreen, AddEditHabitBottomSheet), and data layer tests via flutter_test and mockito
+- ✅ Tested — unit tests (streak logic, allHabitsDoneToday getter, toggle transition, notification schedule), widget tests (HabitCard, ProgressCard, TodayScreen, ProgressScreen, SettingsScreen, AddEditHabitBottomSheet), and data layer tests via flutter_test and mockito
 
 ## Tech Stack
 
@@ -67,7 +67,7 @@ habittrack/
 ├── lib/
 │   ├── core/
 │   │   ├── constants/     # Colors, tokens, text styles, dimensions, strings, theme
-│   │   ├── notifications/ # NotificationService (scheduling) + NotificationHandler (tap routing)
+│   │   ├── notifications/ # NotificationService (scheduling) + notification plan (14-day schedule) + NotificationHandler (tap routing)
 │   │   └── utils/         # Helper utilities, context extensions
 │   ├── data/
 │   │   ├── database/   # DatabaseHelper (sqflite)
@@ -80,6 +80,8 @@ habittrack/
 │       └── home/           # HomeScreen (IndexedStack): TodayScreen, ProgressScreen
 │           └── widgets/    # HabitCard, ProgressCard, TodayScreen, ProgressScreen, TodayPlaceholder, ProgressPlaceholder
 ├── test/
+│   ├── core/
+│   │   └── notifications/  # Unit tests: 14-day notification schedule
 │   ├── data/
 │   │   ├── models/         # Unit tests: Habit.computedStreak logic
 │   │   └── viewmodels/     # Unit tests: HabitViewModel streak logic, allHabitsDoneToday getter (mockito)
