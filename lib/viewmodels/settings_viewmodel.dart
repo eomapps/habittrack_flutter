@@ -39,7 +39,7 @@ class SettingsViewmodel extends ChangeNotifier {
     if (notificationsEnabled) {
       await NotificationsService.instance.scheduleNotification();
     } else {
-      await NotificationsService.instance.cancelNotification(0);
+      await NotificationsService.instance.cancelAllNotifications();
     }
     notifyListeners();
   }
@@ -55,7 +55,7 @@ class SettingsViewmodel extends ChangeNotifier {
       await _prefs.setInt(AppStrings.settingsNotificationHour, hours);
       await _prefs.setInt(AppStrings.settingsNotificationMins, mins);
       if (notificationsEnabled) {
-        await NotificationsService.instance.cancelNotification(0);
+        await NotificationsService.instance.cancelAllNotifications();
         await NotificationsService.instance.scheduleNotification();
       }
     } catch (e) {
